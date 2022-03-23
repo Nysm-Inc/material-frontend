@@ -5,3 +5,5 @@ export const CraftMaterialContractAddress = "0x0260a5a982f13a16527b9140650e90bd4
 export const WrapContractAddress = "0x061babbd9e61b3f07c976d2faec4f9cfd4dedf160b6759790e7f0b05ed285111";
 export const WrapMaterialContractAddress = "0x0714d1a1f17e76042a4cfb4d6722c07d67dc9fc6278075b9a05af02d24ae7428";
 export const WrapCraftMaterialContractAddress = "0x061f8c5a8519837cb2b6f9fc52f1f150bb514cc1c3e09c8fb987894499bd8474";
+
+export const starknetFeederGateway = "https://alpha4.starknet.io/feeder_gateway/call_contract?blockId=null";

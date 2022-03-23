@@ -1,12 +1,18 @@
-import axios from "axios";
 import type { NextPage } from "next";
 import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import { Abi, hash, number } from "starknet";
 import { useStarknet, useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
 import { Box, Button, Center, Divider, Heading, HStack, Text, VStack } from "@chakra-ui/react";
-import { craftAbi, dailyBonusAbi, dailyMaterialAbi } from "~/abi";
+import { craftAbi, craftMaterialAbi, dailyBonusAbi, dailyMaterialAbi } from "~/abi";
 import WalletStarknet from "~/components/wallet/Starknet";
-import { CraftContractAddress, DailyBonusContractAddress, DailyMaterialContractAddress } from "~/constants";
+import {
+  CraftContractAddress,
+  CraftMaterialContractAddress,
+  DailyBonusContractAddress,
+  DailyMaterialContractAddress,
+  starknetFeederGateway,
+} from "~/constants";
 import { stringToBN, toBN, toNumber } from "~/utils/cairo";
 
 const Index: NextPage = () => {
@@ -34,13 +40,12 @@ const Index: NextPage = () => {
     abi: dailyMaterialAbi as Abi,
     address: DailyMaterialContractAddress,
   });
-  const [myMaterials, setMyMaterials] = useState<number[]>([]);
-  const fetchMyMaterials = useCallback(async () => {
-    const endpoint = "https://alpha4.starknet.io/feeder_gateway/call_contract?blockId=null";
+  const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
+  const fetchDailyMaterials = useCallback(async () => {
     const len = 4;
     const owners = [...new Array(len)].map(() => toBN(account));
     const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
-    const res = await axios.post<{ result: string[] }>(endpoint, {
+    const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
       signature: [],
       calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
       contract_address: DailyMaterialContractAddress,
@@ -55,10 +60,10 @@ const Index: NextPage = () => {
     if (!account) return;
 
     (async () => {
-      const materials = await fetchMyMaterials();
-      setMyMaterials(materials);
+      const materials = await fetchDailyMaterials();
+      setDailyMaterials(materials);
     })();
-  }, [account, fetchMyMaterials]);
+  }, [account, fetchDailyMaterials]);
 
   // -------- Craft --------
   const { contract: craftContract } = useContract({
@@ -71,16 +76,44 @@ const Index: NextPage = () => {
   });
 
   // -------- Craft Material --------
+  const { contract: craftMaterialContract } = useContract({
+    abi: craftMaterialAbi as Abi,
+    address: CraftMaterialContractAddress,
+  });
+  const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
+  const fetchCraftMaterials = useCallback(async () => {
+    const len = 7;
+    const owners = [...new Array(len)].map(() => toBN(account));
+    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
+    const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
+      signature: [],
+      calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
+      contract_address: CraftMaterialContractAddress,
+      entry_point_selector: number.toHex(hash.starknetKeccak("balance_of_batch")),
+    });
+    const materials = res.data.result.map((res) => toNumber(res));
+    materials.shift();
+    return materials;
+  }, [account]);
+
+  useEffect(() => {
+    if (!account) return;
+
+    (async () => {
+      const materials = await fetchCraftMaterials();
+      setCraftMaterials(materials);
+    })();
+  }, [account, fetchCraftMaterials]);
 
   return (
-    <VStack w="100vw" h="100vh" p="8">
+    <VStack w="100vw" p="8">
       <WalletStarknet />
       <Text>account: {account}</Text>
       <Text>account(felt): {toBN(account)}</Text>
       <Divider />
 
       <Heading size="lg">Daily Bonus</Heading>
-      <Text>elapsedLoginTime: {toNumber(elapsedLoginTime)}s</Text>
+      <Text>elapsed login time: {toNumber(elapsedLoginTime)}s</Text>
       <Button
         onClick={() => {
           if (!account) return;
@@ -94,8 +127,8 @@ const Index: NextPage = () => {
       <Heading size="lg">Daily Material</Heading>
       <Text>id: number</Text>
       <VStack>
-        {myMaterials.map((material, i) => (
-          <Text key={i}>{`${i}: ${material}`}</Text>
+        {dailyMaterials.map((num, id) => (
+          <Text key={id}>{`${id}: ${num}`}</Text>
         ))}
       </VStack>
       <Divider />
@@ -111,6 +144,13 @@ const Index: NextPage = () => {
       <Divider />
 
       <Heading size="lg">Craft Material</Heading>
+      <Text>id: number</Text>
+      <VStack>
+        {craftMaterials.map((num, id) => (
+          <Text key={id}>{`${id}: ${num}`}</Text>
+        ))}
+      </VStack>
+      <Divider />
     </VStack>
   );
 };
