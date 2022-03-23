@@ -1,0 +1,140 @@
+[
+  {
+    "inputs": [
+      {
+        "name": "daily_material_address",
+        "type": "felt"
+      },
+      {
+        "name": "craft_material_address",
+        "type": "felt"
+      }
+    ],
+    "name": "constructor",
+    "outputs": [],
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_soil_2_brick",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_brick_2_brickHouse",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_soilAndSeed_2_wood",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_ironAndWood_2_ironSword",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "stake_iron_2_steel",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_iron_2_steel",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_oil_2_plastic",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_plasticAndSteel_2_computer",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
+    "name": "craft_computer_2_electronicsStore",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daily_material_address",
+    "outputs": [
+      {
+        "name": "res",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "craft_material_address",
+    "outputs": [
+      {
+        "name": "res",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

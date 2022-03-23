@@ -1,0 +1,7 @@
+export const DailyBonusContractAddress = "0x01766d875720e3ced7fbb2e4e81b441fd6fd8fea0ececde890f40d42edffb2e0";
+export const DailyMaterialContractAddress = "0x035f2aa05aacb0291509aca9332292f083cf86e95b694266704bfd6c24c7811d";
+export const CraftContractAddress = "0x0139f1d4f92b7e64e022f0c84c2a0191267ee68b1ecf7a89ace2ef695d7e8d90";
+export const CraftMaterialContractAddress = "0x0260a5a982f13a16527b9140650e90bd4dd7a77ba62829bb3cf791776a4cb4dc";
+export const WrapContractAddress = "0x061babbd9e61b3f07c976d2faec4f9cfd4dedf160b6759790e7f0b05ed285111";
+export const WrapMaterialContractAddress = "0x0714d1a1f17e76042a4cfb4d6722c07d67dc9fc6278075b9a05af02d24ae7428";
+export const WrapCraftMaterialContractAddress = "0x061f8c5a8519837cb2b6f9fc52f1f150bb514cc1c3e09c8fb987894499bd8474";
