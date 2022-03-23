@@ -16,7 +16,7 @@ import {
   WrapCraftMaterialContractAddress,
   WrapMaterialContractAddress,
 } from "~/constants";
-import { toBN, toNumber } from "~/utils/cairo";
+import { numToFelt, feltToNum } from "~/utils/cairo";
 import { Github, Meta } from "~/public";
 import Image from "next/image";
 
@@ -32,7 +32,7 @@ const Index: NextPage = () => {
   const { data: elapsedLoginTime } = useStarknetCall({
     contract: dailyBonusContract,
     method: "check_elapsed_time",
-    args: [toBN(account)],
+    args: [numToFelt(account)],
   });
   // note: must invoke register_owner before get_reward
   const { invoke: getReward } = useStarknetInvoke({
@@ -44,15 +44,15 @@ const Index: NextPage = () => {
   const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
   const fetchDailyMaterials = useCallback(async () => {
     const len = 4;
-    const owners = [...new Array(len)].map(() => toBN(account));
-    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
+    const owners = [...new Array(len)].map(() => numToFelt(account));
+    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, numToFelt(i), numToFelt(0)], []);
     const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
       signature: [],
-      calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
+      calldata: [numToFelt(len), ...owners, numToFelt(len), ...tokenIDs],
       contract_address: DailyMaterialContractAddress,
       entry_point_selector: number.toHex(hash.starknetKeccak("balance_of_batch")),
     });
-    const materials = res.data.result.map((res) => toNumber(res));
+    const materials = res.data.result.map((res) => feltToNum(res));
     materials.shift();
     return materials;
   }, [account]);
@@ -112,15 +112,15 @@ const Index: NextPage = () => {
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
   const fetchCraftMaterials = useCallback(async () => {
     const len = 8;
-    const owners = [...new Array(len)].map(() => toBN(account));
-    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
+    const owners = [...new Array(len)].map(() => numToFelt(account));
+    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, numToFelt(i), numToFelt(0)], []);
     const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
       signature: [],
-      calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
+      calldata: [numToFelt(len), ...owners, numToFelt(len), ...tokenIDs],
       contract_address: CraftMaterialContractAddress,
       entry_point_selector: number.toHex(hash.starknetKeccak("balance_of_batch")),
     });
-    const materials = res.data.result.map((res) => toNumber(res));
+    const materials = res.data.result.map((res) => feltToNum(res));
     materials.shift();
     return materials;
   }, [account]);
@@ -180,15 +180,15 @@ const Index: NextPage = () => {
   const [wrapMaterials, setWrapMaterials] = useState<number[]>([]);
   const fetchWrapMaterials = useCallback(async () => {
     const len = 4;
-    const owners = [...new Array(len)].map(() => toBN(account));
-    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
+    const owners = [...new Array(len)].map(() => numToFelt(account));
+    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, numToFelt(i), numToFelt(0)], []);
     const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
       signature: [],
-      calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
+      calldata: [numToFelt(len), ...owners, numToFelt(len), ...tokenIDs],
       contract_address: WrapMaterialContractAddress,
       entry_point_selector: number.toHex(hash.starknetKeccak("balance_of_batch")),
     });
-    const materials = res.data.result.map((res) => toNumber(res));
+    const materials = res.data.result.map((res) => feltToNum(res));
     materials.shift();
     return materials;
   }, [account]);
@@ -206,15 +206,15 @@ const Index: NextPage = () => {
   const [wrapCraftMaterials, setWrapCraftMaterials] = useState<number[]>([]);
   const fetchWrapCraftMaterials = useCallback(async () => {
     const len = 8;
-    const owners = [...new Array(len)].map(() => toBN(account));
-    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
+    const owners = [...new Array(len)].map(() => numToFelt(account));
+    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, numToFelt(i), numToFelt(0)], []);
     const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
       signature: [],
-      calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
+      calldata: [numToFelt(len), ...owners, numToFelt(len), ...tokenIDs],
       contract_address: WrapCraftMaterialContractAddress,
       entry_point_selector: number.toHex(hash.starknetKeccak("balance_of_batch")),
     });
-    const materials = res.data.result.map((res) => toNumber(res));
+    const materials = res.data.result.map((res) => feltToNum(res));
     materials.shift();
     return materials;
   }, [account]);
@@ -252,11 +252,11 @@ const Index: NextPage = () => {
           Daily Bonus
         </Link>
       </Heading>
-      <Text>elapsed login time: {toNumber(elapsedLoginTime)}s</Text>
+      <Text>elapsed login time: {feltToNum(elapsedLoginTime)}s</Text>
       <Button
         onClick={() => {
           if (!account) return;
-          getReward({ args: [toBN(account)] });
+          getReward({ args: [numToFelt(account)] });
         }}
       >
         Get Reward
@@ -284,7 +284,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[0]}
         onClick={() => {
-          craftSoil2Brick({ args: [toBN(account)] });
+          craftSoil2Brick({ args: [numToFelt(account)] });
         }}
       >
         Soil to Brick
@@ -292,7 +292,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[1]}
         onClick={() => {
-          craftBrick2BrickHouse({ args: [toBN(account)] });
+          craftBrick2BrickHouse({ args: [numToFelt(account)] });
         }}
       >
         Brick to BrickHouse
@@ -300,7 +300,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[2]}
         onClick={() => {
-          craftSoilAndSeed2Wood({ args: [toBN(account)] });
+          craftSoilAndSeed2Wood({ args: [numToFelt(account)] });
         }}
       >
         SoilAndSeed to Wood
@@ -308,7 +308,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[3]}
         onClick={() => {
-          craftIronAndWood2IronSword({ args: [toBN(account)] });
+          craftIronAndWood2IronSword({ args: [numToFelt(account)] });
         }}
       >
         IronAndWood to IronSword
@@ -316,7 +316,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[4]}
         onClick={() => {
-          stakeIron2Steel({ args: [toBN(account)] });
+          stakeIron2Steel({ args: [numToFelt(account)] });
         }}
       >
         Stake Iron To Steel
@@ -324,7 +324,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[5]}
         onClick={() => {
-          craftIron2Steel({ args: [toBN(account)] });
+          craftIron2Steel({ args: [numToFelt(account)] });
         }}
       >
         Iron to Steel
@@ -332,7 +332,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[6]}
         onClick={() => {
-          craftOil2Plastic({ args: [toBN(account)] });
+          craftOil2Plastic({ args: [numToFelt(account)] });
         }}
       >
         Oil to Plastic
@@ -340,7 +340,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[7]}
         onClick={() => {
-          craftPlasticAndSteel2Computer({ args: [toBN(account)] });
+          craftPlasticAndSteel2Computer({ args: [numToFelt(account)] });
         }}
       >
         PlasticAndSteel to Computer
@@ -348,7 +348,7 @@ const Index: NextPage = () => {
       <Button
         disabled={!isCraftable[8]}
         onClick={() => {
-          craftComputer2ElectronicsStore({ args: [toBN(account)] });
+          craftComputer2ElectronicsStore({ args: [numToFelt(account)] });
         }}
       >
         Computer to ElectronicsStore
@@ -383,7 +383,9 @@ const Index: NextPage = () => {
         />
         <Button
           onClick={() => {
-            wrapDailyMaterial({ args: [toBN(account), [toBN(wrapDailyMaterialID), toBN(0)], toBN(1)] });
+            wrapDailyMaterial({
+              args: [numToFelt(account), [numToFelt(wrapDailyMaterialID), numToFelt(0)], numToFelt(1)],
+            });
           }}
         >
           Wrap Daily Material
@@ -399,7 +401,9 @@ const Index: NextPage = () => {
         />
         <Button
           onClick={() => {
-            wrapCraftMaterial({ args: [toBN(account), [toBN(wrapCraftMaterialID), toBN(0)], toBN(1)] });
+            wrapCraftMaterial({
+              args: [numToFelt(account), [numToFelt(wrapCraftMaterialID), numToFelt(0)], numToFelt(1)],
+            });
           }}
         >
           Wrap Craft Material
@@ -415,7 +419,9 @@ const Index: NextPage = () => {
         />
         <Button
           onClick={() => {
-            unwrapDailyMaterial({ args: [toBN(account), [toBN(unwrapDailyMaterialID), toBN(0)], toBN(1)] });
+            unwrapDailyMaterial({
+              args: [numToFelt(account), [numToFelt(unwrapDailyMaterialID), numToFelt(0)], numToFelt(1)],
+            });
           }}
         >
           Unwrap Daily Material
@@ -431,7 +437,9 @@ const Index: NextPage = () => {
         />
         <Button
           onClick={() => {
-            unwrapCraftMaterial({ args: [toBN(account), [toBN(unwrapCraftMaterialID), toBN(0)], toBN(1)] });
+            unwrapCraftMaterial({
+              args: [numToFelt(account), [numToFelt(unwrapCraftMaterialID), numToFelt(0)], numToFelt(1)],
+            });
           }}
         >
           Unwrap Craft Material
