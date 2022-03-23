@@ -25,6 +25,7 @@ import {
   DailyMaterialContractAddress,
   starknetFeederGateway,
   WrapContractAddress,
+  WrapCraftMaterialContractAddress,
   WrapMaterialContractAddress,
 } from "~/constants";
 import { stringToBN, toBN, toNumber } from "~/utils/cairo";
@@ -50,10 +51,6 @@ const Index: NextPage = () => {
   });
 
   // -------- Daily Material --------
-  const { contract: dailyMaterialContract } = useContract({
-    abi: dailyMaterialAbi as Abi,
-    address: DailyMaterialContractAddress,
-  });
   const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
   const fetchDailyMaterials = useCallback(async () => {
     const len = 4;
@@ -90,10 +87,6 @@ const Index: NextPage = () => {
   });
 
   // -------- Craft Material --------
-  const { contract: craftMaterialContract } = useContract({
-    abi: craftMaterialAbi as Abi,
-    address: CraftMaterialContractAddress,
-  });
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
   const fetchCraftMaterials = useCallback(async () => {
     const len = 7;
@@ -137,10 +130,6 @@ const Index: NextPage = () => {
   });
 
   // -------- Wrap Material --------
-  const { contract: wrapMaterialContract } = useContract({
-    abi: wrapMaterialAbi as Abi,
-    address: WrapMaterialContractAddress,
-  });
   const [wrapMaterials, setWrapMaterials] = useState<number[]>([]);
   const fetchWrapMaterials = useCallback(async () => {
     const len = 4;
@@ -165,6 +154,32 @@ const Index: NextPage = () => {
       setWrapMaterials(materials);
     })();
   }, [account, fetchWrapMaterials]);
+
+  // -------- Wrap Craft Material --------
+  const [wrapCraftMaterials, setWrapCraftMaterials] = useState<number[]>([]);
+  const fetchWrapCraftMaterials = useCallback(async () => {
+    const len = 7;
+    const owners = [...new Array(len)].map(() => toBN(account));
+    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
+    const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
+      signature: [],
+      calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
+      contract_address: WrapCraftMaterialContractAddress,
+      entry_point_selector: number.toHex(hash.starknetKeccak("balance_of_batch")),
+    });
+    const materials = res.data.result.map((res) => toNumber(res));
+    materials.shift();
+    return materials;
+  }, [account]);
+
+  useEffect(() => {
+    if (!account) return;
+
+    (async () => {
+      const materials = await fetchWrapCraftMaterials();
+      setWrapCraftMaterials(materials);
+    })();
+  }, [account, fetchWrapCraftMaterials]);
 
   return (
     <VStack w="100vw" p="8">
@@ -256,6 +271,14 @@ const Index: NextPage = () => {
         ))}
       </VStack>
       <Divider />
+
+      <Heading size="lg">Wrap Craft Material</Heading>
+      <Text>id: number</Text>
+      <VStack>
+        {wrapCraftMaterials.map((num, id) => (
+          <Text key={id}>{`${id}: ${num}`}</Text>
+        ))}
+      </VStack>
     </VStack>
   );
 };
