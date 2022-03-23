@@ -24,7 +24,7 @@ const Index: NextPage = () => {
     args: [toBN(account)],
   });
   // note: must invoke register_owner before get_reward
-  const { invoke: invokeGetReward } = useStarknetInvoke({
+  const { invoke: getReward } = useStarknetInvoke({
     contract: dailyBonusContract,
     method: "get_reward",
   });
@@ -60,35 +60,58 @@ const Index: NextPage = () => {
     })();
   }, [account, fetchMyMaterials]);
 
-  return (
-    <Box w="100vw" h="100vh">
-      <VStack>
-        <Heading size="lg">Account</Heading>
-        <WalletStarknet />
-        <Text>account: {account}</Text>
-        <Text>account(felt): {toBN(account)}</Text>
-        <Divider />
+  // -------- Craft --------
+  const { contract: craftContract } = useContract({
+    abi: craftAbi as Abi,
+    address: CraftContractAddress,
+  });
+  const { invoke: craftSoil2Brick } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_soil_2_brick",
+  });
 
-        <Heading size="lg">Daily Bonus</Heading>
-        <Text>elapsedLoginTime: {toNumber(elapsedLoginTime)}s</Text>
-        <Button
-          onClick={() => {
-            if (!account) return;
-            invokeGetReward({ args: [toBN(account)] });
-          }}
-        >
-          Get Reward
-        </Button>
-        <Text>id: number</Text>
-        <VStack>
-          {myMaterials.map((material, i) => (
-            <Text key={i}>{`${i}: ${material}`}</Text>
-          ))}
-        </VStack>
-        <Divider />
-        <Heading size="lg">Craft</Heading>
+  // -------- Craft Material --------
+
+  return (
+    <VStack w="100vw" h="100vh" p="8">
+      <WalletStarknet />
+      <Text>account: {account}</Text>
+      <Text>account(felt): {toBN(account)}</Text>
+      <Divider />
+
+      <Heading size="lg">Daily Bonus</Heading>
+      <Text>elapsedLoginTime: {toNumber(elapsedLoginTime)}s</Text>
+      <Button
+        onClick={() => {
+          if (!account) return;
+          getReward({ args: [toBN(account)] });
+        }}
+      >
+        Get Reward
+      </Button>
+      <Divider />
+
+      <Heading size="lg">Daily Material</Heading>
+      <Text>id: number</Text>
+      <VStack>
+        {myMaterials.map((material, i) => (
+          <Text key={i}>{`${i}: ${material}`}</Text>
+        ))}
       </VStack>
-    </Box>
+      <Divider />
+
+      <Heading size="lg">Craft</Heading>
+      <Button
+        onClick={() => {
+          craftSoil2Brick({ args: [toBN(account)] });
+        }}
+      >
+        Soil to Brick
+      </Button>
+      <Divider />
+
+      <Heading size="lg">Craft Material</Heading>
+    </VStack>
   );
 };
 
