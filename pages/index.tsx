@@ -111,7 +111,7 @@ const Index: NextPage = () => {
   // -------- Craft Material --------
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
   const fetchCraftMaterials = useCallback(async () => {
-    const len = 7;
+    const len = 8;
     const owners = [...new Array(len)].map(() => toBN(account));
     const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
     const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
@@ -133,6 +133,22 @@ const Index: NextPage = () => {
       setCraftMaterials(materials);
     })();
   }, [account, fetchCraftMaterials]);
+
+  const [isCraftable, setIsCraftable] = useState([...new Array(9)].map(() => false));
+  useEffect(() => {
+    const condition = [...new Array(9)].map(() => false);
+    condition[0] = dailyMaterials[0] >= 4;
+    condition[1] = craftMaterials[0] >= 4;
+    condition[2] = dailyMaterials[0] >= 2 && dailyMaterials[2] >= 2;
+    condition[3] = dailyMaterials[3] >= 1 && craftMaterials[2] >= 1;
+    condition[4] = dailyMaterials[3] >= 1;
+    condition[5] = false; // ???
+    condition[6] = dailyMaterials[1] >= 1;
+    condition[7] = craftMaterials[5] >= 2 && craftMaterials[4] >= 1;
+    condition[8] = craftMaterials[6] >= 4;
+
+    setIsCraftable(condition);
+  }, [dailyMaterials, craftMaterials]);
 
   // -------- Wrap --------
   const { contract: wrapContract } = useContract({
@@ -189,7 +205,7 @@ const Index: NextPage = () => {
   // -------- Wrap Craft Material --------
   const [wrapCraftMaterials, setWrapCraftMaterials] = useState<number[]>([]);
   const fetchWrapCraftMaterials = useCallback(async () => {
-    const len = 7;
+    const len = 8;
     const owners = [...new Array(len)].map(() => toBN(account));
     const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
     const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
@@ -266,6 +282,7 @@ const Index: NextPage = () => {
         </Link>
       </Heading>
       <Button
+        disabled={!isCraftable[0]}
         onClick={() => {
           craftSoil2Brick({ args: [toBN(account)] });
         }}
@@ -273,6 +290,7 @@ const Index: NextPage = () => {
         Soil to Brick
       </Button>
       <Button
+        disabled={!isCraftable[1]}
         onClick={() => {
           craftBrick2BrickHouse({ args: [toBN(account)] });
         }}
@@ -280,6 +298,7 @@ const Index: NextPage = () => {
         Brick to BrickHouse
       </Button>
       <Button
+        disabled={!isCraftable[2]}
         onClick={() => {
           craftSoilAndSeed2Wood({ args: [toBN(account)] });
         }}
@@ -287,6 +306,7 @@ const Index: NextPage = () => {
         SoilAndSeed to Wood
       </Button>
       <Button
+        disabled={!isCraftable[3]}
         onClick={() => {
           craftIronAndWood2IronSword({ args: [toBN(account)] });
         }}
@@ -294,6 +314,7 @@ const Index: NextPage = () => {
         IronAndWood to IronSword
       </Button>
       <Button
+        disabled={!isCraftable[4]}
         onClick={() => {
           stakeIron2Steel({ args: [toBN(account)] });
         }}
@@ -301,6 +322,7 @@ const Index: NextPage = () => {
         Stake Iron To Steel
       </Button>
       <Button
+        disabled={!isCraftable[5]}
         onClick={() => {
           craftIron2Steel({ args: [toBN(account)] });
         }}
@@ -308,6 +330,7 @@ const Index: NextPage = () => {
         Iron to Steel
       </Button>
       <Button
+        disabled={!isCraftable[6]}
         onClick={() => {
           craftOil2Plastic({ args: [toBN(account)] });
         }}
@@ -315,6 +338,7 @@ const Index: NextPage = () => {
         Oil to Plastic
       </Button>
       <Button
+        disabled={!isCraftable[7]}
         onClick={() => {
           craftPlasticAndSteel2Computer({ args: [toBN(account)] });
         }}
@@ -322,6 +346,7 @@ const Index: NextPage = () => {
         PlasticAndSteel to Computer
       </Button>
       <Button
+        disabled={!isCraftable[8]}
         onClick={() => {
           craftComputer2ElectronicsStore({ args: [toBN(account)] });
         }}
