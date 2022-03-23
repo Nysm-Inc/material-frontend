@@ -107,16 +107,25 @@ const Index: NextPage = () => {
     abi: wrapAbi as Abi,
     address: WrapContractAddress,
   });
-  const [dailyMaterialID, setDailyMaterialID] = useState(0);
+  const [wrapDailyMaterialID, setWrapDailyMaterialID] = useState(0);
   const { invoke: wrapDailyMaterial } = useStarknetInvoke({
     contract: wrapContract,
     method: "wrap_daily_material",
   });
-
-  const [craftMaterialID, setCraftMaterialID] = useState(0);
+  const [wrapCraftMaterialID, setWrapCraftMaterialID] = useState(0);
   const { invoke: wrapCraftMaterial } = useStarknetInvoke({
     contract: wrapContract,
     method: "wrap_craft_material",
+  });
+  const [unwrapDailyMaterialID, setUnwrapDailyMaterialID] = useState(0);
+  const { invoke: unwrapDailyMaterial } = useStarknetInvoke({
+    contract: wrapContract,
+    method: "unwrap_daily_material",
+  });
+  const [unwrapCraftMaterialID, setUnwrapCraftMaterialID] = useState(0);
+  const { invoke: unwrapCraftMaterial } = useStarknetInvoke({
+    contract: wrapContract,
+    method: "unwrap_craft_material",
   });
 
   // -------- Wrap Material --------
@@ -257,11 +266,11 @@ const Index: NextPage = () => {
           h="8"
           type="number"
           placeholder="daily material id"
-          onChange={(e) => setDailyMaterialID(Number(e.target.value))}
+          onChange={(e) => setWrapDailyMaterialID(Number(e.target.value))}
         />
         <Button
           onClick={() => {
-            wrapDailyMaterial({ args: [toBN(account), [toBN(dailyMaterialID), toBN(0)], toBN(1)] });
+            wrapDailyMaterial({ args: [toBN(account), [toBN(wrapDailyMaterialID), toBN(0)], toBN(1)] });
           }}
         >
           Wrap Daily Material
@@ -273,14 +282,46 @@ const Index: NextPage = () => {
           h="8"
           type="number"
           placeholder="craft material id"
-          onChange={(e) => setCraftMaterialID(Number(e.target.value))}
+          onChange={(e) => setWrapCraftMaterialID(Number(e.target.value))}
         />
         <Button
           onClick={() => {
-            wrapCraftMaterial({ args: [toBN(account), [toBN(craftMaterialID), toBN(0)], toBN(1)] });
+            wrapCraftMaterial({ args: [toBN(account), [toBN(wrapCraftMaterialID), toBN(0)], toBN(1)] });
           }}
         >
           Wrap Craft Material
+        </Button>
+      </HStack>
+      <HStack>
+        <Input
+          w="48"
+          h="8"
+          type="number"
+          placeholder="daily material id"
+          onChange={(e) => setUnwrapDailyMaterialID(Number(e.target.value))}
+        />
+        <Button
+          onClick={() => {
+            unwrapDailyMaterial({ args: [toBN(account), [toBN(unwrapDailyMaterialID), toBN(0)], toBN(1)] });
+          }}
+        >
+          Unwrap Daily Material
+        </Button>
+      </HStack>
+      <HStack>
+        <Input
+          w="48"
+          h="8"
+          type="number"
+          placeholder="craft material id"
+          onChange={(e) => setUnwrapCraftMaterialID(Number(e.target.value))}
+        />
+        <Button
+          onClick={() => {
+            unwrapCraftMaterial({ args: [toBN(account), [toBN(unwrapCraftMaterialID), toBN(0)], toBN(1)] });
+          }}
+        >
+          Unwrap Craft Material
         </Button>
       </HStack>
       <Divider />
