@@ -3,8 +3,20 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Abi, hash, number } from "starknet";
 import { useStarknet, useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
-import { Box, Button, Center, Divider, Heading, HStack, Text, VStack } from "@chakra-ui/react";
-import { craftAbi, craftMaterialAbi, dailyBonusAbi, dailyMaterialAbi } from "~/abi";
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Heading,
+  HStack,
+  Input,
+  InputGroup,
+  Spacer,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { craftAbi, craftMaterialAbi, dailyBonusAbi, dailyMaterialAbi, wrapAbi } from "~/abi";
 import WalletStarknet from "~/components/wallet/Starknet";
 import {
   CraftContractAddress,
@@ -12,6 +24,7 @@ import {
   DailyBonusContractAddress,
   DailyMaterialContractAddress,
   starknetFeederGateway,
+  WrapContractAddress,
 } from "~/constants";
 import { stringToBN, toBN, toNumber } from "~/utils/cairo";
 
@@ -105,6 +118,23 @@ const Index: NextPage = () => {
     })();
   }, [account, fetchCraftMaterials]);
 
+  // -------- Wrap --------
+  const { contract: wrapContract } = useContract({
+    abi: wrapAbi as Abi,
+    address: WrapContractAddress,
+  });
+  const [dailyMaterialID, setDailyMaterialID] = useState(0);
+  const { invoke: wrapDailyMaterial } = useStarknetInvoke({
+    contract: wrapContract,
+    method: "wrap_daily_material",
+  });
+
+  const [craftMaterialID, setCraftMaterialID] = useState(0);
+  const { invoke: wrapCraftMaterial } = useStarknetInvoke({
+    contract: wrapContract,
+    method: "wrap_craft_material",
+  });
+
   return (
     <VStack w="100vw" p="8">
       <WalletStarknet />
@@ -151,6 +181,43 @@ const Index: NextPage = () => {
         ))}
       </VStack>
       <Divider />
+
+      <Heading size="lg">Wrap</Heading>
+      <HStack>
+        <Input
+          w="48"
+          h="8"
+          type="number"
+          placeholder="daily material id"
+          onChange={(e) => setDailyMaterialID(Number(e.target.value))}
+        />
+        <Button
+          onClick={() => {
+            wrapDailyMaterial({ args: [toBN(account), [toBN(dailyMaterialID), toBN(0)], toBN(1)] });
+          }}
+        >
+          Wrap Daily Material
+        </Button>
+      </HStack>
+      <HStack>
+        <Input
+          w="48"
+          h="8"
+          type="number"
+          placeholder="craft material id"
+          onChange={(e) => setCraftMaterialID(Number(e.target.value))}
+        />
+        <Button
+          onClick={() => {
+            wrapCraftMaterial({ args: [toBN(account), [toBN(craftMaterialID), toBN(0)], toBN(1)] });
+          }}
+        >
+          Wrap Daily Material
+        </Button>
+      </HStack>
+      <Divider />
+
+      <Heading size="lg">Wrap Material</Heading>
     </VStack>
   );
 };
