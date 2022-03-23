@@ -75,6 +75,38 @@ const Index: NextPage = () => {
     contract: craftContract,
     method: "craft_soil_2_brick",
   });
+  const { invoke: craftBrick2BrickHouse } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_brick_2_brickHouse",
+  });
+  const { invoke: craftSoilAndSeed2Wood } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_soilAndSeed_2_wood",
+  });
+  const { invoke: craftIronAndWood2IronSword } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_ironAndWood_2_ironSword",
+  });
+  const { invoke: stakeIron2Steel } = useStarknetInvoke({
+    contract: craftContract,
+    method: "stake_iron_2_steel",
+  });
+  const { invoke: craftIron2Steel } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_iron_2_steel",
+  });
+  const { invoke: craftOil2Plastic } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_oil_2_plastic",
+  });
+  const { invoke: craftPlasticAndSteel2Computer } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_plasticAndSteel_2_computer",
+  });
+  const { invoke: craftComputer2ElectronicsStore } = useStarknetInvoke({
+    contract: craftContract,
+    method: "craft_computer_2_electronicsStore",
+  });
 
   // -------- Craft Material --------
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
@@ -239,6 +271,62 @@ const Index: NextPage = () => {
         }}
       >
         Soil to Brick
+      </Button>
+      <Button
+        onClick={() => {
+          craftBrick2BrickHouse({ args: [toBN(account)] });
+        }}
+      >
+        Brick to BrickHouse
+      </Button>
+      <Button
+        onClick={() => {
+          craftSoilAndSeed2Wood({ args: [toBN(account)] });
+        }}
+      >
+        SoilAndSeed to Wood
+      </Button>
+      <Button
+        onClick={() => {
+          craftIronAndWood2IronSword({ args: [toBN(account)] });
+        }}
+      >
+        IronAndWood to IronSword
+      </Button>
+      <Button
+        onClick={() => {
+          stakeIron2Steel({ args: [toBN(account)] });
+        }}
+      >
+        Stake Iron To Steel
+      </Button>
+      <Button
+        onClick={() => {
+          craftIron2Steel({ args: [toBN(account)] });
+        }}
+      >
+        Iron to Steel
+      </Button>
+      <Button
+        onClick={() => {
+          craftOil2Plastic({ args: [toBN(account)] });
+        }}
+      >
+        Oil to Plastic
+      </Button>
+      <Button
+        onClick={() => {
+          craftPlasticAndSteel2Computer({ args: [toBN(account)] });
+        }}
+      >
+        PlasticAndSteel to Computer
+      </Button>
+      <Button
+        onClick={() => {
+          craftComputer2ElectronicsStore({ args: [toBN(account)] });
+        }}
+      >
+        Computer to ElectronicsStore
       </Button>
       <Divider />
 
