@@ -16,7 +16,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { craftAbi, craftMaterialAbi, dailyBonusAbi, dailyMaterialAbi, wrapAbi } from "~/abi";
+import { craftAbi, craftMaterialAbi, dailyBonusAbi, dailyMaterialAbi, wrapAbi, wrapMaterialAbi } from "~/abi";
 import WalletStarknet from "~/components/wallet/Starknet";
 import {
   CraftContractAddress,
@@ -25,6 +25,7 @@ import {
   DailyMaterialContractAddress,
   starknetFeederGateway,
   WrapContractAddress,
+  WrapMaterialContractAddress,
 } from "~/constants";
 import { stringToBN, toBN, toNumber } from "~/utils/cairo";
 
@@ -135,6 +136,36 @@ const Index: NextPage = () => {
     method: "wrap_craft_material",
   });
 
+  // -------- Wrap Material --------
+  const { contract: wrapMaterialContract } = useContract({
+    abi: wrapMaterialAbi as Abi,
+    address: WrapMaterialContractAddress,
+  });
+  const [wrapMaterials, setWrapMaterials] = useState<number[]>([]);
+  const fetchWrapMaterials = useCallback(async () => {
+    const len = 4;
+    const owners = [...new Array(len)].map(() => toBN(account));
+    const tokenIDs = [...new Array(len)].reduce((memo, _, i) => [...memo, toBN(i), toBN(0)], []);
+    const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
+      signature: [],
+      calldata: [toBN(len), ...owners, toBN(len), ...tokenIDs],
+      contract_address: WrapMaterialContractAddress,
+      entry_point_selector: number.toHex(hash.starknetKeccak("balance_of_batch")),
+    });
+    const materials = res.data.result.map((res) => toNumber(res));
+    materials.shift();
+    return materials;
+  }, [account]);
+
+  useEffect(() => {
+    if (!account) return;
+
+    (async () => {
+      const materials = await fetchWrapMaterials();
+      setWrapMaterials(materials);
+    })();
+  }, [account, fetchWrapMaterials]);
+
   return (
     <VStack w="100vw" p="8">
       <WalletStarknet />
@@ -212,12 +243,19 @@ const Index: NextPage = () => {
             wrapCraftMaterial({ args: [toBN(account), [toBN(craftMaterialID), toBN(0)], toBN(1)] });
           }}
         >
-          Wrap Daily Material
+          Wrap Craft Material
         </Button>
       </HStack>
       <Divider />
 
       <Heading size="lg">Wrap Material</Heading>
+      <Text>id: number</Text>
+      <VStack>
+        {wrapMaterials.map((num, id) => (
+          <Text key={id}>{`${id}: ${num}`}</Text>
+        ))}
+      </VStack>
+      <Divider />
     </VStack>
   );
 };
