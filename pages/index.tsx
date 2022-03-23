@@ -3,19 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Abi, hash, number } from "starknet";
 import { useStarknet, useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
-import {
-  Box,
-  Button,
-  Center,
-  Divider,
-  Heading,
-  HStack,
-  Input,
-  InputGroup,
-  Spacer,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Heading, HStack, Input, Link, Text, VStack } from "@chakra-ui/react";
 import { craftAbi, craftMaterialAbi, dailyBonusAbi, dailyMaterialAbi, wrapAbi, wrapMaterialAbi } from "~/abi";
 import WalletStarknet from "~/components/wallet/Starknet";
 import {
@@ -28,7 +16,9 @@ import {
   WrapCraftMaterialContractAddress,
   WrapMaterialContractAddress,
 } from "~/constants";
-import { stringToBN, toBN, toNumber } from "~/utils/cairo";
+import { toBN, toNumber } from "~/utils/cairo";
+import { Github, Meta } from "~/public";
+import Image from "next/image";
 
 const Index: NextPage = () => {
   const { account } = useStarknet();
@@ -182,13 +172,29 @@ const Index: NextPage = () => {
   }, [account, fetchWrapCraftMaterials]);
 
   return (
-    <VStack w="100vw" p="8">
-      <WalletStarknet />
-      <Text>account: {account}</Text>
-      <Text>account(felt): {toBN(account)}</Text>
-      <Divider />
+    <VStack w="100vw">
+      <Flex
+        w="100%"
+        h="16"
+        justifyContent="space-between"
+        alignItems="center"
+        pl="6"
+        pr="6"
+        borderBottom="solid 1px"
+        borderColor="gray.100"
+      >
+        <HStack>
+          <Image width="32px" height="32px" src={Meta} />
+          <Text>Meta | Material</Text>
+        </HStack>
+        <WalletStarknet />
+      </Flex>
 
-      <Heading size="lg">Daily Bonus</Heading>
+      <Heading size="lg">
+        <Link href={`https://goerli.voyager.online/contract/${DailyBonusContractAddress}`} isExternal>
+          Daily Bonus
+        </Link>
+      </Heading>
       <Text>elapsed login time: {toNumber(elapsedLoginTime)}s</Text>
       <Button
         onClick={() => {
@@ -200,7 +206,11 @@ const Index: NextPage = () => {
       </Button>
       <Divider />
 
-      <Heading size="lg">Daily Material</Heading>
+      <Heading size="lg">
+        <Link href={`https://goerli.voyager.online/contract/${DailyMaterialContractAddress}`} isExternal>
+          Daily Material
+        </Link>
+      </Heading>
       <Text>id: number</Text>
       <VStack>
         {dailyMaterials.map((num, id) => (
@@ -209,7 +219,11 @@ const Index: NextPage = () => {
       </VStack>
       <Divider />
 
-      <Heading size="lg">Craft</Heading>
+      <Heading size="lg">
+        <Link href={`https://goerli.voyager.online/contract/${CraftContractAddress}`} isExternal>
+          Craft
+        </Link>
+      </Heading>
       <Button
         onClick={() => {
           craftSoil2Brick({ args: [toBN(account)] });
@@ -219,7 +233,11 @@ const Index: NextPage = () => {
       </Button>
       <Divider />
 
-      <Heading size="lg">Craft Material</Heading>
+      <Heading size="lg">
+        <Link href={`https://goerli.voyager.online/contract/${CraftMaterialContractAddress}`} isExternal>
+          Craft Material
+        </Link>
+      </Heading>
       <Text>id: number</Text>
       <VStack>
         {craftMaterials.map((num, id) => (
@@ -228,7 +246,11 @@ const Index: NextPage = () => {
       </VStack>
       <Divider />
 
-      <Heading size="lg">Wrap</Heading>
+      <Heading size="lg">
+        <Link href={`https://goerli.voyager.online/contract/${WrapContractAddress}`} isExternal>
+          Wrap
+        </Link>
+      </Heading>
       <HStack>
         <Input
           w="48"
@@ -263,7 +285,11 @@ const Index: NextPage = () => {
       </HStack>
       <Divider />
 
-      <Heading size="lg">Wrap Material</Heading>
+      <Heading size="lg">
+        <Link href={`https://goerli.voyager.online/contract/${WrapMaterialContractAddress}`} isExternal>
+          Wrap Material
+        </Link>
+      </Heading>
       <Text>id: number</Text>
       <VStack>
         {wrapMaterials.map((num, id) => (
@@ -272,13 +298,25 @@ const Index: NextPage = () => {
       </VStack>
       <Divider />
 
-      <Heading size="lg">Wrap Craft Material</Heading>
+      <Heading size="lg">
+        <Link href={`https://goerli.voyager.online/contract/${WrapCraftMaterialContractAddress}`} isExternal>
+          Wrap Craft Material
+        </Link>
+      </Heading>
       <Text>id: number</Text>
       <VStack>
         {wrapCraftMaterials.map((num, id) => (
           <Text key={id}>{`${id}: ${num}`}</Text>
         ))}
       </VStack>
+      <Divider />
+
+      <Flex w="100%" h="16" justifyContent="space-between" alignItems="center" pl="6" pr="6">
+        <Box />
+        <Link href="https://github.com/Nysm-Inc/material-frontend" isExternal>
+          <Image width="32px" height="32px" src={Github} />
+        </Link>
+      </Flex>
     </VStack>
   );
 };
