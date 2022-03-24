@@ -25,6 +25,14 @@
       {
         "name": "daily_material_address",
         "type": "felt"
+      },
+      {
+        "name": "erc20Address",
+        "type": "felt"
+      },
+      {
+        "name": "treasury_address",
+        "type": "felt"
       }
     ],
     "name": "constructor",
@@ -61,6 +69,17 @@
       }
     ],
     "name": "get_reward",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      }
+    ],
+    "name": "get_reward2",
     "outputs": [],
     "type": "function"
   },
@@ -141,6 +160,49 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "value",
+        "type": "Uint256"
+      }
+    ],
+    "name": "set_fee",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_fee",
+    "outputs": [
+      {
+        "name": "res",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "last_block_number",
+        "type": "felt"
+      },
+      {
+        "name": "last_gold_parcent",
+        "type": "Uint256"
+      }
+    ],
+    "name": "_recalc_gold_parcent",
+    "outputs": [
+      {
+        "name": "res",
+        "type": "Uint256"
+      }
+    ],
     "type": "function"
   },
   {

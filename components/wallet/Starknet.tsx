@@ -1,34 +1,35 @@
 import Image from "next/image";
-import { useEffect } from "react";
-import { useStarknet, InjectedConnector } from "@starknet-react/core";
-import { Button, Text } from "@chakra-ui/react";
+import { useEffect, useContext } from "react";
+import { Text } from "@chakra-ui/react";
 import { Argent } from "~/public";
+import { AppContext } from "~/contexts";
+import { InjectedConnector, useStarknet } from "@starknet-react/core";
+import { Button } from "~/components/common";
 
 const WalletStarknet = () => {
-  const { account, connect } = useStarknet();
+  const { account, setAccount } = useContext(AppContext);
+  const { account: starknetAccount, connect } = useStarknet();
 
   useEffect(() => {
-    if (!account) connect(new InjectedConnector());
-  }, [account]);
+    if (!starknetAccount) {
+      connect(new InjectedConnector());
+    } else {
+      setAccount(starknetAccount);
+    }
+  }, [starknetAccount, connect, setAccount]);
 
   return (
     <>
       {!account ? (
         <Button
-          size="sm"
-          variant="outline"
           leftIcon={<Image src={Argent} width="16px" height="16px" />}
           onClick={() => connect(new InjectedConnector())}
         >
-          <Text fontSize="sm" fontWeight="bold">
-            Connect Wallet
-          </Text>
+          Connect Wallet
         </Button>
       ) : (
-        <Button size="sm" leftIcon={<Image src={Argent} width="16px" height="16px" />}>
-          <Text fontSize="sm" fontWeight="bold">
-            {account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : "No Account"}
-          </Text>
+        <Button leftIcon={<Image src={Argent} width="16px" height="16px" />}>
+          {account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : "No Account"}
         </Button>
       )}
     </>

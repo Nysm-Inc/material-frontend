@@ -1,9 +1,10 @@
-export const DailyBonusContractAddress = "0x01766d875720e3ced7fbb2e4e81b441fd6fd8fea0ececde890f40d42edffb2e0";
-export const DailyMaterialContractAddress = "0x035f2aa05aacb0291509aca9332292f083cf86e95b694266704bfd6c24c7811d";
-export const CraftContractAddress = "0x0139f1d4f92b7e64e022f0c84c2a0191267ee68b1ecf7a89ace2ef695d7e8d90";
-export const CraftMaterialContractAddress = "0x0260a5a982f13a16527b9140650e90bd4dd7a77ba62829bb3cf791776a4cb4dc";
-export const WrapContractAddress = "0x061babbd9e61b3f07c976d2faec4f9cfd4dedf160b6759790e7f0b05ed285111";
-export const WrapMaterialContractAddress = "0x0714d1a1f17e76042a4cfb4d6722c07d67dc9fc6278075b9a05af02d24ae7428";
-export const WrapCraftMaterialContractAddress = "0x061f8c5a8519837cb2b6f9fc52f1f150bb514cc1c3e09c8fb987894499bd8474";
+export const ERC20ContractAddress = "0x06efbaaf71322ffc23ec703d155b7ac3749f9c54a29241059b4b0c452cc6d6ac";
+export const DailyBonusContractAddress = "0x041d6290e3ab1a25844ad1e5af6ff078759016061173d847b818a05baf02b3ae";
+export const DailyMaterialContractAddress = "0x073700487e627c24ce9816f337cdb94909eaba75c3e51bada69d638ee16c2847";
+export const CraftContractAddress = "0x07e5c07a1d5b1858f3c38cfcf6fb2208473d735b35dd72cbcae719f94da46013";
+export const CraftMaterialContractAddress = "0x0256b580f832c9514fd93784b522da4f4d6ed485d8b9e6f3bbc44d92791a7777";
+export const WrapContractAddress = "0x066d4acc12f972370daae0389fe43e09b787134d5093f89b268146a8fa4f1cf7";
+export const WrapMaterialContractAddress = "0x04db3541e9fa80550b201d3efe875e93cf90d3405d5ada15d804a2bf94e5f8d2";
+export const WrapCraftMaterialContractAddress = "0x07a583c27b7853040858f46d1e8a9cb21eb4144b8ce4afaecc76a9dc74cbd92b";
 
 export const starknetFeederGateway = "https://alpha4.starknet.io/feeder_gateway/call_contract?blockId=null";
