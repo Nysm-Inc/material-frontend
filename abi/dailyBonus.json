@@ -188,6 +188,35 @@
   {
     "inputs": [
       {
+        "name": "blockNumber",
+        "type": "felt"
+      }
+    ],
+    "name": "history_gold_parcent",
+    "outputs": [
+      {
+        "name": "gold_parcent",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_gold_parcent",
+    "outputs": [
+      {
+        "name": "gold_parcent",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "name": "last_block_number",
         "type": "felt"
       },

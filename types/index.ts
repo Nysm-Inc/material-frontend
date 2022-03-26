@@ -24,13 +24,19 @@ export type CraftMethod =
   | "craft_plasticAndSteel_2_computer"
   | "craft_computer_2_electronicsStore";
 
+export type ElapsedStakeTime = {
+  soilAndWood: number;
+  iron: number;
+  oil: number;
+};
+
 export type Receipe = {
   name: string;
   receipe: string;
   type: "send" | "stake";
   note: string;
   method: CraftMethod;
-  condition: (dailyMaterials: number[], craftMaterials: number[]) => boolean;
+  condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime) => boolean;
 };
 
 export const receipes: Receipe[] = [
@@ -40,7 +46,9 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_soil_2_brick",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => dailyMaterials[0] >= 4,
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return dailyMaterials[0] >= 4;
+    },
   },
   {
     name: "BrickHouse",
@@ -48,7 +56,9 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_brick_2_brickHouse",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => craftMaterials[0] >= 4,
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return craftMaterials[0] >= 4;
+    },
   },
   {
     name: "Wood",
@@ -56,8 +66,8 @@ export const receipes: Receipe[] = [
     type: "stake",
     note: "100s",
     method: "stake_soilAndSeed_2_wood",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => {
-      return dailyMaterials[0] >= 1 && dailyMaterials[2] >= 1;
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return dailyMaterials[0] >= 1 && dailyMaterials[2] >= 1 && elapsedStakeTime.soilAndWood <= 0;
     },
   },
   {
@@ -66,8 +76,8 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_soilAndSeed_2_wood",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => {
-      return true; // todo
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return elapsedStakeTime.soilAndWood >= 100;
     },
   },
   {
@@ -76,7 +86,7 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_ironAndWood_2_ironSword",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => {
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
       return dailyMaterials[3] >= 1 && craftMaterials[2] >= 1;
     },
   },
@@ -86,7 +96,9 @@ export const receipes: Receipe[] = [
     type: "stake",
     note: "100s",
     method: "stake_iron_2_steel",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => dailyMaterials[3] >= 1,
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return dailyMaterials[3] >= 1 && elapsedStakeTime.iron <= 0;
+    },
   },
   {
     name: "Steel",
@@ -94,8 +106,8 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_iron_2_steel",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => {
-      return true; // todo
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return elapsedStakeTime.iron >= 100;
     },
   },
   {
@@ -104,7 +116,9 @@ export const receipes: Receipe[] = [
     type: "stake",
     note: "100s",
     method: "stake_oil_2_plastic",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => dailyMaterials[1] >= 1,
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return dailyMaterials[1] >= 1 && elapsedStakeTime.oil <= 0;
+    },
   },
   {
     name: "Plastic",
@@ -112,8 +126,8 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_oil_2_plastic",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => {
-      return true; //todo
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return elapsedStakeTime.oil >= 100;
     },
   },
   {
@@ -122,7 +136,7 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_plasticAndSteel_2_computer",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => {
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
       return craftMaterials[5] >= 2 && craftMaterials[4] >= 1;
     },
   },
@@ -132,6 +146,16 @@ export const receipes: Receipe[] = [
     type: "send",
     note: "",
     method: "craft_computer_2_electronicsStore",
-    condition: (dailyMaterials: number[], craftMaterials: number[]): boolean => craftMaterials[6] >= 4,
+    condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
+      return craftMaterials[6] >= 4;
+    },
   },
 ];
+
+export type WrapType = "wrap" | "unwrap";
+export type MaterialType = "daily" | "craft";
+export type Cart = {
+  [key in WrapType]: {
+    [key in MaterialType]: number[];
+  };
+};

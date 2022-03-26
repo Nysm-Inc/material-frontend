@@ -1,29 +1,17 @@
 import type { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
-import { Abi } from "starknet";
-import { useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
-import { Text, VStack, Flex, Box, Tag, TagLabel } from "@chakra-ui/react";
-import { craftAbi } from "~/abi";
-import { CraftContractAddress } from "~/constants";
+import { Text, VStack, Flex, Tag, TagLabel } from "@chakra-ui/react";
 import { AppContext } from "~/contexts";
-import { craftMaterialList, dailyMaterialList, receipes } from "~/types";
-import { fetchCraftMaterials, fetchDailyMaterials } from "~/utils/material";
+import { craftMaterialList, dailyMaterialList, receipes, ElapsedStakeTime } from "~/types";
+import { fetchCraftMaterials, fetchDailyMaterials, fetchElapsedStakeTime } from "~/utils/material";
 import Receipe from "~/components/craft/Receipe";
 import { Table, Thead, Tbody, Tr, Th, Td } from "~/components/common";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
-  const { contract: craftContract } = useContract({
-    abi: craftAbi as Abi,
-    address: CraftContractAddress,
-  });
   const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
-
-  // const { data: elapsedTimeStakeSoilAndSeed } = useStarknetCall({
-  //   contract: craftContract,
-  //   method: "check_elapsed_stake_time_soilAndSeed_2_wood",
-  // });
+  const [elapsedStakeTime, setElapsedStakeTime] = useState<ElapsedStakeTime>({ soilAndWood: 0, iron: 0, oil: 0 });
 
   useEffect(() => {
     if (!account) return;
@@ -43,18 +31,31 @@ const Index: NextPage = () => {
     })();
   }, [account]);
 
+  useEffect(() => {
+    if (!account) return;
+
+    (async () => {
+      const time = await fetchElapsedStakeTime(account, "check_elapsed_stake_time_soilAndSeed_2_wood");
+      setElapsedStakeTime((prev) => {
+        return { ...prev, soilAndWood: time };
+      });
+    })();
+    (async () => {
+      const time = await fetchElapsedStakeTime(account, "check_elapsed_stake_time_iron_2_steel");
+      setElapsedStakeTime((prev) => {
+        return { ...prev, iron: time };
+      });
+    })();
+    (async () => {
+      const time = await fetchElapsedStakeTime(account, "check_elapsed_stake_time_oil_2_plastic");
+      setElapsedStakeTime((prev) => {
+        return { ...prev, oil: time };
+      });
+    })();
+  }, [account]);
+
   return (
     <Flex w="100%" h="100%" justifyContent="space-evenly">
-      {/* <VStack w="16%" align="flex-start">
-        <Text fontSize="2xl" color="white">
-          Category
-        </Text>
-        <VStack pl="2">
-          <Text color="white">Material</Text>
-          <Text color="white">Object</Text>
-          <Text color="white">Weapon</Text>
-        </VStack>
-      </VStack> */}
       <VStack w="56%" align="flex-start">
         <Text fontSize="2xl" color="white">
           Receipes
@@ -71,7 +72,13 @@ const Index: NextPage = () => {
           </Thead>
           <Tbody>
             {receipes.map((receipe, i) => (
-              <Receipe key={i} receipe={receipe} dailyMaterials={dailyMaterials} craftMaterials={craftMaterials}>
+              <Receipe
+                key={i}
+                receipe={receipe}
+                dailyMaterials={dailyMaterials}
+                craftMaterials={craftMaterials}
+                elapsedStakeTime={elapsedStakeTime}
+              >
                 <Td>{receipe.name}</Td>
                 <Td>{receipe.receipe}</Td>
                 <Td>
@@ -100,7 +107,7 @@ const Index: NextPage = () => {
           <Thead h="8">
             <Tr>
               <Th w="24">Name</Th>
-              <Th w="40">Ammount</Th>
+              <Th w="40">Balance</Th>
             </Tr>
           </Thead>
           <Tbody>

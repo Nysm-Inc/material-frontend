@@ -1,6 +1,11 @@
 import axios from "axios";
 import { hash, number } from "starknet";
-import { CraftMaterialContractAddress, DailyMaterialContractAddress, starknetFeederGateway } from "~/constants";
+import {
+  CraftContractAddress,
+  CraftMaterialContractAddress,
+  DailyMaterialContractAddress,
+  starknetFeederGateway,
+} from "~/constants";
 import { feltToNum, numToFelt } from "./cairo";
 
 export const fetchDailyMaterials = async (account: string): Promise<number[]> => {
@@ -31,4 +36,14 @@ export const fetchCraftMaterials = async (account: string): Promise<number[]> =>
   const materials = res.data.result.map((res) => feltToNum(res));
   materials.shift();
   return materials;
+};
+
+export const fetchElapsedStakeTime = async (account: string, method: string): Promise<any> => {
+  const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
+    signature: [],
+    calldata: [numToFelt(account)],
+    contract_address: CraftContractAddress,
+    entry_point_selector: number.toHex(hash.starknetKeccak(method)),
+  });
+  return feltToNum(res.data.result);
 };

@@ -310,5 +310,34 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ERC1155_Enumerable_totalSupply",
+    "outputs": [
+      {
+        "name": "totalSupply",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "token_id",
+        "type": "Uint256"
+      }
+    ],
+    "name": "ERC1155_Enumerable_token_totalSupply",
+    "outputs": [
+      {
+        "name": "totalSupply",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]

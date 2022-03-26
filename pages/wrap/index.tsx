@@ -1,18 +1,19 @@
 import type { NextPage } from "next";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Abi } from "starknet";
 import { useStarknet, useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
-import { Box, Flex, IconButton, useTheme, VStack } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Spacer, useTheme, VStack } from "@chakra-ui/react";
 import { craftMaterialAbi, dailyMaterialAbi, wrapAbi, wrapMaterialAbi } from "~/abi";
 import { RiArrowLeftRightLine, RiArrowRightLine } from "react-icons/ri";
+import BarLoader from "react-spinners/BarLoader";
 import { WrapContractAddress } from "~/constants";
 import { AppContext } from "~/contexts";
 import { fetchWrapCraftMaterials, fetchWrapMaterials } from "./phi";
 import { fetchCraftMaterials, fetchDailyMaterials } from "~/utils/material";
 import { MetaCard, PhiCard, Inventry } from "~/components/wrap";
 import { Button, Text } from "~/components/common";
-
-type Mode = "wrap" | "unwrap";
+import { numToFelt } from "~/utils/cairo";
+import { Cart, craftMaterialList, dailyMaterialList, MaterialType, WrapType } from "~/types";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
@@ -27,29 +28,92 @@ const Index: NextPage = () => {
   const [wrapDailyMaterials, setWrapDailyMaterials] = useState<number[]>([]);
   const [wrapCraftMaterials, setWrapCraftMaterials] = useState<number[]>([]);
 
-  const [mode, setMode] = useState<Mode>("wrap");
-  const switchMode = useCallback(() => setMode((prev) => (prev === "wrap" ? "unwrap" : "wrap")), []);
-  const swapByMode = useCallback((a, b): [x: any, y: any] => (mode === "wrap" ? [a, b] : [b, a]), [mode]);
-  const card = swapByMode(<MetaCard />, <PhiCard />);
-  const dailyInventry = swapByMode(dailyMaterials, wrapDailyMaterials);
-  const craftInventry = swapByMode(craftMaterials, wrapCraftMaterials);
+  const [wrapType, setWrapType] = useState<WrapType>("wrap");
+  const [materialType, setMaterialType] = useState<MaterialType>("daily");
+  const switchWrapType = useCallback(() => setWrapType((prev) => (prev === "wrap" ? "unwrap" : "wrap")), []);
+  const switchMaterialTypeType = useCallback(
+    () => setMaterialType((prev) => (prev === "daily" ? "craft" : "daily")),
+    []
+  );
+  const swapByWrapType = useCallback((a, b): [x: any, y: any] => (wrapType === "wrap" ? [a, b] : [b, a]), [wrapType]);
+  const card = swapByWrapType(<MetaCard />, <PhiCard />);
+  const dailyInventry = swapByWrapType(dailyMaterials, wrapDailyMaterials);
+  const craftInventry = swapByWrapType(craftMaterials, wrapCraftMaterials);
 
   const { invoke: wrapDailyMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "wrap_daily_material",
+    method: "batch_wrap_daily_material",
   });
   const { invoke: wrapCraftMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "wrap_craft_material",
+    method: "batch_wrap_craft_material",
   });
   const { invoke: unwrapDailyMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "unwrap_daily_material",
+    method: "batch_unwrap_daily_material",
   });
   const { invoke: unwrapCraftMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "unwrap_craft_material",
+    method: "batch_unwrap_craft_material",
   });
+
+  const [cart, setCart] = useState<Cart>({
+    wrap: {
+      daily: [...new Array(dailyMaterialList.length)].fill(0),
+      craft: [...new Array(craftMaterialList.length)].fill(0),
+    },
+    unwrap: {
+      daily: [...new Array(dailyMaterialList.length)].fill(0),
+      craft: [...new Array(craftMaterialList.length)].fill(0),
+    },
+  });
+  const addCart = useCallback(
+    (id: number) => {
+      setCart((prev) => {
+        const copied = prev[wrapType][materialType].map((d) => d);
+        copied[id] += 1;
+        return {
+          ...prev,
+          [wrapType]: { ...prev[wrapType], [materialType]: copied },
+        };
+      });
+    },
+    [wrapType, materialType]
+  );
+  const removeCart = useCallback(
+    (id: number) => {
+      setCart((prev) => {
+        const copied = prev[wrapType][materialType].map((d) => d);
+        copied[id] = copied[id] > 0 ? copied[id] - 1 : copied[id];
+        return { ...prev, [wrapType]: { ...prev[wrapType], [materialType]: copied } };
+      });
+    },
+    [wrapType, materialType]
+  );
+  const wrap = () => {
+    let tokenIDs: string[][] = [];
+    let amounts: string[] = [];
+    cart[wrapType][materialType].forEach((num, id) => {
+      if (num > 0) {
+        tokenIDs.push([numToFelt(id), numToFelt(0)]);
+        amounts.push(num.toString());
+      }
+    });
+
+    if (wrapType === "wrap") {
+      if (materialType === "daily") {
+        wrapDailyMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+      } else {
+        wrapCraftMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+      }
+    } else {
+      if (materialType === "daily") {
+        unwrapDailyMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+      } else {
+        unwrapCraftMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+      }
+    }
+  };
 
   useEffect(() => {
     if (!account) return;
@@ -73,23 +137,58 @@ const Index: NextPage = () => {
   }, [account]);
 
   return (
-    <Flex w="100%" h="100%" justify="space-evenly" align="center">
-      <VStack>
+    <Flex w="100%" h="100%" justify="space-evenly" align="center" pr="32">
+      <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[0]}
-        <Inventry dailyMaterials={dailyInventry[0]} craftMaterials={craftInventry[0]} />
+        <Inventry
+          dailyMaterials={dailyInventry[0]}
+          craftMaterials={craftInventry[0]}
+          wrapType={wrapType}
+          materialType={materialType}
+          cart={cart}
+          addCart={addCart}
+          removeCart={removeCart}
+        />
       </VStack>
-      <VStack>
-        <IconButton aria-label="wrap" borderRadius="3xl" bgColor="primary.100" _focus={{ border: "none" }}>
-          <RiArrowLeftRightLine size="24" cursor="pointer" color={theme.colors.white} onClick={switchMode} />
+      <VStack h="100%" align="center" justify="space-evenly">
+        <IconButton
+          aria-label="wrap"
+          borderRadius="3xl"
+          bgColor="primary.100"
+          _focus={{ border: "none" }}
+          onClick={switchWrapType}
+        >
+          <RiArrowLeftRightLine size="16" cursor="pointer" color={theme.colors.white} />
         </IconButton>
-        <Button w="32" h="12" fontSize="2xl" borderRadius="3xl" bgColor="primary.100">
-          {mode}
+        <Button
+          w="32"
+          h="10"
+          fontSize="lg"
+          borderRadius="3xl"
+          bgColor="primary.100"
+          onClick={wrap}
+          alignItems="center"
+          justifyContent="space-between"
+          rightIcon={<RiArrowRightLine />}
+        >
+          <Box />
+          {wrapType}
         </Button>
-        <RiArrowRightLine size="32" />
+        {/* <BarLoader color={theme.colors.primary[100]} loading={true} /> */}
+        {/* <Text>{wrapType}ping...</Text> */}
       </VStack>
-      <VStack>
+      <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[1]}
-        <Inventry dailyMaterials={dailyInventry[1]} craftMaterials={craftInventry[1]} />
+        <Inventry
+          dailyMaterials={dailyInventry[1]}
+          craftMaterials={craftInventry[1]}
+          wrapType={wrapType}
+          materialType={materialType}
+          cart={cart}
+          addCart={addCart}
+          removeCart={removeCart}
+          hideCart
+        />
       </VStack>
     </Flex>
   );

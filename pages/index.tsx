@@ -3,7 +3,7 @@ import { Box, Text } from "@chakra-ui/react";
 
 const Index: NextPage = () => {
   return (
-    <Box w="100%" h="100%" color="white">
+    <Box w="100%" h="100%" color="white" pl="8">
       <Text fontSize="8xl">1Mint 1Day.</Text>
       <Text fontSize="8xl">Share and Bridge</Text>
       <Text fontSize="8xl">Resources</Text>
