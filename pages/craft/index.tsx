@@ -97,7 +97,7 @@ const Index: NextPage = () => {
           Inventry
         </Text>
         <Table>
-          <Thead>
+          <Thead h="8">
             <Tr>
               <Th w="24">Name</Th>
               <Th w="40">Ammount</Th>
@@ -105,13 +105,13 @@ const Index: NextPage = () => {
           </Thead>
           <Tbody>
             {dailyMaterialList.map((name, i) => (
-              <Tr key={i}>
+              <Tr key={i} h="12" bgColor="blackAlpha.600">
                 <Td>{name}</Td>
                 <Td>{dailyMaterials[i] || 0}</Td>
               </Tr>
             ))}
             {craftMaterialList.map((name, i) => (
-              <Tr key={i}>
+              <Tr key={i} h="12" bgColor="blackAlpha.600">
                 <Td>{name}</Td>
                 <Td>{craftMaterials[i] || 0}</Td>
               </Tr>

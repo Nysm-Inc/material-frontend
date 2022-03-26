@@ -32,8 +32,8 @@ const Receipe: FC<{ receipe: Receipe; dailyMaterials: number[]; craftMaterials: 
           }
         : {
             cursor: "not-allowed",
-            bgColor: "black",
-            opacity: 0.6,
+            bgColor: "blackAlpha.600",
+            color: "whiteAlpha.600",
           })}
     >
       {children}

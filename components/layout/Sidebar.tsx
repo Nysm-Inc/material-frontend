@@ -41,16 +41,44 @@ const Index: FC = () => {
       >
         Daily Mint
       </Button>
-      <Button w="24" onClick={() => router.push("/craft")}>
+      <Button
+        w="24"
+        {...(router.pathname === "/craft" && {
+          bgColor: "gray.800",
+          color: "whiteAlpha.600",
+        })}
+        onClick={() => router.push("/craft")}
+      >
         Craft
       </Button>
-      <Button w="24" onClick={() => router.push("/wrap")}>
+      <Button
+        w="24"
+        {...(router.pathname === "/wrap" && {
+          bgColor: "gray.800",
+          color: "whiteAlpha.600",
+        })}
+        onClick={() => router.push("/wrap")}
+      >
         Wrap
       </Button>
-      <Button w="24" onClick={() => router.push("/analytics")}>
+      <Button
+        w="24"
+        {...(router.pathname === "/analytics" && {
+          bgColor: "gray.800",
+          color: "whiteAlpha.600",
+        })}
+        onClick={() => router.push("/analytics")}
+      >
         Analytics
       </Button>
-      <Button w="24" onClick={() => router.push("/voyager")}>
+      <Button
+        w="24"
+        {...(router.pathname === "/voyager" && {
+          bgColor: "gray.800",
+          color: "whiteAlpha.600",
+        })}
+        onClick={() => router.push("/voyager")}
+      >
         Voyager
       </Button>
     </VStack>

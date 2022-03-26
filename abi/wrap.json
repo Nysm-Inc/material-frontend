@@ -65,6 +65,33 @@
         "type": "felt"
       },
       {
+        "name": "tokens_id_len",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id",
+        "type": "Uint256*"
+      },
+      {
+        "name": "amounts_len",
+        "type": "felt"
+      },
+      {
+        "name": "amounts",
+        "type": "felt*"
+      }
+    ],
+    "name": "batch_wrap_daily_material",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      },
+      {
         "name": "token_id",
         "type": "Uint256"
       },
@@ -74,6 +101,33 @@
       }
     ],
     "name": "unwrap_daily_material",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id_len",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id",
+        "type": "Uint256*"
+      },
+      {
+        "name": "amounts_len",
+        "type": "felt"
+      },
+      {
+        "name": "amounts",
+        "type": "felt*"
+      }
+    ],
+    "name": "batch_unwrap_daily_material",
     "outputs": [],
     "type": "function"
   },
@@ -103,6 +157,33 @@
         "type": "felt"
       },
       {
+        "name": "tokens_id_len",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id",
+        "type": "Uint256*"
+      },
+      {
+        "name": "amounts_len",
+        "type": "felt"
+      },
+      {
+        "name": "amounts",
+        "type": "felt*"
+      }
+    ],
+    "name": "batch_wrap_craft_material",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      },
+      {
         "name": "token_id",
         "type": "Uint256"
       },
@@ -112,6 +193,33 @@
       }
     ],
     "name": "unwrap_craft_material",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id_len",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id",
+        "type": "Uint256*"
+      },
+      {
+        "name": "amounts_len",
+        "type": "felt"
+      },
+      {
+        "name": "amounts",
+        "type": "felt*"
+      }
+    ],
+    "name": "batch_unwrap_craft_material",
     "outputs": [],
     "type": "function"
   },

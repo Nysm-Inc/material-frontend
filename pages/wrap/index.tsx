@@ -2,15 +2,15 @@ import type { NextPage } from "next";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Abi } from "starknet";
 import { useStarknet, useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
-import { Box, Button, Flex, VStack } from "@chakra-ui/react";
+import { Box, Flex, IconButton, useTheme, VStack } from "@chakra-ui/react";
 import { craftMaterialAbi, dailyMaterialAbi, wrapAbi, wrapMaterialAbi } from "~/abi";
 import { RiArrowLeftRightLine, RiArrowRightLine } from "react-icons/ri";
 import { WrapContractAddress } from "~/constants";
 import { AppContext } from "~/contexts";
 import { fetchWrapCraftMaterials, fetchWrapMaterials } from "./phi";
 import { fetchCraftMaterials, fetchDailyMaterials } from "~/utils/material";
-import Inventry from "~/components/wrap/Inventry";
-import { Text } from "~/components/common";
+import { MetaCard, PhiCard, Inventry } from "~/components/wrap";
+import { Button, Text } from "~/components/common";
 
 type Mode = "wrap" | "unwrap";
 
@@ -20,6 +20,7 @@ const Index: NextPage = () => {
     abi: wrapAbi as Abi,
     address: WrapContractAddress,
   });
+  const theme = useTheme();
 
   const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
@@ -29,7 +30,7 @@ const Index: NextPage = () => {
   const [mode, setMode] = useState<Mode>("wrap");
   const switchMode = useCallback(() => setMode((prev) => (prev === "wrap" ? "unwrap" : "wrap")), []);
   const swapByMode = useCallback((a, b): [x: any, y: any] => (mode === "wrap" ? [a, b] : [b, a]), [mode]);
-  const label = swapByMode("Meta", "Phi");
+  const card = swapByMode(<MetaCard />, <PhiCard />);
   const dailyInventry = swapByMode(dailyMaterials, wrapDailyMaterials);
   const craftInventry = swapByMode(craftMaterials, wrapCraftMaterials);
 
@@ -74,16 +75,20 @@ const Index: NextPage = () => {
   return (
     <Flex w="100%" h="100%" justify="space-evenly" align="center">
       <VStack>
-        <Text fontSize="3xl">{label[0]}</Text>
+        {card[0]}
         <Inventry dailyMaterials={dailyInventry[0]} craftMaterials={craftInventry[0]} />
       </VStack>
       <VStack>
-        <RiArrowLeftRightLine size="32" cursor="pointer" onClick={switchMode} />
-        <Button w="24">{mode}</Button>
+        <IconButton aria-label="wrap" borderRadius="3xl" bgColor="primary.100" _focus={{ border: "none" }}>
+          <RiArrowLeftRightLine size="24" cursor="pointer" color={theme.colors.white} onClick={switchMode} />
+        </IconButton>
+        <Button w="32" h="12" fontSize="2xl" borderRadius="3xl" bgColor="primary.100">
+          {mode}
+        </Button>
         <RiArrowRightLine size="32" />
       </VStack>
       <VStack>
-        <Text fontSize="3xl">{label[1]}</Text>
+        {card[1]}
         <Inventry dailyMaterials={dailyInventry[1]} craftMaterials={craftInventry[1]} />
       </VStack>
     </Flex>

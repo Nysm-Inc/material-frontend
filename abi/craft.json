@@ -81,7 +81,12 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
     "name": "check_elapsed_stake_time_soilAndSeed_2_wood",
     "outputs": [
       {
@@ -93,7 +98,12 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
     "name": "check_elapsed_stake_time_iron_2_steel",
     "outputs": [
       {
@@ -105,7 +115,12 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "sender_address",
+        "type": "felt"
+      }
+    ],
     "name": "check_elapsed_stake_time_oil_2_plastic",
     "outputs": [
       {
