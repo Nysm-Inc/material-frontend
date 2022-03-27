@@ -47,7 +47,7 @@ const Index: FC = () => {
           bgColor: "gray.800",
           color: "whiteAlpha.600",
         })}
-        onClick={() => router.push("/craft")}
+        onClick={() => router.push("/craft", undefined, { shallow: true })}
       >
         Craft
       </Button>
@@ -57,7 +57,7 @@ const Index: FC = () => {
           bgColor: "gray.800",
           color: "whiteAlpha.600",
         })}
-        onClick={() => router.push("/wrap")}
+        onClick={() => router.push("/wrap", undefined, { shallow: true })}
       >
         Wrap
       </Button>
@@ -67,7 +67,7 @@ const Index: FC = () => {
           bgColor: "gray.800",
           color: "whiteAlpha.600",
         })}
-        onClick={() => router.push("/analytics")}
+        onClick={() => router.push("/analytics", undefined, { shallow: true })}
       >
         Analytics
       </Button>
@@ -77,7 +77,7 @@ const Index: FC = () => {
           bgColor: "gray.800",
           color: "whiteAlpha.600",
         })}
-        onClick={() => router.push("/voyager")}
+        onClick={() => router.push("/voyager", undefined, { shallow: true })}
       >
         Voyager
       </Button>

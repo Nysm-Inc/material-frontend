@@ -9,3 +9,4 @@ export const WrapCraftMaterialContractAddress = "0x0136b74d1d0da76a602061c3d875b
 
 export const starknetFeederGateway = "https://alpha4.starknet.io/feeder_gateway/call_contract?blockId=null";
 export const voyagerGoerliURL = "https://goerli.voyager.online";
+export const philandURL = "https://philand.xyz";

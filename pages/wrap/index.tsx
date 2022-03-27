@@ -8,7 +8,7 @@ import { RiArrowLeftRightLine, RiArrowRightLine } from "react-icons/ri";
 import BarLoader from "react-spinners/BarLoader";
 import { WrapContractAddress } from "~/constants";
 import { AppContext } from "~/contexts";
-import { fetchWrapCraftMaterials, fetchWrapMaterials } from "./phi";
+import { fetchWrapCraftMaterials, fetchWrapMaterials } from "~/utils/phi";
 import { fetchCraftMaterials, fetchDailyMaterials } from "~/utils/material";
 import { MetaCard, PhiCard, Inventry } from "~/components/wrap";
 import { Button, Text } from "~/components/common";
@@ -137,7 +137,7 @@ const Index: NextPage = () => {
   }, [account]);
 
   return (
-    <Flex w="100%" h="100%" justify="space-evenly" align="center" pr="32">
+    <Flex w="100%" h="100%" justify="space-evenly" align="center" pr="32" pb="8">
       <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[0]}
         <Inventry
@@ -158,12 +158,16 @@ const Index: NextPage = () => {
           _focus={{ border: "none" }}
           onClick={switchWrapType}
         >
-          <RiArrowLeftRightLine size="16" cursor="pointer" color={theme.colors.white} />
+          <RiArrowLeftRightLine
+            size="16"
+            cursor="pointer"
+            color={theme.colors.white}
+            style={wrapType === "wrap" ? {} : { transform: "scale(-1, 1)" }}
+          />
         </IconButton>
         <Button
           w="32"
           h="10"
-          fontSize="lg"
           borderRadius="3xl"
           bgColor="primary.100"
           onClick={wrap}
@@ -172,7 +176,9 @@ const Index: NextPage = () => {
           rightIcon={<RiArrowRightLine />}
         >
           <Box />
-          {wrapType}
+          <Text fontSize="md" pb="1">
+            {wrapType}
+          </Text>
         </Button>
         {/* <BarLoader color={theme.colors.primary[100]} loading={true} /> */}
         {/* <Text>{wrapType}ping...</Text> */}

@@ -4,7 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Layout from "~/components/layout/Layout";
 import AppContextProvider from "~/contexts";
 import theme from "~/styles";
-import TrackTxStarknet from "~/components/tx/starknet";
+import TrackTxStarknet from "~/components/tx/Starknet";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (

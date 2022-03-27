@@ -4,6 +4,7 @@ import {
   CraftContractAddress,
   CraftMaterialContractAddress,
   DailyMaterialContractAddress,
+  ERC20ContractAddress,
   starknetFeederGateway,
 } from "~/constants";
 import { feltToNum, numToFelt } from "./cairo";
@@ -38,7 +39,7 @@ export const fetchCraftMaterials = async (account: string): Promise<number[]> =>
   return materials;
 };
 
-export const fetchElapsedStakeTime = async (account: string, method: string): Promise<any> => {
+export const fetchElapsedStakeTime = async (account: string, method: string): Promise<number> => {
   const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
     signature: [],
     calldata: [numToFelt(account)],
@@ -46,4 +47,14 @@ export const fetchElapsedStakeTime = async (account: string, method: string): Pr
     entry_point_selector: number.toHex(hash.starknetKeccak(method)),
   });
   return feltToNum(res.data.result);
+};
+
+export const fetchBalanceOfErc20 = async (account: string): Promise<number> => {
+  const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
+    signature: [],
+    calldata: [numToFelt(account)],
+    contract_address: ERC20ContractAddress,
+    entry_point_selector: number.toHex(hash.starknetKeccak("balanceOf")),
+  });
+  return feltToNum(res.data.result[0]);
 };

@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import type { NextPage } from "next";
-import { Box, Center, useTheme } from "@chakra-ui/react";
+import { Box, Center, Flex, HStack, Spacer, useTheme } from "@chakra-ui/react";
 import { useContract, useStarknetCall } from "@starknet-react/core";
 import "chart.js/auto";
 import { Bar } from "react-chartjs-2";
@@ -23,11 +23,8 @@ const options = {
   plugins: {
     legend: {
       display: false,
-      position: "top",
     },
-    title: {
-      display: false,
-    },
+    title: {},
   },
   scales: {
     y: {
@@ -38,7 +35,7 @@ const options = {
     },
     x: {
       ticks: {
-        minRotation: 90,
+        minRotation: 60,
         color: "white",
       },
     },
@@ -160,18 +157,50 @@ const Index: NextPage = () => {
           craftToken6supply,
           craftToken7supply,
         ],
-        backgroundColor: theme.colors.gray[300],
+        backgroundColor: [
+          theme.colors.green[100],
+          theme.colors.green[100],
+          theme.colors.green[100],
+          theme.colors.green[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+        ],
         borderWidth: 1,
       },
     ],
   };
 
   return (
-    <Center w="100%" h="100%">
-      <Center w="4xl">
-        {token0supply ? <Bar options={options} data={data} /> : <BeatLoader color={theme.colors.gray[100]} size={12} />}
+    <Flex w="100%" h="100%" pr="24" justify="center" align="center" direction="column">
+      <Text fontSize="2xl">Material Total Supply</Text>
+      <Box h="2" />
+      <HStack>
+        <Flex align="center">
+          <Box w="8" h="3" bgColor="green.100" />
+          <Spacer w="1" />
+          <Text>Daily Material</Text>
+        </Flex>
+        <Flex align="center">
+          <Box w="8" h="3" bgColor="yellow.100" />
+          <Spacer w="1" />
+          <Text>Craft Material</Text>
+        </Flex>
+      </HStack>
+      <Box h="16" />
+      <Center w="4xl" h="md">
+        {token0supply && craftToken0supply ? (
+          <Bar options={options} data={data} />
+        ) : (
+          <BeatLoader color={theme.colors.gray[100]} size={12} />
+        )}
       </Center>
-    </Center>
+    </Flex>
   );
 };
 
