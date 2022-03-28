@@ -4,6 +4,7 @@ import { Cart, craftMaterialList, dailyMaterialList, MaterialType, WrapType } fr
 import AddCart from "./AddCart";
 
 const Inventry: FC<{
+  readonly?: boolean;
   dailyMaterials: number[];
   craftMaterials: number[];
   wrapType: WrapType;
@@ -11,8 +12,9 @@ const Inventry: FC<{
   cart: Cart;
   addCart: (id: number) => void;
   removeCart: (id: number) => void;
-  hideCart?: boolean;
-}> = ({ dailyMaterials, craftMaterials, wrapType, materialType, cart, addCart, removeCart, hideCart }) => {
+}> = ({ readonly = false, dailyMaterials, craftMaterials, wrapType, materialType, cart, addCart, removeCart }) => {
+  const list = materialType === "daily" ? dailyMaterialList : craftMaterialList;
+  const materials = materialType === "daily" ? dailyMaterials : craftMaterials;
   return (
     <Table>
       <Thead h="8">
@@ -23,45 +25,21 @@ const Inventry: FC<{
         </Tr>
       </Thead>
       <Tbody>
-        {materialType === "daily" ? (
-          <>
-            {dailyMaterialList.map((name, id) => (
-              <Tr key={id} h="12" bgColor="blackAlpha.600">
-                <Td>{name}</Td>
-                <Td>{dailyMaterials[id] || 0}</Td>
-                <Td>
-                  {!hideCart && (
-                    <AddCart
-                      num={cart[wrapType][materialType][id]}
-                      balance={dailyMaterials[id]}
-                      handleClickPlus={() => addCart(id)}
-                      handleClickMinus={() => removeCart(id)}
-                    />
-                  )}
-                </Td>
-              </Tr>
-            ))}
-          </>
-        ) : (
-          <>
-            {craftMaterialList.map((name, id) => (
-              <Tr key={id} h="12" bgColor="blackAlpha.600">
-                <Td>{name}</Td>
-                <Td>{craftMaterials[id] || 0}</Td>
-                <Td>
-                  {!hideCart && (
-                    <AddCart
-                      num={cart[wrapType][materialType][id]}
-                      balance={craftMaterials[id]}
-                      handleClickPlus={() => addCart(id)}
-                      handleClickMinus={() => removeCart(id)}
-                    />
-                  )}
-                </Td>
-              </Tr>
-            ))}
-          </>
-        )}
+        {list.map((name, id) => (
+          <Tr key={id} h="12" bgColor="blackAlpha.600">
+            <Td>{name}</Td>
+            <Td>{materials[id] || 0}</Td>
+            <Td>
+              <AddCart
+                readonly={readonly}
+                num={cart[wrapType][materialType][id]}
+                balance={dailyMaterials[id]}
+                handleClickPlus={() => addCart(id)}
+                handleClickMinus={() => removeCart(id)}
+              />
+            </Td>
+          </Tr>
+        ))}
       </Tbody>
     </Table>
   );

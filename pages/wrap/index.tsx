@@ -185,7 +185,9 @@ const Index: NextPage = () => {
           />
         </IconButton>
         {isWrapping ? (
-          <BarLoader color={theme.colors.primary[100]} loading={isWrapping} />
+          <Flex w="32" h="10" alignItems="center" justifyContent="space-evenly">
+            <BarLoader color={theme.colors.primary[100]} loading={isWrapping} />
+          </Flex>
         ) : (
           <Button
             w="32"
@@ -207,6 +209,7 @@ const Index: NextPage = () => {
       <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[1]}
         <Inventry
+          readonly
           dailyMaterials={dailyInventry[1]}
           craftMaterials={craftInventry[1]}
           wrapType={wrapType}
@@ -214,7 +217,6 @@ const Index: NextPage = () => {
           cart={cart}
           addCart={addCart}
           removeCart={removeCart}
-          hideCart
         />
       </VStack>
     </Flex>

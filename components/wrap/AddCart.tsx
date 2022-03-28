@@ -2,12 +2,13 @@ import { Button, Flex } from "@chakra-ui/react";
 import { VFC } from "react";
 import { Text } from "~/components/common";
 
-const AddCart: VFC<{ num: number; balance: number; handleClickPlus: () => void; handleClickMinus: () => void }> = ({
-  num = 0,
-  balance = 0,
-  handleClickPlus,
-  handleClickMinus,
-}) => {
+const AddCart: VFC<{
+  readonly: boolean;
+  num: number;
+  balance: number;
+  handleClickPlus: () => void;
+  handleClickMinus: () => void;
+}> = ({ readonly, num = 0, balance = 0, handleClickPlus, handleClickMinus }) => {
   return (
     <Flex
       w="32"
@@ -19,13 +20,17 @@ const AddCart: VFC<{ num: number; balance: number; handleClickPlus: () => void; 
       borderColor="gray.600"
       borderRadius="md"
     >
-      <Button variant="unstyled" disabled={num <= 0} onClick={handleClickMinus} _focus={{ border: "none" }}>
-        <Text fontSize="2xl">-</Text>
-      </Button>
+      {!readonly && (
+        <Button variant="unstyled" disabled={num <= 0} onClick={handleClickMinus} _focus={{ border: "none" }}>
+          <Text fontSize="2xl">-</Text>
+        </Button>
+      )}
       {num}
-      <Button variant="unstyled" disabled={balance <= num} onClick={handleClickPlus} _focus={{ border: "none" }}>
-        <Text fontSize="lg">+</Text>
-      </Button>
+      {!readonly && (
+        <Button variant="unstyled" disabled={balance <= num} onClick={handleClickPlus} _focus={{ border: "none" }}>
+          <Text fontSize="lg">+</Text>
+        </Button>
+      )}
     </Flex>
   );
 };
