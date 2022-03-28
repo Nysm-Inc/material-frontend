@@ -33,7 +33,7 @@ export type ElapsedStakeTime = {
 export type Receipe = {
   name: string;
   receipe: string;
-  type: "send" | "forging";
+  type: "send" | "forge";
   note: string;
   method: CraftMethod;
   condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime) => boolean;
@@ -63,7 +63,7 @@ export const receipes: Receipe[] = [
   {
     name: "Wood",
     receipe: "1 Soil + 1 Seed",
-    type: "forging",
+    type: "forge",
     note: "100s",
     method: "stake_soilAndSeed_2_wood",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
@@ -93,7 +93,7 @@ export const receipes: Receipe[] = [
   {
     name: "Steel",
     receipe: "1 Iron",
-    type: "forging",
+    type: "forge",
     note: "100s",
     method: "stake_iron_2_steel",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
@@ -113,7 +113,7 @@ export const receipes: Receipe[] = [
   {
     name: "Plastic",
     receipe: "1 Oil",
-    type: "forging",
+    type: "forge",
     note: "100s",
     method: "stake_oil_2_plastic",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedStakeTime: ElapsedStakeTime): boolean => {
