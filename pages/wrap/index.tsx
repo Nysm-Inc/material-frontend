@@ -1,7 +1,13 @@
 import type { NextPage } from "next";
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Abi } from "starknet";
-import { useStarknet, useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
+import {
+  useStarknet,
+  useContract,
+  useStarknetCall,
+  useStarknetInvoke,
+  useStarknetTransactionManager,
+} from "@starknet-react/core";
 import { Box, Flex, IconButton, Spacer, useTheme, VStack } from "@chakra-ui/react";
 import { craftMaterialAbi, dailyMaterialAbi, wrapAbi, wrapMaterialAbi } from "~/abi";
 import { RiArrowLeftRightLine, RiArrowRightLine } from "react-icons/ri";
@@ -21,13 +27,14 @@ const Index: NextPage = () => {
     abi: wrapAbi as Abi,
     address: WrapContractAddress,
   });
+  const { transactions = [] } = useStarknetTransactionManager();
   const theme = useTheme();
 
   const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
   const [wrapDailyMaterials, setWrapDailyMaterials] = useState<number[]>([]);
   const [wrapCraftMaterials, setWrapCraftMaterials] = useState<number[]>([]);
-
+  const [isWrapping, setIsWrapping] = useState(false);
   const [wrapType, setWrapType] = useState<WrapType>("wrap");
   const [materialType, setMaterialType] = useState<MaterialType>("daily");
   const switchWrapType = useCallback(() => setWrapType((prev) => (prev === "wrap" ? "unwrap" : "wrap")), []);
@@ -40,19 +47,19 @@ const Index: NextPage = () => {
   const dailyInventry = swapByWrapType(dailyMaterials, wrapDailyMaterials);
   const craftInventry = swapByWrapType(craftMaterials, wrapCraftMaterials);
 
-  const { invoke: wrapDailyMaterial } = useStarknetInvoke({
+  const { invoke: wrapDailyMaterial, data: txWrapDailyMaterial } = useStarknetInvoke({
     contract: wrapContract,
     method: "batch_wrap_daily_material",
   });
-  const { invoke: wrapCraftMaterial } = useStarknetInvoke({
+  const { invoke: wrapCraftMaterial, data: txWrapCraftMaterial } = useStarknetInvoke({
     contract: wrapContract,
     method: "batch_wrap_craft_material",
   });
-  const { invoke: unwrapDailyMaterial } = useStarknetInvoke({
+  const { invoke: unwrapDailyMaterial, data: txUnwrapDailyMaterial } = useStarknetInvoke({
     contract: wrapContract,
     method: "batch_unwrap_daily_material",
   });
-  const { invoke: unwrapCraftMaterial } = useStarknetInvoke({
+  const { invoke: unwrapCraftMaterial, data: txUnwrapCraftMaterial } = useStarknetInvoke({
     contract: wrapContract,
     method: "batch_unwrap_craft_material",
   });
@@ -136,6 +143,17 @@ const Index: NextPage = () => {
     })();
   }, [account]);
 
+  useEffect(() => {
+    if (transactions.length <= 0) return;
+
+    transactions.forEach((tx) => {
+      const txHashs = [txWrapDailyMaterial, txWrapCraftMaterial, txUnwrapDailyMaterial, txUnwrapCraftMaterial];
+      if (txHashs.includes(tx.transactionHash)) {
+        setIsWrapping(tx.status !== "ACCEPTED_ON_L2");
+      }
+    });
+  }, [transactions, txWrapDailyMaterial, txWrapCraftMaterial, txUnwrapDailyMaterial, txUnwrapCraftMaterial]);
+
   return (
     <Flex w="100%" h="100%" justify="space-evenly" align="center" pr="32" pb="8">
       <VStack h="100%" align="flex-start" justify="space-evenly">
@@ -156,6 +174,7 @@ const Index: NextPage = () => {
           borderRadius="3xl"
           bgColor="primary.100"
           _focus={{ border: "none" }}
+          isDisabled={isWrapping}
           onClick={switchWrapType}
         >
           <RiArrowLeftRightLine
@@ -165,23 +184,25 @@ const Index: NextPage = () => {
             style={wrapType === "wrap" ? {} : { transform: "scale(-1, 1)" }}
           />
         </IconButton>
-        <Button
-          w="32"
-          h="10"
-          borderRadius="3xl"
-          bgColor="primary.100"
-          onClick={wrap}
-          alignItems="center"
-          justifyContent="space-between"
-          rightIcon={<RiArrowRightLine />}
-        >
-          <Box />
-          <Text fontSize="md" pb="1">
-            {wrapType}
-          </Text>
-        </Button>
-        {/* <BarLoader color={theme.colors.primary[100]} loading={true} /> */}
-        {/* <Text>{wrapType}ping...</Text> */}
+        {isWrapping ? (
+          <BarLoader color={theme.colors.primary[100]} loading={isWrapping} />
+        ) : (
+          <Button
+            w="32"
+            h="10"
+            borderRadius="3xl"
+            bgColor="primary.100"
+            onClick={wrap}
+            alignItems="center"
+            justifyContent="space-between"
+            rightIcon={<RiArrowRightLine />}
+          >
+            <Box />
+            <Text fontSize="md" pb="1">
+              {wrapType}
+            </Text>
+          </Button>
+        )}
       </VStack>
       <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[1]}
