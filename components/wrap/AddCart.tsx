@@ -19,6 +19,9 @@ const AddCart: VFC<{
       border="1px solid"
       borderColor="gray.600"
       borderRadius="md"
+      {...(readonly && {
+        color: "whiteAlpha.800",
+      })}
     >
       {!readonly && (
         <Button variant="unstyled" disabled={num <= 0} onClick={handleClickMinus} _focus={{ border: "none" }}>
