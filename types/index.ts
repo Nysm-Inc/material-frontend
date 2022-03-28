@@ -1,3 +1,5 @@
+import { PhiIron, PhiOil, PhiSeed, PhiSoil } from "~/public";
+
 export const dailyMaterialList = ["Soil", "Oil", "Seed", "Iron"];
 
 export const craftMaterialList = [
@@ -159,3 +161,5 @@ export type Cart = {
     [key in MaterialType]: number[];
   };
 };
+
+export const PhiImages = [PhiSoil, PhiOil, PhiSeed, PhiIron];

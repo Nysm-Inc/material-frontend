@@ -5,5 +5,9 @@ import MetaBlack from "./meta_black.png";
 import MetaWide from "./meta_wide.png";
 import MetaBlackWide from "./meta_black_wide.png";
 import PhiBoy from "./phi_boy.svg";
+import PhiSoil from "./phi_objects/soil.png";
+import PhiOil from "./phi_objects/oil.png";
+import PhiSeed from "./phi_objects/seed.png";
+import PhiIron from "./phi_objects/iron.png";
 
-export { Argent, Github, Meta, MetaWide, MetaBlack, MetaBlackWide, PhiBoy };
+export { Argent, Github, Meta, MetaWide, MetaBlack, MetaBlackWide, PhiBoy, PhiSoil, PhiOil, PhiSeed, PhiIron };

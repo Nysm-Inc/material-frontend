@@ -1,18 +1,30 @@
 import { FC } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "~/components/common";
-import { Cart, craftMaterialList, dailyMaterialList, MaterialType, WrapType } from "~/types";
+import { Cart, craftMaterialList, dailyMaterialList, MaterialType, WrapType, PhiImages } from "~/types";
 import AddCart from "./AddCart";
+import MaterialToolTip from "./MaterialTooltip";
 
 const Inventry: FC<{
-  readonly?: boolean;
+  label: "meta" | "phi";
   dailyMaterials: number[];
   craftMaterials: number[];
   wrapType: WrapType;
   materialType: MaterialType;
   cart: Cart;
+  readonly?: boolean;
   addCart: (id: number) => void;
   removeCart: (id: number) => void;
-}> = ({ readonly = false, dailyMaterials, craftMaterials, wrapType, materialType, cart, addCart, removeCart }) => {
+}> = ({
+  label,
+  dailyMaterials,
+  craftMaterials,
+  wrapType,
+  materialType,
+  cart,
+  readonly = false,
+  addCart,
+  removeCart,
+}) => {
   const list = materialType === "daily" ? dailyMaterialList : craftMaterialList;
   const materials = materialType === "daily" ? dailyMaterials : craftMaterials;
   return (
@@ -27,7 +39,13 @@ const Inventry: FC<{
       <Tbody>
         {list.map((name, id) => (
           <Tr key={id} h="12" bgColor="blackAlpha.600">
-            <Td>{name}</Td>
+            {label === "meta" ? (
+              <Td>{name}</Td>
+            ) : (
+              <Td cursor="pointer">
+                <MaterialToolTip image={PhiImages[id]}>{name}</MaterialToolTip>
+              </Td>
+            )}
             <Td>{materials[id] || 0}</Td>
             <Td>
               <AddCart

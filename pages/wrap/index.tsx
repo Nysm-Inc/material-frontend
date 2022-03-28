@@ -43,6 +43,7 @@ const Index: NextPage = () => {
     []
   );
   const swapByWrapType = useCallback((a, b): [x: any, y: any] => (wrapType === "wrap" ? [a, b] : [b, a]), [wrapType]);
+  const label = swapByWrapType("meta", "phi");
   const card = swapByWrapType(<MetaCard />, <PhiCard />);
   const dailyInventry = swapByWrapType(dailyMaterials, wrapDailyMaterials);
   const craftInventry = swapByWrapType(craftMaterials, wrapCraftMaterials);
@@ -159,6 +160,7 @@ const Index: NextPage = () => {
       <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[0]}
         <Inventry
+          label={label[0]}
           dailyMaterials={dailyInventry[0]}
           craftMaterials={craftInventry[0]}
           wrapType={wrapType}
@@ -209,12 +211,13 @@ const Index: NextPage = () => {
       <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[1]}
         <Inventry
-          readonly
+          label={label[1]}
           dailyMaterials={dailyInventry[1]}
           craftMaterials={craftInventry[1]}
           wrapType={wrapType}
           materialType={materialType}
           cart={cart}
+          readonly
           addCart={addCart}
           removeCart={removeCart}
         />
