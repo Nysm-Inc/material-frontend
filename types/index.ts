@@ -25,17 +25,17 @@ export const craftedMaterialList = [
 ];
 
 export type CraftedMethod =
-  | "crafted_soil_2_brick"
-  | "crafted_brick_2_brickHouse"
+  | "craft_soil_2_brick"
+  | "craft_brick_2_brickHouse"
   | "forge_soilAndSeed_2_wood"
-  | "crafted_soilAndSeed_2_wood"
-  | "crafted_ironAndWood_2_ironSword"
+  | "craft_soilAndSeed_2_wood"
+  | "craft_ironAndWood_2_ironSword"
   | "forge_iron_2_steel"
-  | "crafted_iron_2_steel"
+  | "craft_iron_2_steel"
   | "forge_oil_2_plastic"
-  | "crafted_oil_2_plastic"
-  | "crafted_plasticAndSteel_2_computer"
-  | "crafted_computer_2_electronicsStore";
+  | "craft_oil_2_plastic"
+  | "craft_plasticAndSteel_2_computer"
+  | "craft_computer_2_electronicsStore";
 
 export type ElapsedForgeTime = {
   soilAndWood: number;
@@ -56,7 +56,7 @@ export const recipes: Recipe[] = [
     name: "Brick",
     recipe: "4 Soil",
     note: "",
-    method: "crafted_soil_2_brick",
+    method: "craft_soil_2_brick",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],
@@ -69,7 +69,7 @@ export const recipes: Recipe[] = [
     name: "BrickHouse",
     recipe: "4 Brick",
     note: "",
-    method: "crafted_brick_2_brickHouse",
+    method: "craft_brick_2_brickHouse",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],
@@ -95,7 +95,7 @@ export const recipes: Recipe[] = [
     name: "Wood",
     recipe: "1 Soil + 1 Seed",
     note: "",
-    method: "crafted_soilAndSeed_2_wood",
+    method: "craft_soilAndSeed_2_wood",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],
@@ -108,7 +108,7 @@ export const recipes: Recipe[] = [
     name: "IronSword",
     recipe: "1 Iron + 1 Wood",
     note: "",
-    method: "crafted_ironAndWood_2_ironSword",
+    method: "craft_ironAndWood_2_ironSword",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],
@@ -134,7 +134,7 @@ export const recipes: Recipe[] = [
     name: "Steel",
     recipe: "1 Iron",
     note: "",
-    method: "crafted_iron_2_steel",
+    method: "craft_iron_2_steel",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],
@@ -160,7 +160,7 @@ export const recipes: Recipe[] = [
     name: "Plastic",
     recipe: "1 Oil",
     note: "",
-    method: "crafted_oil_2_plastic",
+    method: "craft_oil_2_plastic",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],
@@ -173,7 +173,7 @@ export const recipes: Recipe[] = [
     name: "Computer",
     recipe: "2 Plastic + 1 Steel",
     note: "",
-    method: "crafted_plasticAndSteel_2_computer",
+    method: "craft_plasticAndSteel_2_computer",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],
@@ -186,7 +186,7 @@ export const recipes: Recipe[] = [
     name: "ElectronicsStore",
     recipe: "4 Computer",
     note: "",
-    method: "crafted_computer_2_electronicsStore",
+    method: "craft_computer_2_electronicsStore",
     condition: (
       primitiveMaterials: number[],
       craftedMaterials: number[],

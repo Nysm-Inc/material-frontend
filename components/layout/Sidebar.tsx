@@ -44,22 +44,30 @@ const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
 
   return (
     <VStack w="40" h="100%">
-      <Button
-        w="24"
-        bgColor="primary.100"
-        disabled={!feltToNum(isMintableReward) || nonBalance}
-        onClick={() => {
-          if (!account) return;
-
-          if (isApproved) {
+      {isApproved ? (
+        <Button
+          w="24"
+          bgColor="primary.100"
+          disabled={!feltToNum(isMintableReward) || nonBalance}
+          onClick={() => {
+            if (!account) return;
             getReward({ args: [numToFelt(account)] });
-          } else {
+          }}
+        >
+          Mint
+        </Button>
+      ) : (
+        <Button
+          w="24"
+          bgColor="primary.100"
+          onClick={() => {
+            if (!account) return;
             approve({ args: [numToFelt(DailyBonusContractAddress), [numToFelt(500), numToFelt(0)]] });
-          }
-        }}
-      >
-        {isApproved ? "Mint" : "Approve"}
-      </Button>
+          }}
+        >
+          Approve
+        </Button>
+      )}
       <Button
         w="24"
         {...(router.pathname === "/craft" && {
