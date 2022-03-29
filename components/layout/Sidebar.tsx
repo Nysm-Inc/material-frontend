@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { FC, useContext } from "react";
-import { Box, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import { useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
 import { dailyBonusAbi, erc20Abi } from "~/abi";
 import { Abi } from "starknet";
@@ -9,7 +9,7 @@ import { feltToNum, numToFelt } from "~/utils/cairo";
 import { AppContext } from "~/contexts";
 import { Button } from "~/components/common";
 
-const Index: FC = () => {
+const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
   const { account } = useContext(AppContext);
   const router = useRouter();
   const { contract: erc20Contract } = useContract({
@@ -25,6 +25,13 @@ const Index: FC = () => {
     contract: erc20Contract,
     method: "approve",
   });
+  const { data: allowance } = useStarknetCall({
+    contract: erc20Contract,
+    method: "allowance",
+    args: [numToFelt(account), numToFelt(DailyBonusContractAddress)],
+  });
+  // @ts-ignore
+  const isApproved = feltToNum(allowance?.remaining?.low) > 0;
   const { data: isMintableReward } = useStarknetCall({
     contract: dailyBonusContract,
     method: "check_reward",
@@ -40,17 +47,18 @@ const Index: FC = () => {
       <Button
         w="24"
         bgColor="primary.100"
-        disabled={!feltToNum(isMintableReward)}
+        disabled={!feltToNum(isMintableReward) || nonBalance}
         onClick={() => {
           if (!account) return;
-          if (false) {
-            approve({ args: [numToFelt(DailyBonusContractAddress), [numToFelt(500), numToFelt(0)]] });
-          } else {
+
+          if (isApproved) {
             getReward({ args: [numToFelt(account)] });
+          } else {
+            approve({ args: [numToFelt(DailyBonusContractAddress), [numToFelt(500), numToFelt(0)]] });
           }
         }}
       >
-        Mint
+        {isApproved ? "Mint" : "Approve"}
       </Button>
       <Button
         w="24"

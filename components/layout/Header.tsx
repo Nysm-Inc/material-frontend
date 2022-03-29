@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext } from "react";
 import { Abi } from "starknet";
 import { useContract, useStarknetInvoke } from "@starknet-react/core";
 import { Box, Center, Flex, HStack } from "@chakra-ui/react";
@@ -11,11 +11,9 @@ import { erc20Abi } from "~/abi";
 import { ERC20ContractAddress } from "~/constants";
 import { numToFelt } from "~/utils/cairo";
 import { AppContext } from "~/contexts";
-import { fetchBalanceOfErc20 } from "~/utils/material";
 
-const Index: FC = () => {
+const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
   const { account } = useContext(AppContext);
-  const [balance, setBalance] = useState<number | null>(null);
   const { contract } = useContract({
     abi: erc20Abi as Abi,
     address: ERC20ContractAddress,
@@ -24,15 +22,6 @@ const Index: FC = () => {
     contract: contract,
     method: "mint",
   });
-
-  useEffect(() => {
-    if (!account) return;
-
-    (async () => {
-      const _balance = await fetchBalanceOfErc20(account);
-      setBalance(_balance);
-    })();
-  }, [account]);
 
   return (
     <Flex w="100%" h="20" justify="space-between" align="center" pl="6" pr="6">
@@ -47,7 +36,7 @@ const Index: FC = () => {
         </Box>
       </Link>
 
-      {balance !== null && balance <= 0 ? (
+      {nonBalance ? (
         <Button
           bgColor="primary.100"
           onClick={() => {
