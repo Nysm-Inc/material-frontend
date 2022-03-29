@@ -1,17 +1,11 @@
-// @ts-nocheck
-
 import type { NextPage } from "next";
 import { Box, Center, Flex, HStack, Spacer, useTheme } from "@chakra-ui/react";
-import { useContract, useStarknetCall } from "@starknet-react/core";
 import "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import BeatLoader from "react-spinners/BeatLoader";
-import { craftedMaterialAbi, primitiveMaterialAbi } from "~/abi";
-import { Abi } from "starknet";
-import { CraftedMaterialContractAddress, PrimitiveMaterialContractAddress } from "~/constants";
 import { Text } from "~/components/common";
-import { feltToNum, numToFelt } from "~/utils/cairo";
 import { craftedMaterialList, primitiveMaterialList } from "~/types";
+import { useCraftedMaterialSupply, usePrimitiveMaterialSupply } from "~/hooks/analytics";
 
 const options = {
   responsive: true,
@@ -40,87 +34,18 @@ const options = {
 
 const Index: NextPage = () => {
   const theme = useTheme();
-  const { contract: primitiveMaterialContract } = useContract({
-    abi: primitiveMaterialAbi as Abi,
-    address: PrimitiveMaterialContractAddress,
-  });
-  const { data: primitiveToken0TotalSupply } = useStarknetCall({
-    contract: primitiveMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(0), numToFelt(0)]],
-  });
-  const { data: primitiveToken1TotalSupply } = useStarknetCall({
-    contract: primitiveMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(1), numToFelt(0)]],
-  });
-  const { data: primitiveToken2TotalSupply } = useStarknetCall({
-    contract: primitiveMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(2), numToFelt(0)]],
-  });
-  const { data: primitiveToken3TotalSupply } = useStarknetCall({
-    contract: primitiveMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(3), numToFelt(0)]],
-  });
-  const token0supply = feltToNum(primitiveToken0TotalSupply?.totalSupply?.low);
-  const token1supply = feltToNum(primitiveToken1TotalSupply?.totalSupply?.low);
-  const token2supply = feltToNum(primitiveToken2TotalSupply?.totalSupply?.low);
-  const token3supply = feltToNum(primitiveToken3TotalSupply?.totalSupply?.low);
-
-  const { contract: craftedMaterialContract } = useContract({
-    abi: craftedMaterialAbi as Abi,
-    address: CraftedMaterialContractAddress,
-  });
-  const { data: carftToken0TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(0), numToFelt(0)]],
-  });
-  const { data: carftToken1TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(1), numToFelt(0)]],
-  });
-  const { data: carftToken2TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(2), numToFelt(0)]],
-  });
-  const { data: carftToken3TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(3), numToFelt(0)]],
-  });
-  const { data: carftToken4TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(4), numToFelt(0)]],
-  });
-  const { data: carftToken5TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(5), numToFelt(0)]],
-  });
-  const { data: carftToken6TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(6), numToFelt(0)]],
-  });
-  const { data: carftToken7TotalSupply } = useStarknetCall({
-    contract: craftedMaterialContract,
-    method: "ERC1155_Enumerable_token_totalSupply",
-    args: [[numToFelt(7), numToFelt(0)]],
-  });
-  const craftedToken0supply = feltToNum(carftToken0TotalSupply?.totalSupply?.low);
-  const craftedToken1supply = feltToNum(carftToken1TotalSupply?.totalSupply?.low);
-  const craftedToken2supply = feltToNum(carftToken2TotalSupply?.totalSupply?.low);
-  const craftedToken3supply = feltToNum(carftToken3TotalSupply?.totalSupply?.low);
-  const craftedToken4supply = feltToNum(carftToken4TotalSupply?.totalSupply?.low);
-  const craftedToken5supply = feltToNum(carftToken5TotalSupply?.totalSupply?.low);
-  const craftedToken6supply = feltToNum(carftToken6TotalSupply?.totalSupply?.low);
-  const craftedToken7supply = feltToNum(carftToken7TotalSupply?.totalSupply?.low);
+  const primitive0supply = usePrimitiveMaterialSupply(0);
+  const primitive1supply = usePrimitiveMaterialSupply(1);
+  const primitive2supply = usePrimitiveMaterialSupply(2);
+  const primitive3supply = usePrimitiveMaterialSupply(3);
+  const crafted0supply = useCraftedMaterialSupply(0);
+  const crafted1supply = useCraftedMaterialSupply(1);
+  const crafted2supply = useCraftedMaterialSupply(2);
+  const crafted3supply = useCraftedMaterialSupply(3);
+  const crafted4supply = useCraftedMaterialSupply(4);
+  const crafted5supply = useCraftedMaterialSupply(5);
+  const crafted6supply = useCraftedMaterialSupply(6);
+  const crafted7supply = useCraftedMaterialSupply(7);
 
   const data = {
     labels: [...primitiveMaterialList, ...craftedMaterialList],
@@ -128,18 +53,18 @@ const Index: NextPage = () => {
       {
         label: "Total Supply",
         data: [
-          token0supply,
-          token1supply,
-          token2supply,
-          token3supply,
-          craftedToken0supply,
-          craftedToken1supply,
-          craftedToken2supply,
-          craftedToken3supply,
-          craftedToken4supply,
-          craftedToken5supply,
-          craftedToken6supply,
-          craftedToken7supply,
+          primitive0supply,
+          primitive1supply,
+          primitive2supply,
+          primitive3supply,
+          crafted0supply,
+          crafted1supply,
+          crafted2supply,
+          crafted3supply,
+          crafted4supply,
+          crafted5supply,
+          crafted6supply,
+          crafted7supply,
         ],
         backgroundColor: [
           theme.colors.green[100],
@@ -178,7 +103,11 @@ const Index: NextPage = () => {
       </HStack>
       <Box h="16" />
       <Center w="4xl" h="md">
-        {token0supply ? <Bar options={options} data={data} /> : <BeatLoader color={theme.colors.gray[100]} size={12} />}
+        {primitive0supply ? (
+          <Bar options={options} data={data} />
+        ) : (
+          <BeatLoader color={theme.colors.gray[100]} size={12} />
+        )}
       </Center>
     </Flex>
   );
