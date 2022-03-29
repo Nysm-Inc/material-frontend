@@ -6,7 +6,7 @@ import { useContract, useStarknetInvoke } from "@starknet-react/core";
 import { Box, Center, Flex, HStack } from "@chakra-ui/react";
 import WalletStarknet from "~/components/wallet/Starknet";
 import { Button, Text } from "~/components/common";
-import { Meta } from "~/public";
+import { Meta, MetaWide } from "~/public";
 import { erc20Abi } from "~/abi";
 import { ERC20ContractAddress } from "~/constants";
 import { numToFelt } from "~/utils/cairo";
@@ -26,14 +26,15 @@ const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
   return (
     <Flex w="100%" h="20" justify="space-between" align="center" pl="6" pr="6">
       <Link href="/" passHref>
-        <Box cursor="pointer">
-          <HStack>
+        <Center cursor="pointer">
+          {/* <HStack>
             <Center>
               <Image width="40px" height="40px" src={Meta} />
             </Center>
             <Text fontSize="2xl">Meta | Materials</Text>
-          </HStack>
-        </Box>
+          </HStack> */}
+          <Image width="168px" height="40px" src={MetaWide} />
+        </Center>
       </Link>
 
       {nonBalance ? (
