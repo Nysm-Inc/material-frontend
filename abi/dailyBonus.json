@@ -57,18 +57,7 @@
         "type": "felt"
       }
     ],
-    "name": "regist_owner",
-    "outputs": [],
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "felt"
-      }
-    ],
-    "name": "get_reward",
+    "name": "get_start_reward",
     "outputs": [],
     "type": "function"
   },

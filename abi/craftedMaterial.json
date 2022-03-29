@@ -356,5 +356,22 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "token_id",
+        "type": "Uint256"
+      }
+    ],
+    "name": "ERC1155_Enumerable_token_burnCounter",
+    "outputs": [
+      {
+        "name": "tokenBurn",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
