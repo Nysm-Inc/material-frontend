@@ -26,6 +26,7 @@ const options = {
       min: 0,
       ticks: {
         color: "white",
+        stepSize: 1,
       },
     },
     x: {
