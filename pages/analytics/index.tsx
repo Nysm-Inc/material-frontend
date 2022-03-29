@@ -184,12 +184,12 @@ const Index: NextPage = () => {
         <Flex align="center">
           <Box w="8" h="3" bgColor="green.100" />
           <Spacer w="1" />
-          <Text>Daily Material</Text>
+          <Text>Primitive Material</Text>
         </Flex>
         <Flex align="center">
           <Box w="8" h="3" bgColor="yellow.100" />
           <Spacer w="1" />
-          <Text>Craft Material</Text>
+          <Text>Crafted Material</Text>
         </Flex>
       </HStack>
       <Box h="16" />

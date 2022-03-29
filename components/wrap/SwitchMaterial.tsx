@@ -19,7 +19,7 @@ const SwitchMaterial: VFC<{ materialType: MaterialType; switchMaterialType: (mat
         })}
         onClick={() => switchMaterialType("daily")}
       >
-        <Text>Premitive</Text>
+        <Text>Primitive</Text>
       </Center>
       <Center
         w="20"
