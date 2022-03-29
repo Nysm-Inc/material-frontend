@@ -1,4 +1,15 @@
-import { PhiIron, PhiOil, PhiSeed, PhiSoil } from "~/public";
+import {
+  PhiBrick,
+  PhiBrickHouse,
+  PhiComputer,
+  PhiDenki,
+  PhiIron,
+  PhiOil,
+  PhiPla,
+  PhiSeed,
+  PhiSoil,
+  PhiSteel,
+} from "~/public";
 
 export const primitiveMaterialList = ["Soil", "Oil", "Seed", "Iron"];
 
@@ -194,7 +205,7 @@ export type Cart = {
   };
 };
 
-export const PhiImages: { primitive: StaticImageData[]; crafted: StaticImageData[] } = {
+export const PhiImages: { primitive: StaticImageData[]; crafted: (StaticImageData | null)[] } = {
   primitive: [PhiSoil, PhiOil, PhiSeed, PhiIron],
-  crafted: [],
+  crafted: [PhiBrick, PhiBrickHouse, null, null, PhiSteel, PhiPla, PhiComputer, PhiDenki],
 };

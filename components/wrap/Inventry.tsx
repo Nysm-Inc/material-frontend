@@ -43,8 +43,11 @@ const Inventry: FC<{
               <Td>{name}</Td>
             ) : (
               <Td cursor="pointer">
-                {materialType === "primitive" ? (
-                  <MaterialToolTip image={PhiImages[materialType][id]}>{name}</MaterialToolTip>
+                {PhiImages[materialType][id] ? (
+                  // @ts-ignore
+                  <MaterialToolTip _materialType={materialType} _id={id} _image={PhiImages[materialType][id]}>
+                    {name}
+                  </MaterialToolTip>
                 ) : (
                   <>{name}</>
                 )}
