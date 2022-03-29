@@ -43,7 +43,11 @@ const Inventry: FC<{
               <Td>{name}</Td>
             ) : (
               <Td cursor="pointer">
-                <MaterialToolTip image={PhiImages[id]}>{name}</MaterialToolTip>
+                {materialType === "daily" ? (
+                  <MaterialToolTip image={PhiImages[materialType][id]}>{name}</MaterialToolTip>
+                ) : (
+                  <>{name}</>
+                )}
               </Td>
             )}
             <Td>{materials[id] || 0}</Td>

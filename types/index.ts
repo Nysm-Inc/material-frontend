@@ -35,7 +35,6 @@ export type ElapsedForgeTime = {
 export type Recipe = {
   name: string;
   recipe: string;
-  type: "send" | "forge";
   note: string;
   method: CraftMethod;
   condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime) => boolean;
@@ -45,7 +44,6 @@ export const recipes: Recipe[] = [
   {
     name: "Brick",
     recipe: "4 Soil",
-    type: "send",
     note: "",
     method: "craft_soil_2_brick",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -55,7 +53,6 @@ export const recipes: Recipe[] = [
   {
     name: "BrickHouse",
     recipe: "4 Brick",
-    type: "send",
     note: "",
     method: "craft_brick_2_brickHouse",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -65,7 +62,6 @@ export const recipes: Recipe[] = [
   {
     name: "Wood",
     recipe: "1 Soil + 1 Seed",
-    type: "forge",
     note: "100s",
     method: "forge_soilAndSeed_2_wood",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -75,7 +71,6 @@ export const recipes: Recipe[] = [
   {
     name: "Wood",
     recipe: "1 Soil + 1 Seed",
-    type: "send",
     note: "",
     method: "craft_soilAndSeed_2_wood",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -85,7 +80,6 @@ export const recipes: Recipe[] = [
   {
     name: "IronSword",
     recipe: "1 Iron + 1 Wood",
-    type: "send",
     note: "",
     method: "craft_ironAndWood_2_ironSword",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -95,7 +89,6 @@ export const recipes: Recipe[] = [
   {
     name: "Steel",
     recipe: "1 Iron",
-    type: "forge",
     note: "100s",
     method: "forge_iron_2_steel",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -105,7 +98,6 @@ export const recipes: Recipe[] = [
   {
     name: "Steel",
     recipe: "1 Iron",
-    type: "send",
     note: "",
     method: "craft_iron_2_steel",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -115,7 +107,6 @@ export const recipes: Recipe[] = [
   {
     name: "Plastic",
     recipe: "1 Oil",
-    type: "forge",
     note: "100s",
     method: "forge_oil_2_plastic",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -125,7 +116,6 @@ export const recipes: Recipe[] = [
   {
     name: "Plastic",
     recipe: "1 Oil",
-    type: "send",
     note: "",
     method: "craft_oil_2_plastic",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -135,7 +125,6 @@ export const recipes: Recipe[] = [
   {
     name: "Computer",
     recipe: "2 Plastic + 1 Steel",
-    type: "send",
     note: "",
     method: "craft_plasticAndSteel_2_computer",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -145,7 +134,6 @@ export const recipes: Recipe[] = [
   {
     name: "ElectronicsStore",
     recipe: "4 Computer",
-    type: "send",
     note: "",
     method: "craft_computer_2_electronicsStore",
     condition: (dailyMaterials: number[], craftMaterials: number[], elapsedForgeTime: ElapsedForgeTime): boolean => {
@@ -162,4 +150,7 @@ export type Cart = {
   };
 };
 
-export const PhiImages = [PhiSoil, PhiOil, PhiSeed, PhiIron];
+export const PhiImages: { daily: StaticImageData[]; craft: StaticImageData[] } = {
+  daily: [PhiSoil, PhiOil, PhiSeed, PhiIron],
+  craft: [],
+};

@@ -5,7 +5,7 @@ import { AppContext } from "~/contexts";
 import { craftMaterialList, dailyMaterialList, recipes, ElapsedForgeTime } from "~/types";
 import { fetchCraftMaterials, fetchDailyMaterials, fetchElapsedForgeTime } from "~/utils/material";
 import Recipe from "~/components/craft/Recipe";
-import { Table, Thead, Tbody, Tr, Th, Td } from "~/components/common";
+import { Table, Thead, Tbody, Tr, Th, Td, Button } from "~/components/common";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
@@ -66,8 +66,8 @@ const Index: NextPage = () => {
             <Tr>
               <Th w="24">Name</Th>
               <Th w="64">Recipe</Th>
-              <Th w="24">Type</Th>
               <Th w="40">Term</Th>
+              <Th w="24" />
             </Tr>
           </Thead>
           <Tbody>
@@ -81,19 +81,20 @@ const Index: NextPage = () => {
               >
                 <Td>{recipe.name}</Td>
                 <Td>{recipe.recipe}</Td>
+                <Td>{recipe.note}</Td>
                 <Td>
-                  <Tag
-                    size="sm"
-                    key={i}
+                  <Button
+                    size="xs"
+                    fontSize="xs"
                     borderRadius="full"
                     variant="solid"
-                    color="black"
-                    bgColor={recipe.type === "send" ? "green.100" : "yellow.100"}
+                    color="white"
+                    bgColor="primary.100"
+                    disabled={!recipe.condition(dailyMaterials, craftMaterials, elapsedForgeTime)}
                   >
-                    <TagLabel>{recipe.type}</TagLabel>
-                  </Tag>
+                    Craft
+                  </Button>
                 </Td>
-                <Td>{recipe.note}</Td>
               </Recipe>
             ))}
           </Tbody>
