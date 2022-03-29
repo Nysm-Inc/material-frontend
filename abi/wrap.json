@@ -19,19 +19,19 @@
   {
     "inputs": [
       {
-        "name": "daily_material_address",
+        "name": "primitive_material_address",
         "type": "felt"
       },
       {
-        "name": "craft_material_address",
+        "name": "crafted_material_address",
         "type": "felt"
       },
       {
-        "name": "wrap_material_address",
+        "name": "wrap_primitive_material_address",
         "type": "felt"
       },
       {
-        "name": "wrap_craft_material_address",
+        "name": "wrap_crafted_material_address",
         "type": "felt"
       }
     ],
@@ -54,7 +54,7 @@
         "type": "felt"
       }
     ],
-    "name": "wrap_daily_material",
+    "name": "wrap_primitive_material",
     "outputs": [],
     "type": "function"
   },
@@ -81,7 +81,7 @@
         "type": "felt*"
       }
     ],
-    "name": "batch_wrap_daily_material",
+    "name": "batch_wrap_primitive_material",
     "outputs": [],
     "type": "function"
   },
@@ -100,7 +100,7 @@
         "type": "felt"
       }
     ],
-    "name": "unwrap_daily_material",
+    "name": "unwrap_primitive_material",
     "outputs": [],
     "type": "function"
   },
@@ -127,7 +127,7 @@
         "type": "felt*"
       }
     ],
-    "name": "batch_unwrap_daily_material",
+    "name": "batch_unwrap_primitive_material",
     "outputs": [],
     "type": "function"
   },
@@ -146,7 +146,7 @@
         "type": "felt"
       }
     ],
-    "name": "wrap_craft_material",
+    "name": "wrap_crafted_material",
     "outputs": [],
     "type": "function"
   },
@@ -173,7 +173,7 @@
         "type": "felt*"
       }
     ],
-    "name": "batch_wrap_craft_material",
+    "name": "batch_wrap_crafted_material",
     "outputs": [],
     "type": "function"
   },
@@ -192,7 +192,7 @@
         "type": "felt"
       }
     ],
-    "name": "unwrap_craft_material",
+    "name": "unwrap_crafted_material",
     "outputs": [],
     "type": "function"
   },
@@ -219,13 +219,13 @@
         "type": "felt*"
       }
     ],
-    "name": "batch_unwrap_craft_material",
+    "name": "batch_unwrap_crafted_material",
     "outputs": [],
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "wrap_material_address",
+    "name": "wrap_primitive_material_address",
     "outputs": [
       {
         "name": "res",
@@ -237,7 +237,7 @@
   },
   {
     "inputs": [],
-    "name": "wrap_craft_material_address",
+    "name": "wrap_crafted_material_address",
     "outputs": [
       {
         "name": "res",
@@ -249,7 +249,7 @@
   },
   {
     "inputs": [],
-    "name": "daily_material_address",
+    "name": "primitive_material_address",
     "outputs": [
       {
         "name": "res",
@@ -261,7 +261,7 @@
   },
   {
     "inputs": [],
-    "name": "craft_material_address",
+    "name": "crafted_material_address",
     "outputs": [
       {
         "name": "res",

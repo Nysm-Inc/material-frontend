@@ -2,11 +2,11 @@
   {
     "inputs": [
       {
-        "name": "daily_material_address",
+        "name": "primitive_material_address",
         "type": "felt"
       },
       {
-        "name": "craft_material_address",
+        "name": "crafted_material_address",
         "type": "felt"
       }
     ],
@@ -133,7 +133,7 @@
   },
   {
     "inputs": [],
-    "name": "daily_material_address",
+    "name": "primitive_material_address",
     "outputs": [
       {
         "name": "res",
@@ -145,7 +145,7 @@
   },
   {
     "inputs": [],
-    "name": "craft_material_address",
+    "name": "crafted_material_address",
     "outputs": [
       {
         "name": "res",

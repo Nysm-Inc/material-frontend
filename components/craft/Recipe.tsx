@@ -8,16 +8,15 @@ import { Recipe, ElapsedForgeTime } from "~/types";
 
 const Recipe: FC<{
   recipe: Recipe;
-  dailyMaterials: number[];
-  craftMaterials: number[];
+  primitiveMaterials: number[];
+  craftedMaterials: number[];
   elapsedForgeTime: ElapsedForgeTime;
-}> = ({ recipe, dailyMaterials, craftMaterials, elapsedForgeTime, children }) => {
+}> = ({ recipe, primitiveMaterials, craftedMaterials, elapsedForgeTime, children }) => {
   const { contract: craftContract } = useContract({
     abi: craftAbi as Abi,
     address: CraftContractAddress,
   });
-
-  const { invoke: craft } = useStarknetInvoke({
+  const { invoke: crafted } = useStarknetInvoke({
     contract: craftContract,
     method: recipe.method,
   });
@@ -25,10 +24,10 @@ const Recipe: FC<{
   return (
     <Tr
       h="12"
-      {...(recipe.condition(dailyMaterials, craftMaterials, elapsedForgeTime)
+      {...(recipe.condition(primitiveMaterials, craftedMaterials, elapsedForgeTime)
         ? {
             cursor: "pointer",
-            onClick: () => craft({ args: [] }),
+            onClick: () => crafted({ args: [] }),
           }
         : {
             cursor: "not-allowed",

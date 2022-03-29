@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "~/components/common";
-import { Cart, craftMaterialList, dailyMaterialList, MaterialType, WrapType, PhiImages } from "~/types";
+import { Cart, craftedMaterialList, primitiveMaterialList, MaterialType, WrapType, PhiImages } from "~/types";
 import AddCart from "./AddCart";
 import MaterialToolTip from "./MaterialTooltip";
 
 const Inventry: FC<{
   label: "meta" | "phi";
-  dailyMaterials: number[];
-  craftMaterials: number[];
+  primitiveMaterials: number[];
+  craftedMaterials: number[];
   wrapType: WrapType;
   materialType: MaterialType;
   cart: Cart;
@@ -16,8 +16,8 @@ const Inventry: FC<{
   removeCart: (id: number) => void;
 }> = ({
   label,
-  dailyMaterials,
-  craftMaterials,
+  primitiveMaterials,
+  craftedMaterials,
   wrapType,
   materialType,
   cart,
@@ -25,8 +25,8 @@ const Inventry: FC<{
   addCart,
   removeCart,
 }) => {
-  const list = materialType === "daily" ? dailyMaterialList : craftMaterialList;
-  const materials = materialType === "daily" ? dailyMaterials : craftMaterials;
+  const list = materialType === "primitive" ? primitiveMaterialList : craftedMaterialList;
+  const materials = materialType === "primitive" ? primitiveMaterials : craftedMaterials;
   return (
     <Table>
       <Thead h="8">
@@ -43,7 +43,7 @@ const Inventry: FC<{
               <Td>{name}</Td>
             ) : (
               <Td cursor="pointer">
-                {materialType === "daily" ? (
+                {materialType === "primitive" ? (
                   <MaterialToolTip image={PhiImages[materialType][id]}>{name}</MaterialToolTip>
                 ) : (
                   <>{name}</>

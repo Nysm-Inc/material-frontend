@@ -1,19 +1,19 @@
 import craftAbi from "./craft.json";
-import craftMaterialAbi from "./craftMaterial.json";
+import craftedMaterialAbi from "./craftedMaterial.json";
 import dailyBonusAbi from "./dailyBonus.json";
-import dailyMaterialAbi from "./dailyMaterial.json";
+import primitiveMaterialAbi from "./primitiveMaterial.json";
 import wrapAbi from "./wrap.json";
-import wrapMaterialAbi from "./wrapMaterial.json";
-import wrapCraftMaterialAbi from "./wrapCraftMaterial.json";
+import wrapPrimitiveMaterialAbi from "./wrapPrimitiveMaterial.json";
+import wrapCraftedMaterialAbi from "./wrapCraftedMaterial.json";
 import erc20Abi from "./erc20.json";
 
 export {
   craftAbi,
-  craftMaterialAbi,
+  craftedMaterialAbi,
   dailyBonusAbi,
-  dailyMaterialAbi,
+  primitiveMaterialAbi,
   wrapAbi,
-  wrapMaterialAbi,
-  wrapCraftMaterialAbi,
+  wrapPrimitiveMaterialAbi,
+  wrapCraftedMaterialAbi,
   erc20Abi,
 };

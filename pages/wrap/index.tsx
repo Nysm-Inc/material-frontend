@@ -1,25 +1,19 @@
 import type { NextPage } from "next";
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Abi } from "starknet";
-import {
-  useStarknet,
-  useContract,
-  useStarknetCall,
-  useStarknetInvoke,
-  useStarknetTransactionManager,
-} from "@starknet-react/core";
-import { Box, Flex, IconButton, Spacer, useTheme, VStack } from "@chakra-ui/react";
-import { craftMaterialAbi, dailyMaterialAbi, wrapAbi, wrapMaterialAbi } from "~/abi";
+import { useContract, useStarknetInvoke, useStarknetTransactionManager } from "@starknet-react/core";
+import { Box, Flex, IconButton, useTheme, VStack } from "@chakra-ui/react";
+import { wrapAbi } from "~/abi";
 import { RiArrowLeftRightLine, RiArrowRightLine } from "react-icons/ri";
 import BarLoader from "react-spinners/BarLoader";
 import { WrapContractAddress } from "~/constants";
 import { AppContext } from "~/contexts";
-import { fetchWrapCraftMaterials, fetchWrapMaterials } from "~/utils/phi";
-import { fetchCraftMaterials, fetchDailyMaterials } from "~/utils/material";
+import { fetchWrapCraftedMaterials, fetchWrapPrimitiveMaterials } from "~/utils/phi";
+import { fetchCraftedMaterials, fetchPrimitiveMaterials } from "~/utils/material";
 import { MetaCard, PhiCard, Inventry } from "~/components/wrap";
 import { Button, Text } from "~/components/common";
 import { numToFelt } from "~/utils/cairo";
-import { Cart, craftMaterialList, dailyMaterialList, MaterialType, WrapType } from "~/types";
+import { Cart, craftedMaterialList, primitiveMaterialList, MaterialType, WrapType } from "~/types";
 import SwitchMaterial from "~/components/wrap/SwitchMaterial";
 
 const Index: NextPage = () => {
@@ -31,46 +25,46 @@ const Index: NextPage = () => {
   const { transactions = [] } = useStarknetTransactionManager();
   const theme = useTheme();
 
-  const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
-  const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
-  const [wrapDailyMaterials, setWrapDailyMaterials] = useState<number[]>([]);
-  const [wrapCraftMaterials, setWrapCraftMaterials] = useState<number[]>([]);
+  const [primitiveMaterials, setPrimitiveMaterials] = useState<number[]>([]);
+  const [craftedMaterials, setCraftedMaterials] = useState<number[]>([]);
+  const [wrapPrimitiveMaterials, setWrapPrimitiveMaterials] = useState<number[]>([]);
+  const [wrapCraftedMaterials, setWrapCraftedMaterials] = useState<number[]>([]);
   const [isWrapping, setIsWrapping] = useState(false);
   const [wrapType, setWrapType] = useState<WrapType>("wrap");
-  const [materialType, setMaterialType] = useState<MaterialType>("daily");
+  const [materialType, setMaterialType] = useState<MaterialType>("primitive");
   const switchWrapType = useCallback(() => setWrapType((prev) => (prev === "wrap" ? "unwrap" : "wrap")), []);
   const switchMaterialType = useCallback((materialType: MaterialType) => setMaterialType(materialType), []);
   const swapByWrapType = useCallback((a, b): [x: any, y: any] => (wrapType === "wrap" ? [a, b] : [b, a]), [wrapType]);
   const label = swapByWrapType("meta", "phi");
   const card = swapByWrapType(<MetaCard />, <PhiCard />);
-  const dailyInventry = swapByWrapType(dailyMaterials, wrapDailyMaterials);
-  const craftInventry = swapByWrapType(craftMaterials, wrapCraftMaterials);
+  const primitiveInventry = swapByWrapType(primitiveMaterials, wrapPrimitiveMaterials);
+  const craftedInventry = swapByWrapType(craftedMaterials, wrapCraftedMaterials);
 
-  const { invoke: wrapDailyMaterial, data: txWrapDailyMaterial } = useStarknetInvoke({
+  const { invoke: wrapPrimitiveMaterial, data: txWrapPrimitiveMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "batch_wrap_daily_material",
+    method: "batch_wrap_primitive_material",
   });
-  const { invoke: wrapCraftMaterial, data: txWrapCraftMaterial } = useStarknetInvoke({
+  const { invoke: wrapCraftedMaterial, data: txWrapCraftedMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "batch_wrap_craft_material",
+    method: "batch_wrap_crafted_material",
   });
-  const { invoke: unwrapDailyMaterial, data: txUnwrapDailyMaterial } = useStarknetInvoke({
+  const { invoke: unwrapPrimitiveMaterial, data: txUnwrapPrimitiveMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "batch_unwrap_daily_material",
+    method: "batch_unwrap_primitive_material",
   });
-  const { invoke: unwrapCraftMaterial, data: txUnwrapCraftMaterial } = useStarknetInvoke({
+  const { invoke: unwrapCraftedMaterial, data: txUnwrapCraftedMaterial } = useStarknetInvoke({
     contract: wrapContract,
-    method: "batch_unwrap_craft_material",
+    method: "batch_unwrap_crafted_material",
   });
 
   const [cart, setCart] = useState<Cart>({
     wrap: {
-      daily: [...new Array(dailyMaterialList.length)].fill(0),
-      craft: [...new Array(craftMaterialList.length)].fill(0),
+      primitive: [...new Array(primitiveMaterialList.length)].fill(0),
+      crafted: [...new Array(craftedMaterialList.length)].fill(0),
     },
     unwrap: {
-      daily: [...new Array(dailyMaterialList.length)].fill(0),
-      craft: [...new Array(craftMaterialList.length)].fill(0),
+      primitive: [...new Array(primitiveMaterialList.length)].fill(0),
+      crafted: [...new Array(craftedMaterialList.length)].fill(0),
     },
   });
   const addCart = useCallback(
@@ -107,16 +101,16 @@ const Index: NextPage = () => {
     });
 
     if (wrapType === "wrap") {
-      if (materialType === "daily") {
-        wrapDailyMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+      if (materialType === "primitive") {
+        wrapPrimitiveMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
       } else {
-        wrapCraftMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+        wrapCraftedMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
       }
     } else {
-      if (materialType === "daily") {
-        unwrapDailyMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+      if (materialType === "primitive") {
+        unwrapPrimitiveMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
       } else {
-        unwrapCraftMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
+        unwrapCraftedMaterial({ args: [numToFelt(account), tokenIDs, amounts] });
       }
     }
   };
@@ -125,20 +119,20 @@ const Index: NextPage = () => {
     if (!account) return;
 
     (async () => {
-      const materials = await fetchDailyMaterials(account);
-      setDailyMaterials(materials);
+      const materials = await fetchPrimitiveMaterials(account);
+      setPrimitiveMaterials(materials);
     })();
     (async () => {
-      const materials = await fetchCraftMaterials(account);
-      setCraftMaterials(materials);
+      const materials = await fetchCraftedMaterials(account);
+      setCraftedMaterials(materials);
     })();
     (async () => {
-      const materials = await fetchWrapMaterials(account);
-      setWrapDailyMaterials(materials);
+      const materials = await fetchWrapPrimitiveMaterials(account);
+      setWrapPrimitiveMaterials(materials);
     })();
     (async () => {
-      const materials = await fetchWrapCraftMaterials(account);
-      setWrapCraftMaterials(materials);
+      const materials = await fetchWrapCraftedMaterials(account);
+      setWrapCraftedMaterials(materials);
     })();
   }, [account]);
 
@@ -146,12 +140,23 @@ const Index: NextPage = () => {
     if (transactions.length <= 0) return;
 
     transactions.forEach((tx) => {
-      const txHashs = [txWrapDailyMaterial, txWrapCraftMaterial, txUnwrapDailyMaterial, txUnwrapCraftMaterial];
+      const txHashs = [
+        txWrapPrimitiveMaterial,
+        txWrapCraftedMaterial,
+        txUnwrapPrimitiveMaterial,
+        txUnwrapCraftedMaterial,
+      ];
       if (txHashs.includes(tx.transactionHash)) {
         setIsWrapping(tx.status !== "ACCEPTED_ON_L2");
       }
     });
-  }, [transactions, txWrapDailyMaterial, txWrapCraftMaterial, txUnwrapDailyMaterial, txUnwrapCraftMaterial]);
+  }, [
+    transactions,
+    txWrapPrimitiveMaterial,
+    txWrapCraftedMaterial,
+    txUnwrapPrimitiveMaterial,
+    txUnwrapCraftedMaterial,
+  ]);
 
   return (
     <Flex w="100%" h="100%" justify="space-evenly" align="center" pr="24">
@@ -161,8 +166,8 @@ const Index: NextPage = () => {
           <SwitchMaterial materialType={materialType} switchMaterialType={switchMaterialType} />
           <Inventry
             label={label[0]}
-            dailyMaterials={dailyInventry[0]}
-            craftMaterials={craftInventry[0]}
+            primitiveMaterials={primitiveInventry[0]}
+            craftedMaterials={craftedInventry[0]}
             wrapType={wrapType}
             materialType={materialType}
             cart={cart}
@@ -217,8 +222,8 @@ const Index: NextPage = () => {
           <Box h="6" />
           <Inventry
             label={label[1]}
-            dailyMaterials={dailyInventry[1]}
-            craftMaterials={craftInventry[1]}
+            primitiveMaterials={primitiveInventry[1]}
+            craftedMaterials={craftedInventry[1]}
             wrapType={wrapType}
             materialType={materialType}
             cart={cart}

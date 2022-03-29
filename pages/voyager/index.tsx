@@ -2,13 +2,13 @@ import type { NextPage } from "next";
 import { Link, VStack } from "@chakra-ui/react";
 import {
   CraftContractAddress,
-  CraftMaterialContractAddress,
+  CraftedMaterialContractAddress,
   DailyBonusContractAddress,
-  DailyMaterialContractAddress,
+  PrimitiveMaterialContractAddress,
   ERC20ContractAddress,
   WrapContractAddress,
-  WrapCraftMaterialContractAddress,
-  WrapMaterialContractAddress,
+  WrapCraftedMaterialContractAddress,
+  WrapPrimitiveMaterialContractAddress,
 } from "~/constants";
 import { useContext } from "react";
 import { AppContext } from "~/contexts";
@@ -38,20 +38,20 @@ const Index: NextPage = () => {
         <Text>Daily Bonus</Text>
       </Link>
       <Link
-        href={`https://goerli.voyager.online/contract/${DailyMaterialContractAddress}`}
+        href={`https://goerli.voyager.online/contract/${PrimitiveMaterialContractAddress}`}
         isExternal
         textDecoration="underline"
         textDecorationColor="white"
       >
-        <Text>Daily Material</Text>
+        <Text>Primitive Material</Text>
       </Link>
       <Link
-        href={`https://goerli.voyager.online/contract/${CraftMaterialContractAddress}`}
+        href={`https://goerli.voyager.online/contract/${CraftedMaterialContractAddress}`}
         isExternal
         textDecoration="underline"
         textDecorationColor="white"
       >
-        <Text>Craft Material</Text>
+        <Text>Crafted Material</Text>
       </Link>
       <Link
         href={`https://goerli.voyager.online/contract/${CraftContractAddress}`}
@@ -70,20 +70,20 @@ const Index: NextPage = () => {
         <Text>Wrap</Text>
       </Link>
       <Link
-        href={`https://goerli.voyager.online/contract/${WrapMaterialContractAddress}`}
+        href={`https://goerli.voyager.online/contract/${WrapPrimitiveMaterialContractAddress}`}
         isExternal
         textDecoration="underline"
         textDecorationColor="white"
       >
-        <Text>Wrap Material</Text>
+        <Text>Wrap Primitive Material</Text>
       </Link>
       <Link
-        href={`https://goerli.voyager.online/contract/${WrapCraftMaterialContractAddress}`}
+        href={`https://goerli.voyager.online/contract/${WrapCraftedMaterialContractAddress}`}
         isExternal
         textDecoration="underline"
         textDecorationColor="white"
       >
-        <Text>Wrap Craft Material</Text>
+        <Text>Wrap Crafted Material</Text>
       </Link>
     </VStack>
   );

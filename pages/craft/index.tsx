@@ -2,23 +2,23 @@ import type { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
 import { Text, VStack, Flex, Tag, TagLabel } from "@chakra-ui/react";
 import { AppContext } from "~/contexts";
-import { craftMaterialList, dailyMaterialList, recipes, ElapsedForgeTime } from "~/types";
-import { fetchCraftMaterials, fetchDailyMaterials, fetchElapsedForgeTime } from "~/utils/material";
+import { craftedMaterialList, primitiveMaterialList, recipes, ElapsedForgeTime } from "~/types";
+import { fetchCraftedMaterials, fetchPrimitiveMaterials, fetchElapsedForgeTime } from "~/utils/material";
 import Recipe from "~/components/craft/Recipe";
 import { Table, Thead, Tbody, Tr, Th, Td, Button } from "~/components/common";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
-  const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
-  const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
+  const [primitiveMaterials, setPrimitiveMaterials] = useState<number[]>([]);
+  const [craftedMaterials, setCraftedMaterials] = useState<number[]>([]);
   const [elapsedForgeTime, setElapsedForgeTime] = useState<ElapsedForgeTime>({ soilAndWood: 0, iron: 0, oil: 0 });
 
   useEffect(() => {
     if (!account) return;
 
     (async () => {
-      const materials = await fetchDailyMaterials(account);
-      setDailyMaterials(materials);
+      const materials = await fetchPrimitiveMaterials(account);
+      setPrimitiveMaterials(materials);
     })();
   }, [account]);
 
@@ -26,8 +26,8 @@ const Index: NextPage = () => {
     if (!account) return;
 
     (async () => {
-      const materials = await fetchCraftMaterials(account);
-      setCraftMaterials(materials);
+      const materials = await fetchCraftedMaterials(account);
+      setCraftedMaterials(materials);
     })();
   }, [account]);
 
@@ -75,8 +75,8 @@ const Index: NextPage = () => {
               <Recipe
                 key={i}
                 recipe={recipe}
-                dailyMaterials={dailyMaterials}
-                craftMaterials={craftMaterials}
+                primitiveMaterials={primitiveMaterials}
+                craftedMaterials={craftedMaterials}
                 elapsedForgeTime={elapsedForgeTime}
               >
                 <Td>{recipe.name}</Td>
@@ -90,7 +90,7 @@ const Index: NextPage = () => {
                     variant="solid"
                     color="white"
                     bgColor="primary.100"
-                    disabled={!recipe.condition(dailyMaterials, craftMaterials, elapsedForgeTime)}
+                    disabled={!recipe.condition(primitiveMaterials, craftedMaterials, elapsedForgeTime)}
                   >
                     Craft
                   </Button>
@@ -112,16 +112,16 @@ const Index: NextPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {dailyMaterialList.map((name, i) => (
+            {primitiveMaterialList.map((name, i) => (
               <Tr key={i} h="12" bgColor="blackAlpha.600">
                 <Td>{name}</Td>
-                <Td>{dailyMaterials[i] || 0}</Td>
+                <Td>{primitiveMaterials[i] || 0}</Td>
               </Tr>
             ))}
-            {craftMaterialList.map((name, i) => (
+            {craftedMaterialList.map((name, i) => (
               <Tr key={i} h="12" bgColor="blackAlpha.600">
                 <Td>{name}</Td>
-                <Td>{craftMaterials[i] || 0}</Td>
+                <Td>{craftedMaterials[i] || 0}</Td>
               </Tr>
             ))}
           </Tbody>

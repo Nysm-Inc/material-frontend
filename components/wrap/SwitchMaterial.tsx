@@ -13,11 +13,11 @@ const SwitchMaterial: VFC<{ materialType: MaterialType; switchMaterialType: (mat
         w="20"
         h="6"
         cursor="pointer"
-        {...(materialType === "daily" && {
+        {...(materialType === "primitive" && {
           bgColor: "primary.100",
           borderRadius: "xl",
         })}
-        onClick={() => switchMaterialType("daily")}
+        onClick={() => switchMaterialType("primitive")}
       >
         <Text>Primitive</Text>
       </Center>
@@ -25,11 +25,11 @@ const SwitchMaterial: VFC<{ materialType: MaterialType; switchMaterialType: (mat
         w="20"
         h="6"
         cursor="pointer"
-        {...(materialType === "craft" && {
+        {...(materialType === "crafted" && {
           bgColor: "primary.100",
           borderRadius: "xl",
         })}
-        onClick={() => switchMaterialType("craft")}
+        onClick={() => switchMaterialType("crafted")}
       >
         <Text>Crafted</Text>
       </Center>

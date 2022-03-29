@@ -23,7 +23,7 @@
         "type": "felt"
       },
       {
-        "name": "daily_material_address",
+        "name": "primitive_material_address",
         "type": "felt"
       },
       {
@@ -291,7 +291,7 @@
   },
   {
     "inputs": [],
-    "name": "daily_material_address",
+    "name": "primitive_material_address",
     "outputs": [
       {
         "name": "res",
