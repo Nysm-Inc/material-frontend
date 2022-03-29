@@ -8,13 +8,17 @@ import { RiArrowLeftRightLine, RiArrowRightLine } from "react-icons/ri";
 import BarLoader from "react-spinners/BarLoader";
 import { WrapContractAddress } from "~/constants";
 import { AppContext } from "~/contexts";
-import { fetchWrapCraftedMaterials, fetchWrapPrimitiveMaterials } from "~/utils/phi";
-import { fetchCraftedMaterials, fetchPrimitiveMaterials } from "~/utils/material";
 import { MetaCard, PhiCard, Inventry } from "~/components/wrap";
 import { Button, Text } from "~/components/common";
 import { numToFelt } from "~/utils/cairo";
 import { Cart, craftedMaterialList, primitiveMaterialList, MaterialType, WrapType } from "~/types";
 import SwitchMaterial from "~/components/wrap/SwitchMaterial";
+import {
+  useCraftedeMaterials,
+  usePrimitiveMaterials,
+  useWrapCraftedMaterials,
+  useWrapPrimitiveMaterials,
+} from "~/hooks/material";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
@@ -22,13 +26,13 @@ const Index: NextPage = () => {
     abi: wrapAbi as Abi,
     address: WrapContractAddress,
   });
-  const { transactions = [] } = useStarknetTransactionManager();
   const theme = useTheme();
+  const { transactions = [] } = useStarknetTransactionManager();
 
-  const [primitiveMaterials, setPrimitiveMaterials] = useState<number[]>([]);
-  const [craftedMaterials, setCraftedMaterials] = useState<number[]>([]);
-  const [wrapPrimitiveMaterials, setWrapPrimitiveMaterials] = useState<number[]>([]);
-  const [wrapCraftedMaterials, setWrapCraftedMaterials] = useState<number[]>([]);
+  const primitiveMaterials = usePrimitiveMaterials(account);
+  const craftedMaterials = useCraftedeMaterials(account);
+  const wrapPrimitiveMaterials = useWrapPrimitiveMaterials(account);
+  const wrapCraftedMaterials = useWrapCraftedMaterials(account);
   const [isWrapping, setIsWrapping] = useState(false);
   const [wrapType, setWrapType] = useState<WrapType>("wrap");
   const [materialType, setMaterialType] = useState<MaterialType>("primitive");
@@ -114,27 +118,6 @@ const Index: NextPage = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (!account) return;
-
-    (async () => {
-      const materials = await fetchPrimitiveMaterials(account);
-      setPrimitiveMaterials(materials);
-    })();
-    (async () => {
-      const materials = await fetchCraftedMaterials(account);
-      setCraftedMaterials(materials);
-    })();
-    (async () => {
-      const materials = await fetchWrapPrimitiveMaterials(account);
-      setWrapPrimitiveMaterials(materials);
-    })();
-    (async () => {
-      const materials = await fetchWrapCraftedMaterials(account);
-      setWrapCraftedMaterials(materials);
-    })();
-  }, [account]);
 
   useEffect(() => {
     if (transactions.length <= 0) return;

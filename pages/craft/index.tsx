@@ -1,58 +1,25 @@
 import type { NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
-import { Text, VStack, Flex, Tag, TagLabel } from "@chakra-ui/react";
+import { useContext } from "react";
+import { Text, VStack, Flex } from "@chakra-ui/react";
 import { AppContext } from "~/contexts";
 import { craftedMaterialList, primitiveMaterialList, recipes, ElapsedForgeTime } from "~/types";
-import { fetchCraftedMaterials, fetchPrimitiveMaterials, fetchElapsedForgeTime } from "~/utils/material";
 import Recipe from "~/components/craft/Recipe";
 import { Table, Thead, Tbody, Tr, Th, Td, Button } from "~/components/common";
+import { useCraftedeMaterials, usePrimitiveMaterials } from "~/hooks/material";
+import { useElapsedForgeTime } from "~/hooks/craft";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
-  const [primitiveMaterials, setPrimitiveMaterials] = useState<number[]>([]);
-  const [craftedMaterials, setCraftedMaterials] = useState<number[]>([]);
-  const [elapsedForgeTime, setElapsedForgeTime] = useState<ElapsedForgeTime>({ soilAndWood: 0, iron: 0, oil: 0 });
-
-  useEffect(() => {
-    if (!account) return;
-
-    (async () => {
-      const materials = await fetchPrimitiveMaterials(account);
-      setPrimitiveMaterials(materials);
-    })();
-  }, [account]);
-
-  useEffect(() => {
-    if (!account) return;
-
-    (async () => {
-      const materials = await fetchCraftedMaterials(account);
-      setCraftedMaterials(materials);
-    })();
-  }, [account]);
-
-  useEffect(() => {
-    if (!account) return;
-
-    (async () => {
-      const time = await fetchElapsedForgeTime(account, "check_elapsed_forge_time_soilAndSeed_2_wood");
-      setElapsedForgeTime((prev) => {
-        return { ...prev, soilAndWood: time };
-      });
-    })();
-    (async () => {
-      const time = await fetchElapsedForgeTime(account, "check_elapsed_forge_time_iron_2_steel");
-      setElapsedForgeTime((prev) => {
-        return { ...prev, iron: time };
-      });
-    })();
-    (async () => {
-      const time = await fetchElapsedForgeTime(account, "check_elapsed_forge_time_oil_2_plastic");
-      setElapsedForgeTime((prev) => {
-        return { ...prev, oil: time };
-      });
-    })();
-  }, [account]);
+  const primitiveMaterials = usePrimitiveMaterials(account);
+  const craftedMaterials = useCraftedeMaterials(account);
+  const elapsedForgeTimeSoilAndSeed = useElapsedForgeTime(account, "check_elapsed_forge_time_soilAndSeed_2_wood");
+  const elapsedForgeTimeIron = useElapsedForgeTime(account, "check_elapsed_forge_time_iron_2_steel");
+  const elapsedForgeTimeOil = useElapsedForgeTime(account, "check_elapsed_forge_time_oil_2_plastic");
+  const elapsedForgeTime: ElapsedForgeTime = {
+    soilAndWood: elapsedForgeTimeSoilAndSeed,
+    iron: elapsedForgeTimeIron,
+    oil: elapsedForgeTimeOil,
+  };
 
   return (
     <Flex w="100%" h="100%" justifyContent="space-evenly">
