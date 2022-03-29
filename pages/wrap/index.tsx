@@ -20,6 +20,7 @@ import { MetaCard, PhiCard, Inventry } from "~/components/wrap";
 import { Button, Text } from "~/components/common";
 import { numToFelt } from "~/utils/cairo";
 import { Cart, craftMaterialList, dailyMaterialList, MaterialType, WrapType } from "~/types";
+import SwitchMaterial from "~/components/wrap/SwitchMaterial";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
@@ -38,10 +39,7 @@ const Index: NextPage = () => {
   const [wrapType, setWrapType] = useState<WrapType>("wrap");
   const [materialType, setMaterialType] = useState<MaterialType>("daily");
   const switchWrapType = useCallback(() => setWrapType((prev) => (prev === "wrap" ? "unwrap" : "wrap")), []);
-  const switchMaterialTypeType = useCallback(
-    () => setMaterialType((prev) => (prev === "daily" ? "craft" : "daily")),
-    []
-  );
+  const switchMaterialType = useCallback((materialType: MaterialType) => setMaterialType(materialType), []);
   const swapByWrapType = useCallback((a, b): [x: any, y: any] => (wrapType === "wrap" ? [a, b] : [b, a]), [wrapType]);
   const label = swapByWrapType("meta", "phi");
   const card = swapByWrapType(<MetaCard />, <PhiCard />);
@@ -156,19 +154,22 @@ const Index: NextPage = () => {
   }, [transactions, txWrapDailyMaterial, txWrapCraftMaterial, txUnwrapDailyMaterial, txUnwrapCraftMaterial]);
 
   return (
-    <Flex w="100%" h="100%" justify="space-evenly" align="center" pr="32" pb="8">
+    <Flex w="100%" h="100%" justify="space-evenly" align="center" pr="24">
       <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[0]}
-        <Inventry
-          label={label[0]}
-          dailyMaterials={dailyInventry[0]}
-          craftMaterials={craftInventry[0]}
-          wrapType={wrapType}
-          materialType={materialType}
-          cart={cart}
-          addCart={addCart}
-          removeCart={removeCart}
-        />
+        <VStack w="80" h="lg">
+          <SwitchMaterial materialType={materialType} switchMaterialType={switchMaterialType} />
+          <Inventry
+            label={label[0]}
+            dailyMaterials={dailyInventry[0]}
+            craftMaterials={craftInventry[0]}
+            wrapType={wrapType}
+            materialType={materialType}
+            cart={cart}
+            addCart={addCart}
+            removeCart={removeCart}
+          />
+        </VStack>
       </VStack>
       <VStack h="100%" align="center" justify="space-evenly">
         <IconButton
@@ -207,20 +208,25 @@ const Index: NextPage = () => {
             </Text>
           </Button>
         )}
+        <Box />
+        <Box />
       </VStack>
       <VStack h="100%" align="flex-start" justify="space-evenly">
         {card[1]}
-        <Inventry
-          label={label[1]}
-          dailyMaterials={dailyInventry[1]}
-          craftMaterials={craftInventry[1]}
-          wrapType={wrapType}
-          materialType={materialType}
-          cart={cart}
-          readonly
-          addCart={addCart}
-          removeCart={removeCart}
-        />
+        <VStack w="80" h="lg">
+          <Box h="6" />
+          <Inventry
+            label={label[1]}
+            dailyMaterials={dailyInventry[1]}
+            craftMaterials={craftInventry[1]}
+            wrapType={wrapType}
+            materialType={materialType}
+            cart={cart}
+            readonly
+            addCart={addCart}
+            removeCart={removeCart}
+          />
+        </VStack>
       </VStack>
     </Flex>
   );

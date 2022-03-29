@@ -2,16 +2,16 @@ import type { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
 import { Text, VStack, Flex, Tag, TagLabel } from "@chakra-ui/react";
 import { AppContext } from "~/contexts";
-import { craftMaterialList, dailyMaterialList, receipes, ElapsedStakeTime } from "~/types";
-import { fetchCraftMaterials, fetchDailyMaterials, fetchElapsedStakeTime } from "~/utils/material";
-import Receipe from "~/components/craft/Receipe";
+import { craftMaterialList, dailyMaterialList, recipes, ElapsedForgeTime } from "~/types";
+import { fetchCraftMaterials, fetchDailyMaterials, fetchElapsedForgeTime } from "~/utils/material";
+import Recipe from "~/components/craft/Recipe";
 import { Table, Thead, Tbody, Tr, Th, Td } from "~/components/common";
 
 const Index: NextPage = () => {
   const { account } = useContext(AppContext);
   const [dailyMaterials, setDailyMaterials] = useState<number[]>([]);
   const [craftMaterials, setCraftMaterials] = useState<number[]>([]);
-  const [elapsedStakeTime, setElapsedStakeTime] = useState<ElapsedStakeTime>({ soilAndWood: 0, iron: 0, oil: 0 });
+  const [elapsedForgeTime, setElapsedForgeTime] = useState<ElapsedForgeTime>({ soilAndWood: 0, iron: 0, oil: 0 });
 
   useEffect(() => {
     if (!account) return;
@@ -35,20 +35,20 @@ const Index: NextPage = () => {
     if (!account) return;
 
     (async () => {
-      const time = await fetchElapsedStakeTime(account, "check_elapsed_stake_time_soilAndSeed_2_wood");
-      setElapsedStakeTime((prev) => {
+      const time = await fetchElapsedForgeTime(account, "check_elapsed_forge_time_soilAndSeed_2_wood");
+      setElapsedForgeTime((prev) => {
         return { ...prev, soilAndWood: time };
       });
     })();
     (async () => {
-      const time = await fetchElapsedStakeTime(account, "check_elapsed_stake_time_iron_2_steel");
-      setElapsedStakeTime((prev) => {
+      const time = await fetchElapsedForgeTime(account, "check_elapsed_forge_time_iron_2_steel");
+      setElapsedForgeTime((prev) => {
         return { ...prev, iron: time };
       });
     })();
     (async () => {
-      const time = await fetchElapsedStakeTime(account, "check_elapsed_stake_time_oil_2_plastic");
-      setElapsedStakeTime((prev) => {
+      const time = await fetchElapsedForgeTime(account, "check_elapsed_forge_time_oil_2_plastic");
+      setElapsedForgeTime((prev) => {
         return { ...prev, oil: time };
       });
     })();
@@ -58,29 +58,29 @@ const Index: NextPage = () => {
     <Flex w="100%" h="100%" justifyContent="space-evenly">
       <VStack w="56%" align="flex-start">
         <Text fontSize="2xl" color="white">
-          Receipes
+          Recipes
         </Text>
 
         <Table>
           <Thead h="8">
             <Tr>
               <Th w="24">Name</Th>
-              <Th w="64">Receipe</Th>
+              <Th w="64">Recipe</Th>
               <Th w="24">Type</Th>
-              <Th w="40">Note</Th>
+              <Th w="40">Term</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {receipes.map((receipe, i) => (
-              <Receipe
+            {recipes.map((recipe, i) => (
+              <Recipe
                 key={i}
-                receipe={receipe}
+                recipe={recipe}
                 dailyMaterials={dailyMaterials}
                 craftMaterials={craftMaterials}
-                elapsedStakeTime={elapsedStakeTime}
+                elapsedForgeTime={elapsedForgeTime}
               >
-                <Td>{receipe.name}</Td>
-                <Td>{receipe.receipe}</Td>
+                <Td>{recipe.name}</Td>
+                <Td>{recipe.recipe}</Td>
                 <Td>
                   <Tag
                     size="sm"
@@ -88,13 +88,13 @@ const Index: NextPage = () => {
                     borderRadius="full"
                     variant="solid"
                     color="black"
-                    bgColor={receipe.type === "send" ? "green.100" : "yellow.100"}
+                    bgColor={recipe.type === "send" ? "green.100" : "yellow.100"}
                   >
-                    <TagLabel>{receipe.type}</TagLabel>
+                    <TagLabel>{recipe.type}</TagLabel>
                   </Tag>
                 </Td>
-                <Td>{receipe.note}</Td>
-              </Receipe>
+                <Td>{recipe.note}</Td>
+              </Recipe>
             ))}
           </Tbody>
         </Table>

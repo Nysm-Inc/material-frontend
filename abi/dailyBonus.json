@@ -79,6 +79,12 @@
         "type": "felt"
       }
     ],
+    "name": "get_reward_with_fee",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "get_reward2",
     "outputs": [],
     "type": "function"
@@ -226,6 +232,55 @@
       }
     ],
     "name": "_recalc_gold_parcent",
+    "outputs": [
+      {
+        "name": "res",
+        "type": "Uint256"
+      }
+    ],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "blockNumber",
+        "type": "felt"
+      }
+    ],
+    "name": "history_crystal_parcent",
+    "outputs": [
+      {
+        "name": "crystal_parcent",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_crystal_parcent",
+    "outputs": [
+      {
+        "name": "crystal_parcent",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "last_block_number",
+        "type": "felt"
+      },
+      {
+        "name": "last_crystal_parcent",
+        "type": "Uint256"
+      }
+    ],
+    "name": "_recalc_crystal_parcent",
     "outputs": [
       {
         "name": "res",

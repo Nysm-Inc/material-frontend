@@ -38,7 +38,7 @@ const Inventry: FC<{
       </Thead>
       <Tbody>
         {list.map((name, id) => (
-          <Tr key={id} h="12" bgColor="blackAlpha.600">
+          <Tr key={`${id}_${wrapType}_${materialType}`} h="12" bgColor="blackAlpha.600">
             {label === "meta" ? (
               <Td>{name}</Td>
             ) : (
@@ -51,7 +51,7 @@ const Inventry: FC<{
               <AddCart
                 readonly={readonly}
                 num={cart[wrapType][materialType][id]}
-                balance={dailyMaterials[id]}
+                balance={materials[id]}
                 handleClickPlus={() => addCart(id)}
                 handleClickMinus={() => removeCart(id)}
               />

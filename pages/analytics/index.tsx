@@ -194,11 +194,7 @@ const Index: NextPage = () => {
       </HStack>
       <Box h="16" />
       <Center w="4xl" h="md">
-        {token0supply && craftToken0supply ? (
-          <Bar options={options} data={data} />
-        ) : (
-          <BeatLoader color={theme.colors.gray[100]} size={12} />
-        )}
+        {token0supply ? <Bar options={options} data={data} /> : <BeatLoader color={theme.colors.gray[100]} size={12} />}
       </Center>
     </Flex>
   );

@@ -28,7 +28,7 @@
   },
   {
     "inputs": [],
-    "name": "stake_soilAndSeed_2_wood",
+    "name": "forge_soilAndSeed_2_wood",
     "outputs": [],
     "type": "function"
   },
@@ -46,7 +46,7 @@
   },
   {
     "inputs": [],
-    "name": "stake_iron_2_steel",
+    "name": "forge_iron_2_steel",
     "outputs": [],
     "type": "function"
   },
@@ -58,7 +58,7 @@
   },
   {
     "inputs": [],
-    "name": "stake_oil_2_plastic",
+    "name": "forge_oil_2_plastic",
     "outputs": [],
     "type": "function"
   },
@@ -87,7 +87,7 @@
         "type": "felt"
       }
     ],
-    "name": "check_elapsed_stake_time_soilAndSeed_2_wood",
+    "name": "check_elapsed_forge_time_soilAndSeed_2_wood",
     "outputs": [
       {
         "name": "elapsed_time",
@@ -104,7 +104,7 @@
         "type": "felt"
       }
     ],
-    "name": "check_elapsed_stake_time_iron_2_steel",
+    "name": "check_elapsed_forge_time_iron_2_steel",
     "outputs": [
       {
         "name": "elapsed_time",
@@ -121,7 +121,7 @@
         "type": "felt"
       }
     ],
-    "name": "check_elapsed_stake_time_oil_2_plastic",
+    "name": "check_elapsed_forge_time_oil_2_plastic",
     "outputs": [
       {
         "name": "elapsed_time",

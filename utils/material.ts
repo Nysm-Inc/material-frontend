@@ -39,7 +39,7 @@ export const fetchCraftMaterials = async (account: string): Promise<number[]> =>
   return materials;
 };
 
-export const fetchElapsedStakeTime = async (account: string, method: string): Promise<number> => {
+export const fetchElapsedForgeTime = async (account: string, method: string): Promise<number> => {
   const res = await axios.post<{ result: string[] }>(starknetFeederGateway, {
     signature: [],
     calldata: [numToFelt(account)],

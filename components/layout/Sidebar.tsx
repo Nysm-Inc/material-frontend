@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import { FC, useContext } from "react";
 import { Box, VStack } from "@chakra-ui/react";
 import { useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
-import { dailyBonusAbi } from "~/abi";
+import { dailyBonusAbi, erc20Abi } from "~/abi";
 import { Abi } from "starknet";
-import { DailyBonusContractAddress } from "~/constants";
+import { DailyBonusContractAddress, ERC20ContractAddress } from "~/constants";
 import { feltToNum, numToFelt } from "~/utils/cairo";
 import { AppContext } from "~/contexts";
 import { Button } from "~/components/common";
@@ -12,12 +12,19 @@ import { Button } from "~/components/common";
 const Index: FC = () => {
   const { account } = useContext(AppContext);
   const router = useRouter();
-
+  const { contract: erc20Contract } = useContract({
+    abi: erc20Abi as Abi,
+    address: ERC20ContractAddress,
+  });
   const { contract: dailyBonusContract } = useContract({
     abi: dailyBonusAbi as Abi,
     address: DailyBonusContractAddress,
   });
 
+  const { invoke: approve } = useStarknetInvoke({
+    contract: erc20Contract,
+    method: "approve",
+  });
   const { data: isMintableReward } = useStarknetCall({
     contract: dailyBonusContract,
     method: "check_reward",
@@ -25,7 +32,7 @@ const Index: FC = () => {
   });
   const { invoke: getReward } = useStarknetInvoke({
     contract: dailyBonusContract,
-    method: "get_reward",
+    method: "get_reward_with_fee",
   });
 
   return (
@@ -36,10 +43,14 @@ const Index: FC = () => {
         disabled={!feltToNum(isMintableReward)}
         onClick={() => {
           if (!account) return;
-          getReward({ args: [numToFelt(account)] });
+          if (false) {
+            approve({ args: [numToFelt(DailyBonusContractAddress), [numToFelt(500), numToFelt(0)]] });
+          } else {
+            getReward({ args: [numToFelt(account)] });
+          }
         }}
       >
-        Daily Mint
+        Mint
       </Button>
       <Button
         w="24"

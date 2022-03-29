@@ -4,14 +4,14 @@ import { useContract, useStarknetInvoke } from "@starknet-react/core";
 import { Tr } from "~/components/common";
 import { craftAbi } from "~/abi";
 import { CraftContractAddress } from "~/constants";
-import { Receipe, ElapsedStakeTime } from "~/types";
+import { Recipe, ElapsedForgeTime } from "~/types";
 
-const Receipe: FC<{
-  receipe: Receipe;
+const Recipe: FC<{
+  recipe: Recipe;
   dailyMaterials: number[];
   craftMaterials: number[];
-  elapsedStakeTime: ElapsedStakeTime;
-}> = ({ receipe, dailyMaterials, craftMaterials, elapsedStakeTime, children }) => {
+  elapsedForgeTime: ElapsedForgeTime;
+}> = ({ recipe, dailyMaterials, craftMaterials, elapsedForgeTime, children }) => {
   const { contract: craftContract } = useContract({
     abi: craftAbi as Abi,
     address: CraftContractAddress,
@@ -19,13 +19,13 @@ const Receipe: FC<{
 
   const { invoke: craft } = useStarknetInvoke({
     contract: craftContract,
-    method: receipe.method,
+    method: recipe.method,
   });
 
   return (
     <Tr
       h="12"
-      {...(receipe.condition(dailyMaterials, craftMaterials, elapsedStakeTime)
+      {...(recipe.condition(dailyMaterials, craftMaterials, elapsedForgeTime)
         ? {
             cursor: "pointer",
             onClick: () => craft({ args: [] }),
@@ -41,4 +41,4 @@ const Receipe: FC<{
   );
 };
 
-export default Receipe;
+export default Recipe;
