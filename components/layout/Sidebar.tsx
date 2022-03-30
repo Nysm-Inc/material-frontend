@@ -28,14 +28,14 @@ const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
   const { data: allowance } = useStarknetCall({
     contract: erc20Contract,
     method: "allowance",
-    args: [numToFelt(account), numToFelt(DailyBonusContractAddress)],
+    args: account ? [numToFelt(account), numToFelt(DailyBonusContractAddress)] : [],
   });
   // @ts-ignore
   const isApproved = feltToNum(allowance?.remaining?.low) > 0;
   const { data: isMintableReward } = useStarknetCall({
     contract: dailyBonusContract,
     method: "check_reward",
-    args: [numToFelt(account)],
+    args: account ? [numToFelt(account)] : [],
   });
   const { invoke: getReward } = useStarknetInvoke({
     contract: dailyBonusContract,

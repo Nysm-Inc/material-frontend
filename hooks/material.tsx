@@ -20,7 +20,7 @@ export const usePrimitiveMaterials = (account: string): number[] => {
   const { data: fetchedPrimitiveMaterial } = useStarknetCall({
     contract: contract,
     method: "balance_of_batch",
-    args: [owners, tokenIDs],
+    args: account ? [owners, tokenIDs] : [],
   });
   // @ts-ignore
   const primitiveMaterials = fetchedPrimitiveMaterial?.res?.map((material) => feltToNum(material)) || [];
@@ -37,7 +37,7 @@ export const useCraftedeMaterials = (account: string): number[] => {
   const { data: fetchedCraftedMaterial } = useStarknetCall({
     contract: contract,
     method: "balance_of_batch",
-    args: [owners, tokenIDs],
+    args: account ? [owners, tokenIDs] : [],
   });
   // @ts-ignore
   const craftedMaterials = fetchedCraftedMaterial?.res?.map((material) => feltToNum(material)) || [];
@@ -54,7 +54,7 @@ export const useWrapPrimitiveMaterials = (account: string): number[] => {
   const { data: fetchedWrapPrimitiveMaterial } = useStarknetCall({
     contract: contract,
     method: "balance_of_batch",
-    args: [owners, tokenIDs],
+    args: account ? [owners, tokenIDs] : [],
   });
   // @ts-ignore
   const wrapPrimitiveMaterials = fetchedWrapPrimitiveMaterial?.res?.map((material) => feltToNum(material)) || [];
@@ -71,7 +71,7 @@ export const useWrapCraftedMaterials = (account: string): number[] => {
   const { data: fetchedWrapCraftedMaterial } = useStarknetCall({
     contract: contract,
     method: "balance_of_batch",
-    args: [owners, tokenIDs],
+    args: account ? [owners, tokenIDs] : [],
   });
   // @ts-ignore
   const wrapCraftedMaterials = fetchedWrapCraftedMaterial?.res?.map((material) => feltToNum(material)) || [];

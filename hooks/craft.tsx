@@ -17,7 +17,7 @@ export const useElapsedForgeTime = (account: string, method: Method): number => 
   const { data: elapsedForgeTime } = useStarknetCall({
     contract: craftContract,
     method: method,
-    args: [numToFelt(account)],
+    args: account ? [numToFelt(account)] : [],
   });
   return feltToNum(elapsedForgeTime);
 };

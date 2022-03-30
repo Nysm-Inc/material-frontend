@@ -18,7 +18,7 @@ const Index: FC = ({ children }) => {
   const { data } = useStarknetCall({
     contract: erc20Contract,
     method: "balanceOf",
-    args: [numToFelt(account)],
+    args: account ? [numToFelt(account)] : [],
   });
   // @ts-ignore
   const balance = feltToNum(data?.balance?.low);
