@@ -9,46 +9,67 @@ import { feltToNum, numToFelt } from "~/utils/cairo";
 import { AppContext } from "~/contexts";
 import { Button } from "~/components/common";
 
-const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
+const Index: FC = () => {
   const { account } = useContext(AppContext);
   const router = useRouter();
-  const { contract: erc20Contract } = useContract({
-    abi: erc20Abi as Abi,
-    address: ERC20ContractAddress,
-  });
+
+  // ------- daily -------
   const { contract: dailyBonusContract } = useContract({
     abi: dailyBonusAbi as Abi,
     address: DailyBonusContractAddress,
   });
-
-  const { invoke: approve } = useStarknetInvoke({
-    contract: erc20Contract,
-    method: "approve",
-  });
-  const { data: allowance } = useStarknetCall({
-    contract: erc20Contract,
-    method: "allowance",
-    args: account ? [numToFelt(account), numToFelt(DailyBonusContractAddress)] : [],
-  });
-  // @ts-ignore
-  const isApproved = feltToNum(allowance?.remaining?.low) > 0;
   const { data: isMintableReward } = useStarknetCall({
     contract: dailyBonusContract,
     method: "check_reward",
     args: account ? [numToFelt(account)] : [],
   });
+  const { data: dataLoginTime } = useStarknetCall({
+    contract: dailyBonusContract,
+    method: "get_login_time",
+    args: account ? [numToFelt(account)] : [],
+  });
+  // @ts-ignore
+  const loginTime = feltToNum(dataLoginTime?.last_login_time);
   const { invoke: getReward } = useStarknetInvoke({
     contract: dailyBonusContract,
     method: "get_reward_with_fee",
   });
+  const { invoke: getStarterKit } = useStarknetInvoke({
+    contract: dailyBonusContract,
+    method: "get_start_reward",
+  });
+
+  // ------- erc20 -------
+  const { contract: erc20Contract } = useContract({
+    abi: erc20Abi as Abi,
+    address: ERC20ContractAddress,
+  });
+  const { data: dataAllowance } = useStarknetCall({
+    contract: erc20Contract,
+    method: "allowance",
+    args: account ? [numToFelt(account), numToFelt(DailyBonusContractAddress)] : [],
+  });
+  // @ts-ignore
+  const allowance = feltToNum(dataAllowance?.remaining?.low);
+  const { data: dataBalance } = useStarknetCall({
+    contract: erc20Contract,
+    method: "balanceOf",
+    args: account ? [numToFelt(account)] : [],
+  });
+  // @ts-ignore
+  const balance = feltToNum(dataBalance?.balance?.low);
+  const { invoke: approve } = useStarknetInvoke({
+    contract: erc20Contract,
+    method: "approve",
+  });
 
   return (
     <VStack w="40" h="100%">
-      {isApproved ? (
+      {allowance > 0 ? (
         <Button
           w="24"
           bgColor="primary.100"
-          disabled={!feltToNum(isMintableReward) || nonBalance}
+          disabled={!feltToNum(isMintableReward) || (dataBalance && balance === 0)}
           onClick={() => {
             if (!account) return;
             getReward({ args: [numToFelt(account)] });
@@ -60,6 +81,7 @@ const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
         <Button
           w="24"
           bgColor="primary.100"
+          disabled={!dataAllowance}
           onClick={() => {
             if (!account) return;
             approve({ args: [numToFelt(DailyBonusContractAddress), [numToFelt(500), numToFelt(0)]] });
@@ -108,6 +130,20 @@ const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
       >
         Voyager
       </Button>
+      {dataLoginTime && loginTime === 0 ? (
+        <Button
+          w="24"
+          bgColor="primary.100"
+          onClick={() => {
+            if (!account) return;
+            getStarterKit({ args: [numToFelt(account)] });
+          }}
+        >
+          StarterKit
+        </Button>
+      ) : (
+        <></>
+      )}
     </VStack>
   );
 };

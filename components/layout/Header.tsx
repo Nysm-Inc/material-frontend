@@ -2,22 +2,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useContext } from "react";
 import { Abi } from "starknet";
-import { useContract, useStarknetInvoke } from "@starknet-react/core";
-import { Box, Center, Flex, HStack } from "@chakra-ui/react";
+import { useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
+import { Center, Flex } from "@chakra-ui/react";
 import WalletStarknet from "~/components/wallet/Starknet";
-import { Button, Text } from "~/components/common";
-import { Meta, MetaWide } from "~/public";
+import { Button } from "~/components/common";
+import { MetaWide } from "~/public";
 import { erc20Abi } from "~/abi";
 import { ERC20ContractAddress } from "~/constants";
-import { numToFelt } from "~/utils/cairo";
+import { feltToNum, numToFelt } from "~/utils/cairo";
 import { AppContext } from "~/contexts";
 
-const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
+const Index: FC = () => {
   const { account } = useContext(AppContext);
   const { contract } = useContract({
     abi: erc20Abi as Abi,
     address: ERC20ContractAddress,
   });
+  const { data: dataBalance } = useStarknetCall({
+    contract: contract,
+    method: "balanceOf",
+    args: account ? [numToFelt(account)] : [],
+  });
+  // @ts-ignore
+  const balance = feltToNum(dataBalance?.balance?.low);
+
   const { invoke: mint } = useStarknetInvoke({
     contract: contract,
     method: "mint",
@@ -27,17 +35,11 @@ const Index: FC<{ nonBalance: boolean }> = ({ nonBalance }) => {
     <Flex w="100%" h="20" justify="space-between" align="center" pl="6" pr="6">
       <Link href="/" passHref>
         <Center cursor="pointer">
-          {/* <HStack>
-            <Center>
-              <Image width="40px" height="40px" src={Meta} />
-            </Center>
-            <Text fontSize="2xl">Meta | Materials</Text>
-          </HStack> */}
           <Image width="168px" height="40px" src={MetaWide} />
         </Center>
       </Link>
 
-      {nonBalance ? (
+      {dataBalance && balance === 0 ? (
         <Button
           bgColor="primary.100"
           onClick={() => {
