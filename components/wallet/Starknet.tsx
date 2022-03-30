@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Text } from "@chakra-ui/react";
 import { Argent } from "~/public";
 import { AppContext } from "~/contexts";
@@ -9,6 +9,7 @@ import { Button } from "~/components/common";
 const WalletStarknet = () => {
   const { account, setAccount } = useContext(AppContext);
   const { account: starknetAccount, connect } = useStarknet();
+  const [reflesh, setReflesh] = useState(false);
 
   useEffect(() => {
     if (!starknetAccount) {
@@ -16,7 +17,11 @@ const WalletStarknet = () => {
     } else {
       setAccount(starknetAccount);
     }
-  }, [starknetAccount, connect, setAccount]);
+  }, [starknetAccount, connect, setAccount, reflesh]);
+
+  useEffect(() => {
+    setTimeout(() => setReflesh(true), 1000);
+  }, []);
 
   return (
     <>
