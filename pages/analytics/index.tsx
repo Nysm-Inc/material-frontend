@@ -77,7 +77,6 @@ const Index: NextPage = () => {
           theme.colors.yellow[100],
           theme.colors.yellow[100],
         ],
-        borderWidth: 1,
       },
     ],
   };
