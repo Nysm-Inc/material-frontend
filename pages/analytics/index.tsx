@@ -147,22 +147,9 @@ const Index: NextPage = () => {
 
   return (
     <Flex w="100%" h="100%" pr="24" justify="center" align="center" direction="column">
-      <Text fontSize="2xl">Material Analytics</Text>
+      <Text fontSize="3xl">Material Analytics</Text>
       <Box h="2" />
       <Switch chartType={chartType} switchChartType={(chartType: ChartType) => setChartType(chartType)} />
-      <Box h="2" />
-      <HStack>
-        <Flex align="center">
-          <Box w="8" h="3" bgColor="green.100" />
-          <Spacer w="1" />
-          <Text>Primitive Material</Text>
-        </Flex>
-        <Flex align="center">
-          <Box w="8" h="3" bgColor="yellow.100" />
-          <Spacer w="1" />
-          <Text>Crafted Material</Text>
-        </Flex>
-      </HStack>
       <Box h="12" />
       <Center w="4xl" h="md">
         {
@@ -172,6 +159,20 @@ const Index: NextPage = () => {
           }[chartType]
         }
       </Center>
+      <Box h="2" />
+      <HStack>
+        <Flex align="center">
+          <Box w="8" h="3" bgColor="green.100" />
+          <Spacer w="1" />
+          <Text>Primitive Material</Text>
+        </Flex>
+        <Box w="1" />
+        <Flex align="center">
+          <Box w="8" h="3" bgColor="yellow.100" />
+          <Spacer w="1" />
+          <Text>Crafted Material</Text>
+        </Flex>
+      </HStack>
     </Flex>
   );
 };
