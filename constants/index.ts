@@ -11,3 +11,5 @@ export const WrapContractAddress = "0x04ba7e0f88e37fbf8ce11e7c038fbaa57f3ea2decf
 export const starknetFeederGateway = "https://alpha4.starknet.io/feeder_gateway/call_contract?blockId=null";
 export const voyagerGoerliURL = "https://goerli.voyager.online";
 export const philandURL = "https://philand.xyz";
+
+export const GA_ID = "G-3SHYS8M47R";
