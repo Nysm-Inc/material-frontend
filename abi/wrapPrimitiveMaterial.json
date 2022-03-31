@@ -19,16 +19,8 @@
   {
     "inputs": [
       {
-        "name": "token_id",
+        "name": "owner",
         "type": "felt"
-      },
-      {
-        "name": "token_uri_len",
-        "type": "felt"
-      },
-      {
-        "name": "token_uri",
-        "type": "felt*"
       }
     ],
     "name": "constructor",
@@ -326,6 +318,29 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getOwner",
+    "outputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "next_owner",
+        "type": "felt"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
     "type": "function"
   },
   {

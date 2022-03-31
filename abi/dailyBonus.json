@@ -279,6 +279,31 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "name": "input",
+        "type": "Uint256"
+      },
+      {
+        "name": "min",
+        "type": "Uint256"
+      },
+      {
+        "name": "max",
+        "type": "Uint256"
+      }
+    ],
+    "name": "random",
+    "outputs": [
+      {
+        "name": "out",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "primitive_material_address",
     "outputs": [

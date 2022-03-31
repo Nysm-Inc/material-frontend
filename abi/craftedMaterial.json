@@ -19,16 +19,8 @@
   {
     "inputs": [
       {
-        "name": "token_id",
+        "name": "owner",
         "type": "felt"
-      },
-      {
-        "name": "token_uri_len",
-        "type": "felt"
-      },
-      {
-        "name": "token_uri",
-        "type": "felt*"
       }
     ],
     "name": "constructor",
@@ -330,6 +322,29 @@
   },
   {
     "inputs": [],
+    "name": "getOwner",
+    "outputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "next_owner",
+        "type": "felt"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "ERC1155_Enumerable_totalSupply",
     "outputs": [
       {
@@ -360,6 +375,31 @@
   {
     "inputs": [
       {
+        "name": "tokens_id_len",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id",
+        "type": "Uint256*"
+      }
+    ],
+    "name": "ERC1155_Enumerable_token_totalSupply_batch",
+    "outputs": [
+      {
+        "name": "res_len",
+        "type": "felt"
+      },
+      {
+        "name": "res",
+        "type": "felt*"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "name": "token_id",
         "type": "Uint256"
       }
@@ -369,6 +409,31 @@
       {
         "name": "tokenBurn",
         "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "tokens_id_len",
+        "type": "felt"
+      },
+      {
+        "name": "tokens_id",
+        "type": "Uint256*"
+      }
+    ],
+    "name": "ERC1155_Enumerable_token_burnCounter_batch",
+    "outputs": [
+      {
+        "name": "res_len",
+        "type": "felt"
+      },
+      {
+        "name": "res",
+        "type": "felt*"
       }
     ],
     "stateMutability": "view",

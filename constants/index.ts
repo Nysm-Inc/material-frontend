@@ -1,12 +1,12 @@
-export const ERC20ContractAddress = "0x0547c77da0634db9fbb7ab128dfb9305c422915165c30326ab2fec27bd322691";
-export const CraftedMaterialContractAddress = "0x062120edeb6a85ea903cf5507bac94f27bc7ef3ea8aceced1770ca3516e97390";
-export const PrimitiveMaterialContractAddress = "0x03e1b6813f8ca857857f8bc262588eea540183ba13b826846aae0d2c60c87d2e";
+export const ERC20ContractAddress = "0x041a541c6f1c375b7c43b25d7a1f034d568ac49b9eef09c076d80ea561628c3f";
+export const CraftedMaterialContractAddress = "0x03c2bcded6acfbd846e370bcc1f1a1696961611d08be0e50fd438d6f9403faed";
+export const PrimitiveMaterialContractAddress = "0x019aef9c1e0623894f81e8f29118d09b7e3f10b05cb803ef781eebba574959cb";
 export const WrapPrimitiveMaterialContractAddress =
-  "0x071d8da7a18b46e8e9a819c4c9990a0c5c7f26ecf577607ace629f387a980242";
-export const WrapCraftedMaterialContractAddress = "0x03c41a9cf2c8aa1af874db7fb00aed431eb1545d9591b643d86c0d54c2cd935b";
-export const CraftContractAddress = "0x05724f07f8078282efcae758a4744df6be4f79f3e6794df0f9337f8248b37a70";
-export const DailyBonusContractAddress = "0x02ac03f8012cc5a761246fe645a34c9a7d3f7ac897f40b0feeaeff99aeb7afb1";
-export const WrapContractAddress = "0x04ba7e0f88e37fbf8ce11e7c038fbaa57f3ea2decf884c80a9989b8675549999";
+  "0x04fcaf34d34b9236ead6bfc4dd2a4f85ae7aac2044b2b1e67fea33ec694ef9e6";
+export const WrapCraftedMaterialContractAddress = "0x0258df41b8cf5177af48cd5758d08c28ce8e0ba030c874d96ddc2e89e97f16a3";
+export const CraftContractAddress = "0x05f00a8e6e30cedfdf7876b8442a7873e519f1da6280131791658c57280559b7";
+export const DailyBonusContractAddress = "0x066a52f986b9554531854f4cbf21f047d56b753ae824ee02e5f542638142a4ad";
+export const WrapContractAddress = "0x01a4a0fa1bda167666eb8abb10adf4892531a2ce444e3cbf9de7351d1653a28a";
 
 export const starknetFeederGateway = "https://alpha4.starknet.io/feeder_gateway/call_contract?blockId=null";
 export const voyagerGoerliURL = "https://goerli.voyager.online";
