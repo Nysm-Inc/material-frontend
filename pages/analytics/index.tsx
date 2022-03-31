@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
+import { useState, VFC } from "react";
 import { Box, Center, Flex, HStack, Spacer, useTheme } from "@chakra-ui/react";
 import "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import BeatLoader from "react-spinners/BeatLoader";
 import { Text } from "~/components/common";
+import Switch, { ChartType } from "~/components/analytics/Switch";
 import { craftedMaterialList, primitiveMaterialList } from "~/types";
 import {
   useCraftedMaterialBurned,
@@ -37,13 +39,10 @@ const options = {
   },
 };
 
-const Index: NextPage = () => {
+const Supply: VFC = () => {
   const theme = useTheme();
   const { data: primitiveSupply, loading: loadingPrimitiveSupply } = usePrimitiveMaterialSupply();
   const { data: craftedSupply, loading: loadingCraftedSupply } = useCraftedMaterialSupply();
-  // const { data: primitiveBurned, loading: loadingPrimitiveBurned } = usePrimitiveMaterialBurned();
-  // const { data: craftedBurned, loading: loadingCraftedBurned } = useCraftedMaterialBurned();
-
   const data = {
     labels: [...primitiveMaterialList, ...craftedMaterialList],
     datasets: [
@@ -80,10 +79,77 @@ const Index: NextPage = () => {
       },
     ],
   };
+  return (
+    <>
+      {!loadingPrimitiveSupply && !loadingCraftedSupply ? (
+        <Bar options={options} data={data} />
+      ) : (
+        <BeatLoader color={theme.colors.gray[100]} size={12} />
+      )}
+    </>
+  );
+};
+
+const Burn: VFC = () => {
+  const theme = useTheme();
+  const { data: primitiveBurned, loading: loadingPrimitiveBurned } = usePrimitiveMaterialBurned();
+  const { data: craftedBurned, loading: loadingCraftedBurned } = useCraftedMaterialBurned();
+
+  const data = {
+    labels: [...primitiveMaterialList, ...craftedMaterialList],
+    datasets: [
+      {
+        label: "Total Burn",
+        data: [
+          primitiveBurned[0],
+          primitiveBurned[2],
+          primitiveBurned[4],
+          primitiveBurned[6],
+          craftedBurned[0],
+          craftedBurned[2],
+          craftedBurned[4],
+          craftedBurned[6],
+          craftedBurned[8],
+          craftedBurned[10],
+          craftedBurned[12],
+          craftedBurned[14],
+        ],
+        backgroundColor: [
+          theme.colors.green[100],
+          theme.colors.green[100],
+          theme.colors.green[100],
+          theme.colors.green[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+          theme.colors.yellow[100],
+        ],
+      },
+    ],
+  };
+  return (
+    <>
+      {!loadingPrimitiveBurned && !loadingCraftedBurned ? (
+        <Bar options={options} data={data} />
+      ) : (
+        <BeatLoader color={theme.colors.gray[100]} size={12} />
+      )}
+    </>
+  );
+};
+
+const Index: NextPage = () => {
+  const [chartType, setChartType] = useState<ChartType>("supply");
 
   return (
     <Flex w="100%" h="100%" pr="24" justify="center" align="center" direction="column">
-      <Text fontSize="2xl">Material Total Supply</Text>
+      <Text fontSize="2xl">Material Analytics</Text>
+      <Box h="2" />
+      <Switch chartType={chartType} switchChartType={(chartType: ChartType) => setChartType(chartType)} />
       <Box h="2" />
       <HStack>
         <Flex align="center">
@@ -97,13 +163,14 @@ const Index: NextPage = () => {
           <Text>Crafted Material</Text>
         </Flex>
       </HStack>
-      <Box h="16" />
+      <Box h="12" />
       <Center w="4xl" h="md">
-        {!loadingPrimitiveSupply && !loadingCraftedSupply ? (
-          <Bar options={options} data={data} />
-        ) : (
-          <BeatLoader color={theme.colors.gray[100]} size={12} />
-        )}
+        {
+          {
+            supply: <Supply />,
+            burned: <Burn />,
+          }[chartType]
+        }
       </Center>
     </Flex>
   );
