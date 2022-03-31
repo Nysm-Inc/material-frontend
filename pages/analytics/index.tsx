@@ -5,7 +5,12 @@ import { Bar } from "react-chartjs-2";
 import BeatLoader from "react-spinners/BeatLoader";
 import { Text } from "~/components/common";
 import { craftedMaterialList, primitiveMaterialList } from "~/types";
-import { useCraftedMaterialSupply, usePrimitiveMaterialSupply } from "~/hooks/analytics";
+import {
+  useCraftedMaterialBurned,
+  useCraftedMaterialSupply,
+  usePrimitiveMaterialBurned,
+  usePrimitiveMaterialSupply,
+} from "~/hooks/analytics";
 
 const options = {
   responsive: true,
@@ -36,6 +41,8 @@ const Index: NextPage = () => {
   const theme = useTheme();
   const { data: primitiveSupply, loading: loadingPrimitiveSupply } = usePrimitiveMaterialSupply();
   const { data: craftedSupply, loading: loadingCraftedSupply } = useCraftedMaterialSupply();
+  // const { data: primitiveBurned, loading: loadingPrimitiveBurned } = usePrimitiveMaterialBurned();
+  // const { data: craftedBurned, loading: loadingCraftedBurned } = useCraftedMaterialBurned();
 
   const data = {
     labels: [...primitiveMaterialList, ...craftedMaterialList],
