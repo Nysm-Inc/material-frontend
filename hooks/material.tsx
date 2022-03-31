@@ -66,8 +66,8 @@ export const useWrapCraftedMaterials = (account: string): number[] => {
     abi: wrapCraftedMaterialAbi as Abi,
     address: WrapCraftedMaterialContractAddress,
   });
-  const owners = Object.keys(primitiveMaterialList).map(() => numToFelt(account));
-  const tokenIDs = Object.keys(primitiveMaterialList).map((_, i) => [numToFelt(i), numToFelt(0)]);
+  const owners = Object.keys(craftedMaterialList).map(() => numToFelt(account));
+  const tokenIDs = Object.keys(craftedMaterialList).map((_, i) => [numToFelt(i), numToFelt(0)]);
   const { data: fetchedWrapCraftedMaterial } = useStarknetCall({
     contract: contract,
     method: "balance_of_batch",
