@@ -34,18 +34,8 @@ const options = {
 
 const Index: NextPage = () => {
   const theme = useTheme();
-  const primitive0supply = usePrimitiveMaterialSupply(0);
-  const primitive1supply = usePrimitiveMaterialSupply(1);
-  const primitive2supply = usePrimitiveMaterialSupply(2);
-  const primitive3supply = usePrimitiveMaterialSupply(3);
-  const crafted0supply = useCraftedMaterialSupply(0);
-  const crafted1supply = useCraftedMaterialSupply(1);
-  const crafted2supply = useCraftedMaterialSupply(2);
-  const crafted3supply = useCraftedMaterialSupply(3);
-  const crafted4supply = useCraftedMaterialSupply(4);
-  const crafted5supply = useCraftedMaterialSupply(5);
-  const crafted6supply = useCraftedMaterialSupply(6);
-  const crafted7supply = useCraftedMaterialSupply(7);
+  const { data: primitiveSupply, loading: loadingPrimitiveSupply } = usePrimitiveMaterialSupply();
+  const { data: craftedSupply, loading: loadingCraftedSupply } = useCraftedMaterialSupply();
 
   const data = {
     labels: [...primitiveMaterialList, ...craftedMaterialList],
@@ -53,18 +43,18 @@ const Index: NextPage = () => {
       {
         label: "Total Supply",
         data: [
-          primitive0supply,
-          primitive1supply,
-          primitive2supply,
-          primitive3supply,
-          crafted0supply,
-          crafted1supply,
-          crafted2supply,
-          crafted3supply,
-          crafted4supply,
-          crafted5supply,
-          crafted6supply,
-          crafted7supply,
+          primitiveSupply[0],
+          primitiveSupply[2],
+          primitiveSupply[4],
+          primitiveSupply[6],
+          craftedSupply[0],
+          craftedSupply[2],
+          craftedSupply[4],
+          craftedSupply[6],
+          craftedSupply[8],
+          craftedSupply[10],
+          craftedSupply[12],
+          craftedSupply[14],
         ],
         backgroundColor: [
           theme.colors.green[100],
@@ -103,7 +93,7 @@ const Index: NextPage = () => {
       </HStack>
       <Box h="16" />
       <Center w="4xl" h="md">
-        {primitive0supply ? (
+        {!loadingPrimitiveSupply && !loadingCraftedSupply ? (
           <Bar options={options} data={data} />
         ) : (
           <BeatLoader color={theme.colors.gray[100]} size={12} />
