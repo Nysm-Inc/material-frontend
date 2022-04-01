@@ -4,7 +4,7 @@ import { Text, VStack, Flex } from "@chakra-ui/react";
 import { AppContext } from "~/contexts";
 import { craftedMaterialList, primitiveMaterialList, recipes, ElapsedForgeTime } from "~/types";
 import Recipe from "~/components/craft/Recipe";
-import { Table, Thead, Tbody, Tr, Th, Td, Button } from "~/components/common";
+import { Table, Thead, Tbody, Tr, Th, Td } from "~/components/common";
 import { useCraftedeMaterials, usePrimitiveMaterials } from "~/hooks/material";
 import { useElapsedForgeTime } from "~/hooks/craft";
 
@@ -39,30 +39,7 @@ const Index: NextPage = () => {
           </Thead>
           <Tbody>
             {recipes.map((recipe, i) => (
-              <Recipe
-                key={i}
-                recipe={recipe}
-                primitiveMaterials={primitiveMaterials}
-                craftedMaterials={craftedMaterials}
-                elapsedForgeTime={elapsedForgeTime}
-              >
-                <Td>{recipe.name}</Td>
-                <Td>{recipe.recipe}</Td>
-                <Td>{recipe.note}</Td>
-                <Td>
-                  <Button
-                    size="xs"
-                    fontSize="xs"
-                    borderRadius="full"
-                    variant="solid"
-                    color="white"
-                    bgColor="primary.100"
-                    disabled={!recipe.condition(primitiveMaterials, craftedMaterials, elapsedForgeTime)}
-                  >
-                    Craft
-                  </Button>
-                </Td>
-              </Recipe>
+              <Recipe key={i} recipe={recipe({ primitiveMaterials, craftedMaterials, elapsedForgeTime })} />
             ))}
           </Tbody>
         </Table>

@@ -1,17 +1,12 @@
-import { FC } from "react";
+import { VFC } from "react";
 import { Abi } from "starknet";
 import { useContract, useStarknetInvoke } from "@starknet-react/core";
-import { Tr } from "~/components/common";
+import { Button, Tr, Td } from "~/components/common";
 import { craftAbi } from "~/abi";
 import { CraftContractAddress } from "~/constants";
-import { Recipe, ElapsedForgeTime } from "~/types";
+import { Recipe } from "~/types";
 
-const Recipe: FC<{
-  recipe: Recipe;
-  primitiveMaterials: number[];
-  craftedMaterials: number[];
-  elapsedForgeTime: ElapsedForgeTime;
-}> = ({ recipe, primitiveMaterials, craftedMaterials, elapsedForgeTime, children }) => {
+const Recipe: VFC<{ recipe: Recipe }> = ({ recipe }) => {
   const { contract: craftContract } = useContract({
     abi: craftAbi as Abi,
     address: CraftContractAddress,
@@ -24,7 +19,7 @@ const Recipe: FC<{
   return (
     <Tr
       h="12"
-      {...(recipe.condition(primitiveMaterials, craftedMaterials, elapsedForgeTime)
+      {...(recipe.condition
         ? {
             cursor: "pointer",
             onClick: () => crafted({ args: [] }),
@@ -35,7 +30,22 @@ const Recipe: FC<{
             color: "whiteAlpha.600",
           })}
     >
-      {children}
+      <Td>{recipe.name}</Td>
+      <Td>{recipe.recipe}</Td>
+      <Td>{recipe.note}</Td>
+      <Td>
+        <Button
+          size="xs"
+          fontSize="xs"
+          borderRadius="full"
+          variant="solid"
+          color="white"
+          bgColor="primary.100"
+          disabled={!recipe.condition}
+        >
+          {recipe.type}
+        </Button>
+      </Td>
     </Tr>
   );
 };
