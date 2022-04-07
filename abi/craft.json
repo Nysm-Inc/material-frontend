@@ -1,5 +1,22 @@
 [
   {
+    "members": [
+      {
+        "name": "low",
+        "offset": 0,
+        "type": "felt"
+      },
+      {
+        "name": "high",
+        "offset": 1,
+        "type": "felt"
+      }
+    ],
+    "name": "Uint256",
+    "size": 2,
+    "type": "struct"
+  },
+  {
     "inputs": [
       {
         "name": "primitive_material_address",
@@ -81,6 +98,42 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "craft_soil_2_redtile",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "craft_oil_2_bluetile",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "craft_seed_2_greentile",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "craft_iron_2_yeloowtile",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "craft_soil_2_blacktile",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "craft_oil_2_whitetile",
+    "outputs": [],
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "name": "sender_address",
@@ -126,6 +179,18 @@
       {
         "name": "elapsed_time",
         "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "Craft_Enumerable_Counter",
+    "outputs": [
+      {
+        "name": "total",
+        "type": "Uint256"
       }
     ],
     "stateMutability": "view",

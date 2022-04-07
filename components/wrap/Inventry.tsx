@@ -56,7 +56,9 @@ const Inventry: FC<{
             <Td>{materials[id] || 0}</Td>
             <Td>
               <AddCart
-                readonly={readonly}
+                // todo
+                // readonly={readonly}
+                readonly={readonly || (materialType === "crafted" && [2, 3].includes(id))}
                 num={cart[wrapType][materialType][id]}
                 balance={materials[id]}
                 handleClickPlus={() => addCart(id)}

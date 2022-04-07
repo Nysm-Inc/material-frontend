@@ -9,6 +9,12 @@ import {
   PhiSeed,
   PhiSoil,
   PhiSteel,
+  PhiTileRed,
+  PhiTileBlue,
+  PhiTileGreen,
+  PhiTileYellow,
+  PhiTileBlack,
+  PhiTileWhite,
 } from "~/public";
 
 export const primitiveMaterialList = ["Soil", "Oil", "Seed", "Iron"];
@@ -22,6 +28,12 @@ export const craftedMaterialList = [
   "Plastic",
   "Computer",
   "ElectronicsStore",
+  "RedTile",
+  "BlueTile",
+  "GreenTile",
+  "YellowTile",
+  "BlackTile",
+  "WhiteTile",
 ];
 
 export type CraftMethod =
@@ -35,7 +47,13 @@ export type CraftMethod =
   | "forge_oil_2_plastic"
   | "craft_oil_2_plastic"
   | "craft_plasticAndSteel_2_computer"
-  | "craft_computer_2_electronicsStore";
+  | "craft_computer_2_electronicsStore"
+  | "craft_soil_2_redtile"
+  | "craft_oil_2_bluetile"
+  | "craft_seed_2_greentile"
+  | "craft_iron_2_yeloowtile"
+  | "craft_soil_2_blacktile"
+  | "craft_oil_2_whitetile";
 
 export type ElapsedForgeTime = {
   soilAndWood: number;
@@ -171,6 +189,66 @@ export const recipes: ((args: RecipeArgs) => Recipe)[] = [
       condition: craftedMaterials[6] >= 4,
     };
   },
+  ({ primitiveMaterials }: RecipeArgs): Recipe => {
+    return {
+      name: "RedTile",
+      recipe: "1 Soil",
+      note: "",
+      method: "craft_soil_2_redtile",
+      type: "craft",
+      condition: primitiveMaterials[0] >= 1,
+    };
+  },
+  ({ primitiveMaterials }: RecipeArgs): Recipe => {
+    return {
+      name: "BlueTile",
+      recipe: "1 Oil",
+      note: "",
+      method: "craft_oil_2_bluetile",
+      type: "craft",
+      condition: primitiveMaterials[1] >= 1,
+    };
+  },
+  ({ primitiveMaterials }: RecipeArgs): Recipe => {
+    return {
+      name: "GreenTile",
+      recipe: "1 Seed",
+      note: "",
+      method: "craft_seed_2_greentile",
+      type: "craft",
+      condition: primitiveMaterials[2] >= 1,
+    };
+  },
+  ({ primitiveMaterials }: RecipeArgs): Recipe => {
+    return {
+      name: "YellowTile",
+      recipe: "1 Iron",
+      note: "",
+      method: "craft_iron_2_yeloowtile",
+      type: "craft",
+      condition: primitiveMaterials[3] >= 1,
+    };
+  },
+  ({ primitiveMaterials }: RecipeArgs): Recipe => {
+    return {
+      name: "BlackTile",
+      recipe: "1 Soil",
+      note: "",
+      method: "craft_soil_2_blacktile",
+      type: "craft",
+      condition: primitiveMaterials[0] >= 1,
+    };
+  },
+  ({ primitiveMaterials }: RecipeArgs): Recipe => {
+    return {
+      name: "WhiteTile",
+      recipe: "1 Oil",
+      note: "",
+      method: "craft_oil_2_whitetile",
+      type: "craft",
+      condition: primitiveMaterials[1] >= 1,
+    };
+  },
 ];
 
 export type WrapType = "wrap" | "unwrap";
@@ -183,5 +261,20 @@ export type Cart = {
 
 export const PhiImages: { primitive: StaticImageData[]; crafted: (StaticImageData | null)[] } = {
   primitive: [PhiSoil, PhiOil, PhiSeed, PhiIron],
-  crafted: [PhiBrick, PhiBrickHouse, null, null, PhiSteel, PhiPla, PhiComputer, PhiDenki],
+  crafted: [
+    PhiBrick,
+    PhiBrickHouse,
+    null,
+    null,
+    PhiSteel,
+    PhiPla,
+    PhiComputer,
+    PhiDenki,
+    PhiTileRed,
+    PhiTileBlue,
+    PhiTileGreen,
+    PhiTileYellow,
+    PhiTileBlack,
+    PhiTileWhite,
+  ],
 };

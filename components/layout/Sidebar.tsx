@@ -120,7 +120,7 @@ const Index: FC = () => {
       >
         Analytics
       </Button>
-      <Button
+      {/* <Button
         w="24"
         {...(router.pathname === "/voyager" && {
           bgColor: "gray.800",
@@ -129,7 +129,7 @@ const Index: FC = () => {
         onClick={() => router.push("/voyager", undefined, { shallow: true })}
       >
         Voyager
-      </Button>
+      </Button> */}
       {dataLoginTime && loginTime === 0 ? (
         <Button
           w="24"

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import {
-  Box,
+  TableContainer as ChakraTableContainer,
   Table as ChakraTable,
   Thead as ChakraThead,
   Tbody as ChakraTbody,
@@ -16,11 +16,18 @@ import {
 } from "@chakra-ui/react";
 
 const Table: FC<TableProps> = (props) => (
-  <Box border="1px solid" borderColor="gray.500" borderRadius="md">
+  <ChakraTableContainer
+    maxWidth="xl"
+    maxHeight="xl"
+    overflowY="scroll"
+    border="1px solid"
+    borderColor="gray.500"
+    borderRadius="md"
+  >
     <ChakraTable variant="simple" size="sm" borderColor="gray.500" {...props}>
       {props.children}
     </ChakraTable>
-  </Box>
+  </ChakraTableContainer>
 );
 
 const Thead: FC<TableHeadProps> = (props) => (

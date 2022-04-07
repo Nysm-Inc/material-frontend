@@ -6,9 +6,25 @@ import { MaterialType } from "~/types";
 // todo
 const percel1 = [97, 49, 1.5];
 const percel2 = [97, 121, 1.2];
+const percel3 = [96, 96, 1.0];
 const sizes = {
   primitive: [percel1, percel1, percel1, percel1],
-  crafted: [percel1, percel2, percel1, percel1, percel1, percel1, percel2, percel2],
+  crafted: [
+    percel1,
+    percel2,
+    percel1,
+    percel1,
+    percel1,
+    percel1,
+    percel2,
+    percel2,
+    percel3,
+    percel3,
+    percel3,
+    percel3,
+    percel3,
+    percel3,
+  ],
 };
 
 const MaterialToolTip: FC<{ _materialType: MaterialType; _id: number; _image: StaticImageData } & TooltipProps> = (
