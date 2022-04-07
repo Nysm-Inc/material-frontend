@@ -8,8 +8,9 @@ export const CraftContractAddress = "0x04ed537883a1dd340d2ad6ac504db6a7dbff7d69b
 export const DailyBonusContractAddress = "0x00048940f8c2e043e9f78b28e7ef153b18dbd224e6f985fc67374b9f93473b1d";
 export const WrapContractAddress = "0x01f4eb19a9f73e8a5a5eea145a61dc73fc565c16dab9c3bae0f2aeafac3f67e9";
 
-export const starknetFeederGateway = "https://alpha4.starknet.io/feeder_gateway/call_contract?blockId=null";
 export const voyagerGoerliURL = "https://goerli.voyager.online";
 export const philandURL = "https://philand.xyz";
 
 export const GA_ID = "G-3SHYS8M47R";
+export const twitterURL = "https://twitter.com/material_meta";
+export const discordURL = "https://discord.gg/6Bd5jp5uJr";

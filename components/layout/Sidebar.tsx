@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { FC, useContext } from "react";
-import { VStack } from "@chakra-ui/react";
+import { Flex, Link, VStack } from "@chakra-ui/react";
 import { useContract, useStarknetCall, useStarknetInvoke } from "@starknet-react/core";
 import { dailyBonusAbi, erc20Abi } from "~/abi";
 import { Abi } from "starknet";
-import { DailyBonusContractAddress, ERC20ContractAddress } from "~/constants";
+import { DailyBonusContractAddress, discordURL, ERC20ContractAddress, twitterURL } from "~/constants";
+import { Discord, Twitter } from "~/public";
 import { feltToNum, numToFelt } from "~/utils/cairo";
 import { AppContext } from "~/contexts";
 import { Button } from "~/components/common";
@@ -64,7 +66,7 @@ const Index: FC = () => {
   });
 
   return (
-    <VStack w="40" h="100%">
+    <VStack w="40" h="100%" position="relative">
       {allowance > 0 ? (
         <Button
           w="24"
@@ -144,6 +146,16 @@ const Index: FC = () => {
       ) : (
         <></>
       )}
+      <VStack position="absolute" w="100%" bottom="4">
+        <Flex w="100%" justifyContent="space-evenly">
+          <Link href={twitterURL} isExternal>
+            <Image width="20px" height="20px" src={Twitter} />
+          </Link>
+          <Link href={discordURL} isExternal>
+            <Image width="20px" height="20px" src={Discord} />
+          </Link>
+        </Flex>
+      </VStack>
     </VStack>
   );
 };

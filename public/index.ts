@@ -1,5 +1,6 @@
 import Argent from "./argent.svg";
-import Github from "./github.png";
+import Discord from "./discord.svg";
+import Twitter from "./twitter.svg";
 import Meta from "./meta.png";
 import MetaBlack from "./meta_black.png";
 import MetaWide from "./meta_wide.png";
@@ -24,7 +25,8 @@ import PhiTileWhite from "./phi_objects/White Tile.png";
 
 export {
   Argent,
-  Github,
+  Discord,
+  Twitter,
   Meta,
   MetaWide,
   MetaBlack,
