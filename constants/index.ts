@@ -14,3 +14,4 @@ export const philandURL = "https://philand.xyz";
 export const GA_ID = "G-3SHYS8M47R";
 export const twitterURL = "https://twitter.com/material_meta";
 export const discordURL = "https://discord.gg/6Bd5jp5uJr";
+export const frontendURL = "https://goerli.metamaterial.app";
