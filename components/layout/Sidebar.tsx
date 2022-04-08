@@ -67,29 +67,52 @@ const Index: FC = () => {
 
   return (
     <VStack w="40" h="100%" position="relative">
-      {allowance > 0 ? (
-        <Button
-          w="24"
-          bgColor="primary.100"
-          disabled={!feltToNum(isMintableReward) || (dataBalance && balance === 0)}
-          onClick={() => {
-            if (!account) return;
-            getReward({ args: [numToFelt(account)] });
-          }}
-        >
-          Mint
-        </Button>
+      {dataAllowance && dataBalance && dataLoginTime ? (
+        <>
+          {loginTime === 0 ? (
+            <Button
+              w="24"
+              bgColor="primary.100"
+              onClick={() => {
+                if (!account) return;
+                getStarterKit({ args: [numToFelt(account)] });
+              }}
+            >
+              StarterKit
+            </Button>
+          ) : (
+            <>
+              {allowance > 0 ? (
+                <Button
+                  w="24"
+                  bgColor="primary.100"
+                  disabled={!feltToNum(isMintableReward) || balance === 0}
+                  onClick={() => {
+                    if (!account) return;
+                    getReward({ args: [numToFelt(account)] });
+                  }}
+                >
+                  Mint
+                </Button>
+              ) : (
+                <Button
+                  w="24"
+                  bgColor="primary.100"
+                  disabled={!dataAllowance}
+                  onClick={() => {
+                    if (!account) return;
+                    approve({ args: [numToFelt(DailyBonusContractAddress), [numToFelt(500), numToFelt(0)]] });
+                  }}
+                >
+                  Approve
+                </Button>
+              )}
+            </>
+          )}
+        </>
       ) : (
-        <Button
-          w="24"
-          bgColor="primary.100"
-          disabled={!dataAllowance}
-          onClick={() => {
-            if (!account) return;
-            approve({ args: [numToFelt(DailyBonusContractAddress), [numToFelt(500), numToFelt(0)]] });
-          }}
-        >
-          Approve
+        <Button w="24" bgColor="primary.100" disabled>
+          Mint
         </Button>
       )}
       <Button
@@ -132,20 +155,6 @@ const Index: FC = () => {
       >
         Voyager
       </Button> */}
-      {dataLoginTime && loginTime === 0 ? (
-        <Button
-          w="24"
-          bgColor="primary.100"
-          onClick={() => {
-            if (!account) return;
-            getStarterKit({ args: [numToFelt(account)] });
-          }}
-        >
-          StarterKit
-        </Button>
-      ) : (
-        <></>
-      )}
       <VStack position="absolute" w="100%" bottom="4">
         <Flex w="100%" justifyContent="space-evenly">
           <Link href={twitterURL} isExternal>
